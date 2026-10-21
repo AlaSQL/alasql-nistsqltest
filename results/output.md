@@ -1,12 +1,12 @@
 # NIST SQL Test Suite results for AlaSQL
 
-`2026-10-21T05:22:02.937Z target: alasql@4.20.0`
+`2026-10-21T10:43:48.719Z target: alasql@4.20.0`
 
 NIST SQL Test Suite, Version 6.0 (1996), Interactive SQL: 339 test files, COMMIT and ROLLBACK emulated by the runner.
 
 ## Setup
 
-28 files (17 schemas, 11 dataload programs), 10,700 statements, 9,894 failed.
+28 files (17 schemas, 11 dataload programs), 10,700 statements, 9,896 failed.
 
 | File | Authorization | Statements | Failed | Most common failure |
 |---|---|---|---|---|
@@ -24,7 +24,7 @@ NIST SQL Test Suite, Version 6.0 (1996), Interactive SQL: 339 test files, COMMIT
 | `schema/schem12.std` | FLATER | 13 | 8 | CREATE DOMAIN: Parse error (6) |
 | `schema/cts5sch1.sql` | CTS2 | 6 | 3 | CREATE DOMAIN: Parse error (1) |
 | `schema/cts5sch2.sql` | CTS1 | 67 | 15 | CREATE TABLE: Parse error (5) |
-| `schema/cts5sch3.sql` | CTS1 | 7 | 3 | CREATE DOMAIN: Parse error (3) |
+| `schema/cts5sch3.sql` | CTS1 | 7 | 5 | CREATE DOMAIN: Parse error (3) |
 | `schema/cts5sch4.sql` | CTS4 | 2 | 0 |  |
 | `schema/cts5sch5.sql` | CTS3 | 2 | 0 |  |
 | `sql/basetab.sql` | HU | 49 | 1 | SELECT USER: Column does not exist: USER (1) |
@@ -77,25 +77,25 @@ schema/cts5sch2.sql:127
 ```sql
 SELECT USER FROM HU.ECCO
 
-sql/suntab0.sql:12
+sql/flattab.sql:12
 => Column does not exist: USER
 ```
 
 ```sql
-SELECT USER FROM HU.ECCO
+SELECT USER FROM SUN.ECCO
 
-sql/sc11tab.sql:12
+sql/sultab1.sql:12
 => Column does not exist: USER
 ```
 
 ```sql
-INSERT INTO TIDES.CONSTITUENTS VALUES (0, 0, 0.048E0, 113.4)
+INSERT INTO TIDES.LOCATIONS VALUES (0, 'Morro, California', -120.8500, 35.3670, 1, 2.40E0, INTERVAL '-08:00' HOUR TO MINUTE, ':US/Pacific')
 
-sql/sc12tab.sql:35
-=> Table 'CONSTITUENTS' could not be found
+sql/sc12tab.sql:32
+=> Parse error on line 3: ...ERVAL '-08:00' HOUR TO MINUTE, ':US/Paci -----------------------^ Expecting 'COMMA', 'RPAR', 'IN', 'LIKE', 'ARROW', 'DOT', 'CARET', 'EQ', 'SLASH', 'EXCLAMATION', 'MODULO', 'GT', 'LT', 'GTGT', 'LTLT', 'NOT', 'AND', 'OR', 'PLUS', 'STAR', 'REGEXP', 'TILDA', 'GLOB', 'NOT_LIKE'…
 ```
 
-_8 of 77 kinds of setup failure shown; run with --setup to see every failed statement_
+_8 of 78 kinds of setup failure shown; run with --setup to see every failed statement_
 
 
 ---- ---- ---- ---- ---- ---- ----
@@ -115,19 +115,11 @@ TEST:0831 PASS:0831 If 2 columns added?
 
 
 ---- ---- ---- ---- ---- ---- ----
-### 2/339 `nist/sql/sdl005.sql` (CUGINI)
+### 2/339 `nist/sql/dml141.sql` (FLATER)
 
-```sql
-SELECT EMPNUM,PNUM,USER FROM HU.WORKS WHERE EMPNUM = 'E3'
+#### ★ Ran 2 checks in 1 tests
 
-TEST:0141 PASS:0141 If PNUM = 'P2' and USER = 'CUGINI'?
-=> expected PNUM = 'P2', got error: Column does not exist: USER
-```
-
-#### ☓ Ran 3 checks in 1 tests
-
-* 1 failed
-* 66% of the checks and 0% of the tests were OK
+* 100% of the checks and 100% of the tests were OK
 
 
 ---- ---- ---- ---- ---- ---- ----
@@ -210,15 +202,7 @@ TEST:0016 PASS:0016 If 2 rows are selected and both EMPNUMs are 'E1'?
 
 
 ---- ---- ---- ---- ---- ---- ----
-### 7/339 `nist/sql/flg005.sql` (HU)
-
-#### ★ Ran 2 checks in 2 tests
-
-* 100% of the checks and 100% of the tests were OK
-
-
----- ---- ---- ---- ---- ---- ----
-### 8/339 `nist/sql/dml009.sql` (HU)
+### 7/339 `nist/sql/dml009.sql` (HU)
 
 ```sql
 SELECT COUNT(*) FROM TEMP_S
@@ -242,7 +226,7 @@ TEST:0024 PASS:0024 If 0 rows selected, SQLCODE = 100, end of data?
 
 
 ---- ---- ---- ---- ---- ---- ----
-### 9/339 `nist/sql/dml010.sql` (HU)
+### 8/339 `nist/sql/dml010.sql` (HU)
 
 ```sql
 SELECT * FROM TMP WHERE T2 = 23 AND T3 = 'xxxx '
@@ -258,7 +242,7 @@ TEST:0027 PASS:0027 If T1 = 'xxxx ' ?
 
 
 ---- ---- ---- ---- ---- ---- ----
-### 10/339 `nist/sql/dml011.sql` (HU)
+### 9/339 `nist/sql/dml011.sql` (HU)
 
 ```sql
 UPDATE STAFF SET GRADE=10*STAFF.GRADE WHERE STAFF.EMPNUM NOT IN (SELECT WORKS.EMPNUM FROM WORKS WHERE STAFF.EMPNUM = WORKS.EMPNUM)
@@ -274,7 +258,7 @@ TEST:0035 PASS:0035 If 1 row is updated?
 
 
 ---- ---- ---- ---- ---- ---- ----
-### 11/339 `nist/sql/dml012.sql` (HU)
+### 10/339 `nist/sql/dml012.sql` (HU)
 
 ```sql
 DELETE FROM WORKS WHERE WORKS.PNUM IN (SELECT PROJ.PNUM FROM PROJ WHERE PROJ.PNUM=WORKS.PNUM AND PROJ.CITY='Tampa')
@@ -290,7 +274,31 @@ TEST:0038 PASS:0038 If 1 row deleted?
 
 
 ---- ---- ---- ---- ---- ---- ----
-### 12/339 `nist/sql/dml013.sql` (HU)
+### 11/339 `nist/sql/dml087.sql` (FLATER)
+
+```sql
+SELECT HOURS FROM DV1 ORDER BY HOURS DESC
+
+TEST:0518 PASS:0518 If 4 rows selected AND first HOURS = 80? AND second HOURS = 40 AND third HOURS = 20? AND fourth HOURS = 12?
+=> unparsed: condition not read: second HOURS = 40
+```
+
+#### ★ Ran 18 checks in 3 tests
+
+* 1 not read (condition text the runner does not understand)
+* 100% of the checks and 66% of the tests were OK
+
+
+---- ---- ---- ---- ---- ---- ----
+### 12/339 `nist/sql/flg005.sql` (HU)
+
+#### ★ Ran 2 checks in 2 tests
+
+* 100% of the checks and 100% of the tests were OK
+
+
+---- ---- ---- ---- ---- ---- ----
+### 13/339 `nist/sql/dml013.sql` (HU)
 
 ```sql
 SELECT SUM(HOURS)+10 FROM WORKS WHERE PNUM = 'P2'
@@ -313,7 +321,7 @@ TEST:0041 PASS:0041 If 2 rows are selected and EMPNUMs = 'E3' and 'E5'?
 
 
 ---- ---- ---- ---- ---- ---- ----
-### 13/339 `nist/sql/dml015.sql` (HU)
+### 14/339 `nist/sql/dml015.sql` (HU)
 
 #### ★ Ran 5 checks in 2 tests
 
@@ -321,15 +329,23 @@ TEST:0041 PASS:0041 If 2 rows are selected and EMPNUMs = 'E3' and 'E5'?
 
 
 ---- ---- ---- ---- ---- ---- ----
-### 14/339 `nist/sql/dml141.sql` (FLATER)
+### 15/339 `nist/sql/flg008.sql` (HU)
 
-#### ★ Ran 2 checks in 1 tests
+```sql
+SELECT PTYPE, CITY, SUM (BUDGET), COUNT(*) FROM PROJ GROUP BY CITY ORDER BY CITY
 
-* 100% of the checks and 100% of the tests were OK
+TEST:0454 PASS:0454 If either 3, 4, or 6 rows are selected?
+=> unparsed: condition not read: either 3
+```
+
+#### ★ Ran 1 checks in 1 tests
+
+* 1 not read (condition text the runner does not understand)
+* 0% of the checks and 0% of the tests were OK
 
 
 ---- ---- ---- ---- ---- ---- ----
-### 15/339 `nist/sql/dml018.sql` (HU)
+### 16/339 `nist/sql/dml018.sql` (HU)
 
 ```sql
 SELECT SUM(HOURS) FROM WORKS HAVING MIN(PNUM) > 'P0'
@@ -346,37 +362,7 @@ TEST:0073 PASS:0073 If 1 row is selected with SUM(HOURS) = 464?
 
 
 ---- ---- ---- ---- ---- ---- ----
-### 16/339 `nist/sql/dml019.sql` (HU)
-
-```sql
-SELECT PNUM, SUM(HOURS) FROM WORKS GROUP BY PNUM
-
-TEST:0074 PASS:0074 If 6 rows are selected? If PNUMs: 'P1', 'P2', 'P3', 'P4', 'P5', 'P6'? If SUM(HOURS) for 'P2' is 140 ?
-=> unparsed: condition not read: PNUMs: 'P1'
-```
-
-```sql
-SELECT EMPNUM,HOURS FROM WORKS GROUP BY EMPNUM,HOURS
-
-TEST:0076 PASS:0076 If 10 rows are selected and EMPNUM = 'E1' in 4 rows ? for 1 row EMPNUM = 'E1' and HOURS = 12?
-=> unparsed: condition not read: EMPNUM = 'E1' in 4 rows  for 1 row EMPNUM = 'E1'
-```
-
-#### ★ Ran 10 checks in 6 tests
-
-* 3 not read (condition text the runner does not understand)
-* 100% of the checks and 50% of the tests were OK
-
-
----- ---- ---- ---- ---- ---- ----
 ### 17/339 `nist/sql/dml020.sql` (HU)
-
-```sql
-SELECT EMPNUM,EMPNAME,GRADE,STAFF.CITY, PNAME, PROJ.CITY FROM STAFF, PROJ WHERE STAFF.CITY = PROJ.CITY
-
-TEST:0080 PASS:0080 If 10 rows are selected with EMPNAMEs:'Alice', 'Betty', ? 'Carmen', and 'Don' but not 'Ed'?
-=> unparsed: condition not read: 'Betty'
-```
 
 ```sql
 SELECT DISTINCT STAFF.CITY, PROJ.CITY FROM STAFF, WORKS, PROJ WHERE STAFF.EMPNUM = WORKS.EMPNUM AND WORKS.PNUM = PROJ.PNUM
@@ -399,31 +385,30 @@ TEST:0083 PASS:0083 If 2 rows are selected and ? If EMPNUM pairs are 'E1'/'E4' a
 
 
 ---- ---- ---- ---- ---- ---- ----
-### 18/339 `nist/sql/dml014.sql` (HU)
-
-#### ★ Ran 27 checks in 15 tests
-
-* 100% of the checks and 100% of the tests were OK
-
-
----- ---- ---- ---- ---- ---- ----
-### 19/339 `nist/sql/dml087.sql` (FLATER)
+### 18/339 `nist/sql/dml019.sql` (HU)
 
 ```sql
-SELECT HOURS FROM DV1 ORDER BY HOURS DESC
+SELECT PNUM, SUM(HOURS) FROM WORKS GROUP BY PNUM
 
-TEST:0518 PASS:0518 If 4 rows selected AND first HOURS = 80? AND second HOURS = 40 AND third HOURS = 20? AND fourth HOURS = 12?
-=> unparsed: condition not read: second HOURS = 40
+TEST:0074 PASS:0074 If 6 rows are selected? If PNUMs: 'P1', 'P2', 'P3', 'P4', 'P5', 'P6'? If SUM(HOURS) for 'P2' is 140 ?
+=> unparsed: condition not read: PNUMs: 'P1'
 ```
 
-#### ★ Ran 18 checks in 3 tests
+```sql
+SELECT EMPNUM,HOURS FROM WORKS GROUP BY EMPNUM,HOURS
 
-* 1 not read (condition text the runner does not understand)
-* 100% of the checks and 66% of the tests were OK
+TEST:0076 PASS:0076 If 10 rows are selected and EMPNUM = 'E1' in 4 rows ? for 1 row EMPNUM = 'E1' and HOURS = 12?
+=> unparsed: condition not read: EMPNUM = 'E1' in 4 rows  for 1 row EMPNUM = 'E1'
+```
+
+#### ★ Ran 10 checks in 6 tests
+
+* 3 not read (condition text the runner does not understand)
+* 100% of the checks and 50% of the tests were OK
 
 
 ---- ---- ---- ---- ---- ---- ----
-### 20/339 `nist/sql/dml023.sql` (HU)
+### 19/339 `nist/sql/dml023.sql` (HU)
 
 ```sql
 SELECT PNUM FROM PROJ WHERE PROJ.CITY = (SELECT STAFF.CITY FROM STAFF WHERE EMPNUM > 'E1' )
@@ -447,224 +432,7 @@ TEST:0180 PASS:0180 If 5 rows are selected with NULLs together ? If first EMPNUM
 
 
 ---- ---- ---- ---- ---- ---- ----
-### 21/339 `nist/sql/dml024.sql` (HU)
-
-#### ☓ Ran 10 checks in 6 tests
-
-* 2 failed
-* 80% of the checks and 66% of the tests were OK
-
-
----- ---- ---- ---- ---- ---- ----
-### 22/339 `nist/sql/dml022.sql` (HU)
-
-```sql
-SELECT EMPNUM,PNUM FROM WORKS WHERE HOURS <= ALL (SELECT AVG(HOURS) FROM WORKS GROUP BY PNUM)
-
-TEST:0101 PASS:0101 If 2 rows selected and each EMPNUM = 'E1'?
-=> unparsed: condition not read: each EMPNUM = 'E1'
-```
-
-#### ★ Ran 7 checks in 7 tests
-
-* 4 not read (condition text the runner does not understand)
-* 100% of the checks and 42% of the tests were OK
-
-
----- ---- ---- ---- ---- ---- ----
-### 23/339 `nist/sql/dml021.sql` (HU)
-
-#### ★ Ran 24 checks in 12 tests
-
-* 100% of the checks and 100% of the tests were OK
-
-
----- ---- ---- ---- ---- ---- ----
-### 24/339 `nist/sql/dml025.sql` (HU)
-
-#### ★ Ran 4 checks in 4 tests
-
-* 100% of the checks and 100% of the tests were OK
-
-
----- ---- ---- ---- ---- ---- ----
-### 25/339 `nist/sql/flg008.sql` (HU)
-
-```sql
-SELECT PTYPE, CITY, SUM (BUDGET), COUNT(*) FROM PROJ GROUP BY CITY ORDER BY CITY
-
-TEST:0454 PASS:0454 If either 3, 4, or 6 rows are selected?
-=> unparsed: condition not read: either 3
-```
-
-#### ★ Ran 1 checks in 1 tests
-
-* 1 not read (condition text the runner does not understand)
-* 0% of the checks and 0% of the tests were OK
-
-
----- ---- ---- ---- ---- ---- ----
-### 26/339 `nist/sql/dml027.sql` (HU)
-
-```sql
-UPDATE UPUNIQ SET NUMKEY = NUMKEY + 1
-
-TEST:0124 PASS:0124 If 6 rows updated?
-=> expected 6 rows updated, got error: Record already exists
-```
-
-```sql
-SELECT COUNT(*),SUM(NUMKEY) FROM UPUNIQ
-
-TEST:0124 PASS:0124 If count = 6 and SUM(NUMKEY) = 30?
-=> expected SUM(NUMKEY) = 30, got 24
-```
-
-#### ☓ Ran 4 checks in 2 tests
-
-* 2 failed
-* 50% of the checks and 50% of the tests were OK
-
-
----- ---- ---- ---- ---- ---- ----
-### 27/339 `nist/sql/dml033.sql` (HU)
-
-#### ★ Ran 3 checks in 1 tests
-
-* 100% of the checks and 100% of the tests were OK
-
-
----- ---- ---- ---- ---- ---- ----
-### 28/339 `nist/sql/dml029.sql` (HU)
-
-```sql
-SELECT GRADE,CITY FROM STAFF WHERE EMPNUM = 'E8'
-
-TEST:0129 PASS:0129 If GRADE = 15 and CITY = 'Xi'an'?
-=> unparsed: condition not read: CITY = 'Xi'an'
-```
-
-```sql
-INSERT INTO JJ VALUES(123456E-3)
-
-TEST:0131 PASS:0131 If 1 row is inserted?
-=> expected 1 rows inserted, got error: undefined is not an object (evaluating 'undefined['undefined']')
-```
-
-#### ☓ Ran 8 checks in 4 tests
-
-* 4 failed
-* 1 not read (condition text the runner does not understand)
-* 42% of the checks and 25% of the tests were OK
-
-
----- ---- ---- ---- ---- ---- ----
-### 29/339 `nist/sql/dml035.sql` (HU)
-
-```sql
-SELECT FLOATTEST FROM JJ ORDER BY FLOATTEST DESC
-
-TEST:0157 PASS:0157 If 6 rows are selected ? If last FLOATTEST = -87 OR is between -87.5 and -86.5 ?
-=> unparsed: condition not read: last FLOATTEST = -87 OR  is between -87.5
-```
-
-#### ★ Ran 7 checks in 1 tests
-
-* 1 not read (condition text the runner does not understand)
-* 100% of the checks and 0% of the tests were OK
-
-
----- ---- ---- ---- ---- ---- ----
-### 30/339 `nist/sql/dml038.sql` (HU)
-
-#### ★ Ran 1 checks in 1 tests
-
-* 100% of the checks and 100% of the tests were OK
-
-
----- ---- ---- ---- ---- ---- ----
-### 31/339 `nist/sql/dml037.sql` (HU)
-
-#### ★ Ran 2 checks in 1 tests
-
-* 100% of the checks and 100% of the tests were OK
-
-
----- ---- ---- ---- ---- ---- ----
-### 32/339 `nist/sql/dml040.sql` (HU)
-
-```sql
-SELECT COL1, EMPNUM, GRADE FROM CUGINI.VTABLE, STAFF WHERE COL1 < 200 AND GRADE > 12
-
-TEST:0209 PASS:0209 If 6 rows are selected and SUM(COL1) = 220?
-=> expected 6 rows selected, got error: Table 'STAFF' does not exist in database
-```
-
-#### ☓ Ran 1 checks in 1 tests
-
-* 1 failed
-* 0% of the checks and 0% of the tests were OK
-
-
----- ---- ---- ---- ---- ---- ----
-### 33/339 `nist/sql/dml039.sql` (HU)
-
-#### ★ Ran 4 checks in 1 tests
-
-* 100% of the checks and 100% of the tests were OK
-
-
----- ---- ---- ---- ---- ---- ----
-### 34/339 `nist/sql/dml041.sql` (HU)
-
-```sql
-INSERT INTO V_WORKS3 VALUES('E8','P2',85)
-
-TEST:0212 PASS:0212 If either 1 row is inserted OR ? If ERROR, view check constraint, 0 rows inserted?
-=> unparsed: condition not read: either 1 row is inserted   OR
-```
-
-#### ☓ Ran 7 checks in 1 tests
-
-* 3 failed
-* 1 not read (condition text the runner does not understand)
-* 50% of the checks and 0% of the tests were OK
-
-
----- ---- ---- ---- ---- ---- ----
-### 35/339 `nist/sql/dml051.sql` (HU)
-
-#### ★ Ran 4 checks in 2 tests
-
-* 100% of the checks and 100% of the tests were OK
-
-
----- ---- ---- ---- ---- ---- ----
-### 36/339 `nist/sql/dml052.sql` (HU)
-
-```sql
-SELECT EMPNAME FROM STAFF WHERE EMPNAME LIKE 'Ali%'
-
-TEST:0229 PASS:0229 If 1 row is returned and EMPNAME = 'Alice' (not 'ALICE')?
-=> unparsed: condition not read: EMPNAME = 'Alice' (not 'ALICE')
-```
-
-#### ★ Ran 3 checks in 1 tests
-
-* 2 not read (condition text the runner does not understand)
-* 100% of the checks and 0% of the tests were OK
-
-
----- ---- ---- ---- ---- ---- ----
-### 37/339 `nist/sql/dml053.sql` (HU)
-
-#### ★ Ran 3 checks in 1 tests
-
-* 100% of the checks and 100% of the tests were OK
-
-
----- ---- ---- ---- ---- ---- ----
-### 38/339 `nist/sql/sdl026.sql` (CANWEPARSELENGTH18)
+### 20/339 `nist/sql/sdl026.sql` (CANWEPARSELENGTH18)
 
 ```sql
 SELECT * FROM CANWEPARSELENGTH18.CHARACTERS18VIEW18
@@ -687,44 +455,44 @@ TEST:0237 PASS:0237 If CORRELATIONNAMES18.CHARS18NAME18CHARS = 'VAL4'?
 
 
 ---- ---- ---- ---- ---- ---- ----
-### 39/339 `nist/sql/dml059.sql` (HU)
+### 21/339 `nist/sql/dml014.sql` (HU)
 
-```sql
-SELECT COL1,SUM(2 * COL2 * COL3) FROM VTABLE GROUP BY COL1 HAVING SUM(COL2 * COL3) > 2000 OR SUM(COL2 * COL3) < -2000 ORDER BY COL1
+#### ★ Ran 27 checks in 15 tests
 
-TEST:0258 PASS:0258 If 2 rows are selected? If first row has values (100, 366864) ? If second row has values (1000, -12000000) ?
-=> unparsed: condition not read: first row has values (100
-```
-
-```sql
-SELECT COL1, MAX(COL2) FROM VTABLE GROUP BY COL1 HAVING MAX(COL2) > ANY (SELECT GRADE FROM STAFF) AND MAX(COL2) < SOME (SELECT HOURS FROM WORKS) ORDER BY COL1
-
-TEST:0259 PASS:0259 If 1 row is selected and COL1 = 10 and MAX(COL2) = 20?
-=> expected 1 rows selected, got error: p is not defined
-```
-
-```sql
-SELECT SUM(COL1) FROM VTABLE WHERE 10 + COL1 > COL2 HAVING MAX(COL1) > 100
-
-TEST:0264 PASS:0264 If SUM(COL1) = 1000?
-=> expected SUM(COL1) = 1000, got error: Parse error on line 3: ...L1 > COL2 HAVING MAX(COL1) > 1 ----------------------^ Expecting 'EOF', 'WITH', 'RPAR', 'IN', 'LIKE', 'ARROW', 'DOT', 'ORDER', 'CARET', 'EQ', 'SLASH', 'EXCLAMATION', 'MODULO', 'GT', 'LT', 'GTGT', 'LTLT', 'NOT', 'UNION', 'INTERSECT', 'E…
-```
-
-#### ☓ Ran 14 checks in 5 tests
-
-* 3 failed
-* 2 not read (condition text the runner does not understand)
-* 75% of the checks and 20% of the tests were OK
+* 100% of the checks and 100% of the tests were OK
 
 
 ---- ---- ---- ---- ---- ---- ----
-### 40/339 `nist/sql/dml026.sql` (HU)
+### 22/339 `nist/sql/dml022.sql` (HU)
+
+```sql
+SELECT EMPNUM,PNUM FROM WORKS WHERE HOURS <= ALL (SELECT AVG(HOURS) FROM WORKS GROUP BY PNUM)
+
+TEST:0101 PASS:0101 If 2 rows selected and each EMPNUM = 'E1'?
+=> unparsed: condition not read: each EMPNUM = 'E1'
+```
+
+#### ★ Ran 7 checks in 7 tests
+
+* 4 not read (condition text the runner does not understand)
+* 100% of the checks and 42% of the tests were OK
+
+
+---- ---- ---- ---- ---- ---- ----
+### 23/339 `nist/sql/dml026.sql` (HU)
 
 ```sql
 SELECT +MAX(DISTINCT HOURS) FROM WORKS
 
 TEST:0118 PASS:0118 If +MAX(DISTINCT HOURS) = 80?
 => unparsed: condition not read: +MAX(DISTINCT HOURS) = 80
+```
+
+```sql
+SELECT -MAX(DISTINCT HOURS) FROM WORKS
+
+TEST:0119 PASS:0119 If -MAX(DISTINCT HOURS) = -80?
+=> unparsed: condition not read: -MAX(DISTINCT HOURS) = -80
 ```
 
 ```sql
@@ -757,7 +525,296 @@ TEST:0123 PASS:0123 If Answer is 8999997 (plus or minus 0.5)?
 
 
 ---- ---- ---- ---- ---- ---- ----
-### 41/339 `nist/sql/dml060.sql` (HU)
+### 24/339 `nist/sql/dml024.sql` (HU)
+
+#### ☓ Ran 10 checks in 6 tests
+
+* 2 failed
+* 80% of the checks and 66% of the tests were OK
+
+
+---- ---- ---- ---- ---- ---- ----
+### 25/339 `nist/sql/dml025.sql` (HU)
+
+#### ★ Ran 4 checks in 4 tests
+
+* 100% of the checks and 100% of the tests were OK
+
+
+---- ---- ---- ---- ---- ---- ----
+### 26/339 `nist/sql/dml033.sql` (HU)
+
+#### ★ Ran 3 checks in 1 tests
+
+* 100% of the checks and 100% of the tests were OK
+
+
+---- ---- ---- ---- ---- ---- ----
+### 27/339 `nist/sql/dml029.sql` (HU)
+
+```sql
+SELECT GRADE,CITY FROM STAFF WHERE EMPNUM = 'E8'
+
+TEST:0129 PASS:0129 If GRADE = 15 and CITY = 'Xi'an'?
+=> unparsed: condition not read: CITY = 'Xi'an'
+```
+
+```sql
+INSERT INTO JJ VALUES(123456E-3)
+
+TEST:0131 PASS:0131 If 1 row is inserted?
+=> expected 1 rows inserted, got error: undefined is not an object (evaluating 'undefined['undefined']')
+```
+
+#### ☓ Ran 8 checks in 4 tests
+
+* 4 failed
+* 1 not read (condition text the runner does not understand)
+* 42% of the checks and 25% of the tests were OK
+
+
+---- ---- ---- ---- ---- ---- ----
+### 28/339 `nist/sql/dml027.sql` (HU)
+
+```sql
+UPDATE UPUNIQ SET NUMKEY = NUMKEY + 1
+
+TEST:0124 PASS:0124 If 6 rows updated?
+=> expected 6 rows updated, got error: Record already exists
+```
+
+```sql
+SELECT COUNT(*),SUM(NUMKEY) FROM UPUNIQ
+
+TEST:0124 PASS:0124 If count = 6 and SUM(NUMKEY) = 30?
+=> expected SUM(NUMKEY) = 30, got 24
+```
+
+#### ☓ Ran 4 checks in 2 tests
+
+* 2 failed
+* 50% of the checks and 50% of the tests were OK
+
+
+---- ---- ---- ---- ---- ---- ----
+### 29/339 `nist/sql/dml035.sql` (HU)
+
+```sql
+SELECT FLOATTEST FROM JJ ORDER BY FLOATTEST DESC
+
+TEST:0157 PASS:0157 If 6 rows are selected ? If last FLOATTEST = -87 OR is between -87.5 and -86.5 ?
+=> unparsed: condition not read: last FLOATTEST = -87 OR  is between -87.5
+```
+
+#### ★ Ran 7 checks in 1 tests
+
+* 1 not read (condition text the runner does not understand)
+* 100% of the checks and 0% of the tests were OK
+
+
+---- ---- ---- ---- ---- ---- ----
+### 30/339 `nist/sql/dml037.sql` (HU)
+
+#### ★ Ran 2 checks in 1 tests
+
+* 100% of the checks and 100% of the tests were OK
+
+
+---- ---- ---- ---- ---- ---- ----
+### 31/339 `nist/sql/dml038.sql` (HU)
+
+#### ★ Ran 1 checks in 1 tests
+
+* 100% of the checks and 100% of the tests were OK
+
+
+---- ---- ---- ---- ---- ---- ----
+### 32/339 `nist/sql/dml034.sql` (HU)
+
+```sql
+SELECT REALTEST FROM GG
+
+TEST:0088 PASS:0088 If REALTEST = 1.234567 ? OR is between 1.234562 and 1.234572 ?
+=> unparsed: condition not read: OR is between 1.234562
+```
+
+```sql
+SELECT FLOATTEST FROM KK
+
+TEST:0092 PASS:0092 If FLOATTEST = 123456.123456 ? OR is between 123456.1233 and 123456.1236 ?
+=> unparsed: condition not read: OR is between 123456.1233
+```
+
+#### ★ Ran 19 checks in 7 tests
+
+* 7 not read (condition text the runner does not understand)
+* 100% of the checks and 0% of the tests were OK
+
+
+---- ---- ---- ---- ---- ---- ----
+### 33/339 `nist/sql/dml039.sql` (HU)
+
+#### ★ Ran 4 checks in 1 tests
+
+* 100% of the checks and 100% of the tests were OK
+
+
+---- ---- ---- ---- ---- ---- ----
+### 34/339 `nist/sql/dml051.sql` (HU)
+
+#### ★ Ran 4 checks in 2 tests
+
+* 100% of the checks and 100% of the tests were OK
+
+
+---- ---- ---- ---- ---- ---- ----
+### 35/339 `nist/sql/dml040.sql` (HU)
+
+```sql
+SELECT COL1, EMPNUM, GRADE FROM CUGINI.VTABLE, STAFF WHERE COL1 < 200 AND GRADE > 12
+
+TEST:0209 PASS:0209 If 6 rows are selected and SUM(COL1) = 220?
+=> expected 6 rows selected, got error: Table 'STAFF' does not exist in database
+```
+
+#### ☓ Ran 1 checks in 1 tests
+
+* 1 failed
+* 0% of the checks and 0% of the tests were OK
+
+
+---- ---- ---- ---- ---- ---- ----
+### 36/339 `nist/sql/dml041.sql` (HU)
+
+```sql
+INSERT INTO V_WORKS3 VALUES('E8','P2',85)
+
+TEST:0212 PASS:0212 If either 1 row is inserted OR ? If ERROR, view check constraint, 0 rows inserted?
+=> unparsed: condition not read: either 1 row is inserted   OR
+```
+
+#### ☓ Ran 7 checks in 1 tests
+
+* 3 failed
+* 1 not read (condition text the runner does not understand)
+* 50% of the checks and 0% of the tests were OK
+
+
+---- ---- ---- ---- ---- ---- ----
+### 37/339 `nist/sql/dml052.sql` (HU)
+
+```sql
+SELECT EMPNAME FROM STAFF WHERE EMPNAME LIKE 'Ali%'
+
+TEST:0229 PASS:0229 If 1 row is returned and EMPNAME = 'Alice' (not 'ALICE')?
+=> unparsed: condition not read: EMPNAME = 'Alice' (not 'ALICE')
+```
+
+#### ★ Ran 3 checks in 1 tests
+
+* 2 not read (condition text the runner does not understand)
+* 100% of the checks and 0% of the tests were OK
+
+
+---- ---- ---- ---- ---- ---- ----
+### 38/339 `nist/sql/dml021.sql` (HU)
+
+#### ★ Ran 24 checks in 12 tests
+
+* 100% of the checks and 100% of the tests were OK
+
+
+---- ---- ---- ---- ---- ---- ----
+### 39/339 `nist/sql/dml053.sql` (HU)
+
+#### ★ Ran 3 checks in 1 tests
+
+* 100% of the checks and 100% of the tests were OK
+
+
+---- ---- ---- ---- ---- ---- ----
+### 40/339 `nist/sql/dml059.sql` (HU)
+
+```sql
+SELECT COL1,SUM(2 * COL2 * COL3) FROM VTABLE GROUP BY COL1 HAVING SUM(COL2 * COL3) > 2000 OR SUM(COL2 * COL3) < -2000 ORDER BY COL1
+
+TEST:0258 PASS:0258 If 2 rows are selected? If first row has values (100, 366864) ? If second row has values (1000, -12000000) ?
+=> unparsed: condition not read: first row has values (100
+```
+
+```sql
+SELECT COL1, MAX(COL2) FROM VTABLE GROUP BY COL1 HAVING MAX(COL2) > ANY (SELECT GRADE FROM STAFF) AND MAX(COL2) < SOME (SELECT HOURS FROM WORKS) ORDER BY COL1
+
+TEST:0259 PASS:0259 If 1 row is selected and COL1 = 10 and MAX(COL2) = 20?
+=> expected 1 rows selected, got error: p is not defined
+```
+
+```sql
+SELECT SUM(COL1) FROM VTABLE WHERE 10 + COL1 > COL2 HAVING MAX(COL1) > 100
+
+TEST:0264 PASS:0264 If SUM(COL1) = 1000?
+=> expected SUM(COL1) = 1000, got error: Parse error on line 3: ...L1 > COL2 HAVING MAX(COL1) > 1 ----------------------^ Expecting 'EOF', 'WITH', 'RPAR', 'IN', 'LIKE', 'ARROW', 'DOT', 'ORDER', 'CARET', 'EQ', 'SLASH', 'EXCLAMATION', 'MODULO', 'GT', 'LT', 'GTGT', 'LTLT', 'NOT', 'UNION', 'INTERSECT', 'E…
+```
+
+#### ☓ Ran 14 checks in 5 tests
+
+* 3 failed
+* 2 not read (condition text the runner does not understand)
+* 75% of the checks and 20% of the tests were OK
+
+
+---- ---- ---- ---- ---- ---- ----
+### 41/339 `nist/sql/dml062.sql` (HU)
+
+```sql
+SELECT EMPNUM,SECOND2 FROM SULLIVAN1.MUL_SCH ORDER BY EMPNUM
+
+TEST:0276 PASS:0276 If 2 rows are selected? If first row EMPNUM = 'E1' and SECOND2 = 'A'? If second row EMPNUM = 'E4' and SECOND2 = 'A'?
+=> unparsed: condition not read: first row EMPNUM = 'E1'
+```
+
+#### ☓ Ran 20 checks in 4 tests
+
+* 1 failed
+* 1 not read (condition text the runner does not understand)
+* 94% of the checks and 50% of the tests were OK
+
+
+---- ---- ---- ---- ---- ---- ----
+### 42/339 `nist/sql/dml061.sql` (HU)
+
+```sql
+SELECT SUM(HOURS),MAX(HOURS),MIN(HOURS),MIN(EMPNUM) FROM WORKS
+
+TEST:0273 PASS:0273 If 1 row is selected? If SUM(HOURS), MAX(HOURS), and MIN(HOURS) are NULL?
+=> unparsed: condition not read: SUM(HOURS)
+```
+
+#### ☓ Ran 18 checks in 7 tests
+
+* 3 failed
+* 1 not read (condition text the runner does not understand)
+* 82% of the checks and 57% of the tests were OK
+
+
+---- ---- ---- ---- ---- ---- ----
+### 43/339 `nist/sql/sdl005.sql` (CUGINI)
+
+```sql
+SELECT EMPNUM,PNUM,USER FROM HU.WORKS WHERE EMPNUM = 'E3'
+
+TEST:0141 PASS:0141 If PNUM = 'P2' and USER = 'CUGINI'?
+=> expected PNUM = 'P2', got error: Column does not exist: USER
+```
+
+#### ☓ Ran 3 checks in 1 tests
+
+* 1 failed
+* 66% of the checks and 0% of the tests were OK
+
+
+---- ---- ---- ---- ---- ---- ----
+### 44/339 `nist/sql/dml060.sql` (HU)
 
 ```sql
 SELECT COL1, COL2 FROM VTABLE WHERE(2*(COL3 - COL2)) BETWEEN 5 AND 200 ORDER BY COL1
@@ -788,23 +845,7 @@ TEST:0266 PASS:0266 If 2 rows selected and PNUM values are 'P2' and 'P4'?
 
 
 ---- ---- ---- ---- ---- ---- ----
-### 42/339 `nist/sql/dml034.sql` (HU)
-
-```sql
-SELECT REALTEST FROM GG
-
-TEST:0088 PASS:0088 If REALTEST = 1.234567 ? OR is between 1.234562 and 1.234572 ?
-=> unparsed: condition not read: OR is between 1.234562
-```
-
-#### ★ Ran 19 checks in 7 tests
-
-* 7 not read (condition text the runner does not understand)
-* 100% of the checks and 0% of the tests were OK
-
-
----- ---- ---- ---- ---- ---- ----
-### 43/339 `nist/sql/dml058.sql` (HU)
+### 45/339 `nist/sql/dml058.sql` (HU)
 
 ```sql
 SELECT STR110 FROM T4 WHERE NUM6 = 100
@@ -841,7 +882,23 @@ TEST:0256 PASS:0256 If 1 row is deleted?
 
 
 ---- ---- ---- ---- ---- ---- ----
-### 44/339 `nist/sql/dml069.sql` (HU)
+### 46/339 `nist/sql/dml065.sql` (HU)
+
+```sql
+SELECT COUNT(*) FROM STAFF WHERE EMPNAME = 'Ed'
+
+TEST:0284 PASS:0284 If count = 4?
+=> expected count 4, got 2
+```
+
+#### ☓ Ran 4 checks in 2 tests
+
+* 3 failed
+* 25% of the checks and 50% of the tests were OK
+
+
+---- ---- ---- ---- ---- ---- ----
+### 47/339 `nist/sql/dml069.sql` (HU)
 
 ```sql
 SELECT * FROM WORKS1 WHERE EMPNUM = 'P2' ORDER BY EMPNUM, PNUM ASC
@@ -854,48 +911,6 @@ TEST:0408 PASS:0408 If FOR ROW #1, EMPNO1 = 'P2', PNUM1 = 'E1', HOURS1 = 460? If
 
 * 1 not read (condition text the runner does not understand)
 * 100% of the checks and 50% of the tests were OK
-
-
----- ---- ---- ---- ---- ---- ----
-### 45/339 `nist/sql/dml064.sql` (HU)
-
-```sql
-SELECT COUNT (*) FROM STAFF WHERE GRADE = 13
-
-TEST:0282 PASS:0282 If count = 1?
-=> expected count 1, got 2
-```
-
-#### ☓ Ran 9 checks in 3 tests
-
-* 9 failed
-* 0% of the checks and 0% of the tests were OK
-
-
----- ---- ---- ---- ---- ---- ----
-### 46/339 `nist/sql/dml065.sql` (HU)
-
-#### ☓ Ran 4 checks in 2 tests
-
-* 3 failed
-* 25% of the checks and 50% of the tests were OK
-
-
----- ---- ---- ---- ---- ---- ----
-### 47/339 `nist/sql/dml062.sql` (HU)
-
-```sql
-SELECT EMPNUM,SECOND2 FROM SULLIVAN1.MUL_SCH ORDER BY EMPNUM
-
-TEST:0276 PASS:0276 If 2 rows are selected? If first row EMPNUM = 'E1' and SECOND2 = 'A'? If second row EMPNUM = 'E4' and SECOND2 = 'A'?
-=> unparsed: condition not read: first row EMPNUM = 'E1'
-```
-
-#### ☓ Ran 20 checks in 4 tests
-
-* 1 failed
-* 1 not read (condition text the runner does not understand)
-* 94% of the checks and 50% of the tests were OK
 
 
 ---- ---- ---- ---- ---- ---- ----
@@ -958,23 +973,7 @@ TEST:0436 PASS:0436 If NUMTEST is NULL (Implementor defined print format)?
 
 
 ---- ---- ---- ---- ---- ---- ----
-### 49/339 `nist/sql/dml070.sql` (HU)
-
-#### ★ Ran 4 checks in 3 tests
-
-* 2 not read (condition text the runner does not understand)
-* 100% of the checks and 33% of the tests were OK
-
-
----- ---- ---- ---- ---- ---- ----
-### 50/339 `nist/sql/dml077.sql` (HU)
-
-```sql
-INSERT INTO TEMP_SS VALUES('E7',NULL,'Frankfurt')
-
-TEST:0443 PASS:0443 If ERROR, view check constraint, 0 rows inserted?
-=> expected an error, got count 1
-```
+### 49/339 `nist/sql/dml077.sql` (HU)
 
 #### ☓ Ran 9 checks in 1 tests
 
@@ -983,7 +982,72 @@ TEST:0443 PASS:0443 If ERROR, view check constraint, 0 rows inserted?
 
 
 ---- ---- ---- ---- ---- ---- ----
-### 51/339 `nist/sql/dml073.sql` (HU)
+### 50/339 `nist/sql/dml075.sql` (HU)
+
+```sql
+SELECT COUNT(*) FROM STAFF WHERE CITY <> ANY (SELECT CITY FROM PROJ WHERE PNAME = 'SDP')
+
+TEST:0432 PASS:0432 If count = 3?
+=> expected count 3, got 5
+```
+
+```sql
+SELECT PNUM, SUM(HOURS) FROM WORKS GROUP BY PNUM HAVING EXISTS (SELECT PNAME FROM PROJ WHERE PROJ.PNUM = WORKS.PNUM AND SUM(WORKS.HOURS) > PROJ.BUDGET / 200)
+
+TEST:0434 PASS:0434 If 2 rows selected with values (in any order):? PNUM = 'P1', SUM(HOURS) = 80? PNUM = 'P5', SUM(HOURS) = 92?
+=> unparsed: condition not read: SUM(HOURS) = 80 PNUM = 'P5'
+```
+
+```sql
+SELECT PTYPE, CITY FROM PROJ GROUP BY PTYPE, CITY HAVING AVG(BUDGET) > 21000
+
+TEST:0442 PASS:0442 If 3 rows selected with PTYPE/CITY values(in any order):? Code/Vienna, Design/Deale, Test/Tampa?
+=> unparsed: condition not read: Design/Deale
+```
+
+#### ☓ Ran 18 checks in 5 tests
+
+* 3 failed
+* 4 not read (condition text the runner does not understand)
+* 78% of the checks and 40% of the tests were OK
+
+
+---- ---- ---- ---- ---- ---- ----
+### 51/339 `nist/sql/dml070.sql` (HU)
+
+#### ★ Ran 4 checks in 3 tests
+
+* 2 not read (condition text the runner does not understand)
+* 100% of the checks and 33% of the tests were OK
+
+
+---- ---- ---- ---- ---- ---- ----
+### 52/339 `nist/sql/dml064.sql` (HU)
+
+#### ☓ Ran 9 checks in 3 tests
+
+* 9 failed
+* 0% of the checks and 0% of the tests were OK
+
+
+---- ---- ---- ---- ---- ---- ----
+### 53/339 `nist/sql/dml086.sql` (HU)
+
+```sql
+SELECT COUNT(*) FROM WORKS WHERE HOURS > 85
+
+TEST:0511 PASS:0511 If count = 2?
+=> expected count 2, got 0
+```
+
+#### ☓ Ran 10 checks in 1 tests
+
+* 6 failed
+* 40% of the checks and 0% of the tests were OK
+
+
+---- ---- ---- ---- ---- ---- ----
+### 54/339 `nist/sql/dml073.sql` (HU)
 
 ```sql
 SELECT MAX(STAFF1.GRADE), SUM(STAFF1.GRADE) FROM STAFF1, STAFF GROUP BY STAFF1.CITY, STAFF.CITY
@@ -1006,47 +1070,32 @@ TEST:0418 PASS:0418 If AVG(T1.COL4) = 147 or 148? If AVG(T1.COL4 + T2.COL4) = 29
 
 
 ---- ---- ---- ---- ---- ---- ----
-### 52/339 `nist/sql/dml086.sql` (HU)
+### 55/339 `nist/sql/sdl012.sql` (HU)
 
-#### ☓ Ran 10 checks in 1 tests
+#### ★ Ran 2 checks in 1 tests
 
-* 6 failed
-* 40% of the checks and 0% of the tests were OK
-
-
----- ---- ---- ---- ---- ---- ----
-### 53/339 `nist/sql/dml075.sql` (HU)
-
-```sql
-SELECT PNUM, SUM(HOURS) FROM WORKS GROUP BY PNUM HAVING EXISTS (SELECT PNAME FROM PROJ WHERE PROJ.PNUM = WORKS.PNUM AND SUM(WORKS.HOURS) > PROJ.BUDGET / 200)
-
-TEST:0434 PASS:0434 If 2 rows selected with values (in any order):? PNUM = 'P1', SUM(HOURS) = 80? PNUM = 'P5', SUM(HOURS) = 92?
-=> unparsed: condition not read: SUM(HOURS) = 80 PNUM = 'P5'
-```
-
-```sql
-SELECT PTYPE, CITY FROM PROJ GROUP BY PTYPE, CITY HAVING AVG(BUDGET) > 21000
-
-TEST:0442 PASS:0442 If 3 rows selected with PTYPE/CITY values(in any order):? Code/Vienna, Design/Deale, Test/Tampa?
-=> unparsed: condition not read: Design/Deale
-```
-
-```sql
-SELECT DISTINCT SUM(BUDGET) FROM PROJ GROUP BY PTYPE, CITY HAVING AVG(BUDGET) > 21000
-
-TEST:0442 PASS:0442 If 2 rows selected (in any order):? with SUM(BUDGET) values 30000 and 80000?
-=> unparsed: condition not read: 80000
-```
-
-#### ☓ Ran 18 checks in 5 tests
-
-* 3 failed
-* 4 not read (condition text the runner does not understand)
-* 78% of the checks and 40% of the tests were OK
+* 100% of the checks and 100% of the tests were OK
 
 
 ---- ---- ---- ---- ---- ---- ----
-### 54/339 `nist/sql/dml079.sql` (HU)
+### 56/339 `nist/sql/sdl013.sql` (HU)
+
+#### ★ Ran 4 checks in 1 tests
+
+* 100% of the checks and 100% of the tests were OK
+
+
+---- ---- ---- ---- ---- ---- ----
+### 57/339 `nist/sql/dml142.sql` (HU)
+
+#### ☓ Ran 4 checks in 1 tests
+
+* 4 failed
+* 0% of the checks and 0% of the tests were OK
+
+
+---- ---- ---- ---- ---- ---- ----
+### 58/339 `nist/sql/dml079.sql` (HU)
 
 ```sql
 SELECT * FROM STAFF
@@ -1070,7 +1119,7 @@ TEST:0451 PASS:0451 If 15 rows are selected? If EMPNUM/PNUM values include ? e1/
 
 
 ---- ---- ---- ---- ---- ---- ----
-### 55/339 `nist/sql/sdl001.sql` (HU)
+### 59/339 `nist/sql/sdl001.sql` (HU)
 
 ```sql
 SELECT C1 FROM WHICH_SCHEMA1
@@ -1086,24 +1135,7 @@ TEST:0137 PASS:0137 If 1 row selected ? If C1 starts with 'Use of SCHEMA1.STD is
 
 
 ---- ---- ---- ---- ---- ---- ----
-### 56/339 `nist/sql/dml142.sql` (HU)
-
-#### ☓ Ran 4 checks in 1 tests
-
-* 4 failed
-* 0% of the checks and 0% of the tests were OK
-
-
----- ---- ---- ---- ---- ---- ----
-### 57/339 `nist/sql/sdl012.sql` (HU)
-
-#### ★ Ran 2 checks in 1 tests
-
-* 100% of the checks and 100% of the tests were OK
-
-
----- ---- ---- ---- ---- ---- ----
-### 58/339 `nist/sql/sdl015.sql` (HU)
+### 60/339 `nist/sql/sdl015.sql` (HU)
 
 #### ★ Ran 1 checks in 1 tests
 
@@ -1111,7 +1143,7 @@ TEST:0137 PASS:0137 If 1 row selected ? If C1 starts with 'Use of SCHEMA1.STD is
 
 
 ---- ---- ---- ---- ---- ---- ----
-### 59/339 `nist/sql/sdl014.sql` (HU)
+### 61/339 `nist/sql/sdl014.sql` (HU)
 
 #### ★ Ran 5 checks in 1 tests
 
@@ -1119,25 +1151,16 @@ TEST:0137 PASS:0137 If 1 row selected ? If C1 starts with 'Use of SCHEMA1.STD is
 
 
 ---- ---- ---- ---- ---- ---- ----
-### 60/339 `nist/sql/dml061.sql` (HU)
+### 62/339 `nist/sql/sdl016.sql` (HU)
 
-#### ☓ Ran 18 checks in 7 tests
+#### ☓ Ran 5 checks in 1 tests
 
-* 3 failed
-* 1 not read (condition text the runner does not understand)
-* 82% of the checks and 57% of the tests were OK
-
-
----- ---- ---- ---- ---- ---- ----
-### 61/339 `nist/sql/sdl013.sql` (HU)
-
-#### ★ Ran 4 checks in 1 tests
-
-* 100% of the checks and 100% of the tests were OK
+* 4 failed
+* 20% of the checks and 0% of the tests were OK
 
 
 ---- ---- ---- ---- ---- ---- ----
-### 62/339 `nist/sql/dml090.sql` (HU)
+### 63/339 `nist/sql/dml090.sql` (HU)
 
 ```sql
 SELECT MIN(PNAME) FROM PROJ, WORKS, STAFF WHERE PROJ.PNUM = WORKS.PNUM AND WORKS.EMPNUM = STAFF.EMPNUM AND BUDGET - GRADE * HOURS * 100 IN (-4400, -1000, 4000)
@@ -1151,13 +1174,6 @@ SELECT CITY, COUNT(*) FROM PROJ GROUP BY CITY HAVING (MAX(BUDGET) - MIN(BUDGET))
 
 TEST:0512 PASS:0512 If in first row: CITY = 'Vienna' AND count = 2? AND in second row: CITY = 'Deale' AND count = 3?
 => unparsed: condition not read: in first row: CITY = 'Vienna'
-```
-
-```sql
-INSERT INTO TEMP_OBSERV (YEAR_OBSERV, MAX_TEMP) VALUES (-9999, 1234.51)
-
-TEST:0513 PASS:0513 If ERROR, constraint violation, 0 rows inserted?
-=> expected an error, got count 1
 ```
 
 ```sql
@@ -1176,7 +1192,7 @@ TEST:0564 PASS:0564 If EMPNUM = E3 and GRADE * 1000 = 13000?
 
 
 ---- ---- ---- ---- ---- ---- ----
-### 63/339 `nist/sql/sdl017.sql` (HU)
+### 64/339 `nist/sql/sdl017.sql` (HU)
 
 #### ★ Ran 1 checks in 1 tests
 
@@ -1184,7 +1200,7 @@ TEST:0564 PASS:0564 If EMPNUM = E3 and GRADE * 1000 = 13000?
 
 
 ---- ---- ---- ---- ---- ---- ----
-### 64/339 `nist/sql/sdl018.sql` (HU)
+### 65/339 `nist/sql/sdl018.sql` (HU)
 
 ```sql
 INSERT INTO CUGINI.VTABLE SELECT * FROM VTABLE
@@ -1200,14 +1216,6 @@ TEST:0154 PASS:0154 If 4 rows are inserted?
 
 
 ---- ---- ---- ---- ---- ---- ----
-### 65/339 `nist/sql/sdl019.sql` (HU)
-
-#### ★ Ran 3 checks in 1 tests
-
-* 100% of the checks and 100% of the tests were OK
-
-
----- ---- ---- ---- ---- ---- ----
 ### 66/339 `nist/sql/sdl020.sql` (HU)
 
 #### ★ Ran 5 checks in 1 tests
@@ -1216,21 +1224,20 @@ TEST:0154 PASS:0154 If 4 rows are inserted?
 
 
 ---- ---- ---- ---- ---- ---- ----
-### 67/339 `nist/sql/sdl016.sql` (HU)
+### 67/339 `nist/sql/sdl019.sql` (HU)
 
-#### ☓ Ran 5 checks in 1 tests
+#### ★ Ran 3 checks in 1 tests
 
-* 4 failed
-* 20% of the checks and 0% of the tests were OK
+* 100% of the checks and 100% of the tests were OK
 
 
 ---- ---- ---- ---- ---- ---- ----
-### 68/339 `nist/sql/sdl025.sql` (HU)
+### 68/339 `nist/sql/sdl024.sql` (HU)
 
-#### ☓ Ran 7 checks in 1 tests
+#### ☓ Ran 4 checks in 1 tests
 
-* 3 failed
-* 57% of the checks and 0% of the tests were OK
+* 1 failed
+* 75% of the checks and 0% of the tests were OK
 
 
 ---- ---- ---- ---- ---- ---- ----
@@ -1250,7 +1257,16 @@ TEST:0397 PASS:0397 If for the first row EMP1 = 'E1',? EMP_AVG is between 38 and
 
 
 ---- ---- ---- ---- ---- ---- ----
-### 70/339 `nist/sql/sdl027.sql` (HU)
+### 70/339 `nist/sql/sdl025.sql` (HU)
+
+#### ☓ Ran 7 checks in 1 tests
+
+* 3 failed
+* 57% of the checks and 0% of the tests were OK
+
+
+---- ---- ---- ---- ---- ---- ----
+### 71/339 `nist/sql/sdl027.sql` (HU)
 
 ```sql
 SELECT X.CITY, X.MAX_C, Y.MAX_C, (X.MAX_C + Y.MAX_C) / 2 FROM CELSIUS_OBSERV X, CELSIUS_OBSERV Y WHERE X.YEAR_OBSERV = 1984 AND Y.YEAR_OBSERV = 1985 AND X.CITY = Y.CITY ORDER BY 4 DESC
@@ -1287,7 +1303,7 @@ TEST:0401 PASS:0401 If for the first row HIGH = 105 and LOW = -82?
 
 
 ---- ---- ---- ---- ---- ---- ----
-### 71/339 `nist/sql/cdr028.sql` (SCHANZLE)
+### 72/339 `nist/sql/cdr028.sql` (SCHANZLE)
 
 ```sql
 SELECT COUNT(*) FROM RASTER
@@ -1310,17 +1326,10 @@ TEST:0486 PASS:0486 Consider BOTH current INSERT AND previous SELECT COUNT? ( If
 
 
 ---- ---- ---- ---- ---- ---- ----
-### 72/339 `nist/sql/dml080.sql` (SCHANZLE)
+### 73/339 `nist/sql/dml080.sql` (SCHANZLE)
 
 ```sql
 DELETE FROM HU.STAFF WHERE EMPNUM = 'E7'
-
-TEST:0462 PASS:0462 If SQLCODE = 100 or no data, 0 rows deleted?
-=> unparsed: condition not read: SQLCODE = 100 or no data, 0 rows deleted
-```
-
-```sql
-DELETE FROM HU.STAFF
 
 TEST:0462 PASS:0462 If SQLCODE = 100 or no data, 0 rows deleted?
 => unparsed: condition not read: SQLCODE = 100 or no data, 0 rows deleted
@@ -1340,7 +1349,7 @@ TEST:0463 PASS:0463 If SQLCODE = 100 or no data, 0 rows updated?
 
 
 ---- ---- ---- ---- ---- ---- ----
-### 73/339 `nist/sql/cdr023.sql` (SCHANZLE)
+### 74/339 `nist/sql/cdr023.sql` (SCHANZLE)
 
 #### ☓ Ran 8 checks in 3 tests
 
@@ -1349,30 +1358,7 @@ TEST:0463 PASS:0463 If SQLCODE = 100 or no data, 0 rows updated?
 
 
 ---- ---- ---- ---- ---- ---- ----
-### 74/339 `nist/sql/dml082.sql` (SCHANZLE)
-
-```sql
-INSERT INTO HU.STAFF SELECT 'E13','ff',KC,'gg' FROM CPBASE WHERE JUNK1 LIKE '%X%%X_' ESCAPE 'X'
-
-TEST:0493 PASS:0493 If 1 row is inserted?
-=> expected 1 rows inserted, got error: Table does not exist: CPBASE
-```
-
-#### ☓ Ran 21 checks in 4 tests
-
-* 11 failed
-* 47% of the checks and 25% of the tests were OK
-
-
----- ---- ---- ---- ---- ---- ----
 ### 75/339 `nist/sql/dml083.sql` (SCHANZLE)
-
-```sql
-INSERT INTO HU.STAFF VALUES ('E7','Ella Brown',12,'Claggetsville Maryland')
-
-TEST:0498 PASS:0498 If ERROR, data exception/string right trunc.? If 0 rows inserted OR SQLSTATE = 22001 OR SQLCODE < 0?
-=> expected an error, got count 1
-```
 
 ```sql
 SELECT AVG(SMALLTEST) FROM HU.HH
@@ -1389,16 +1375,14 @@ TEST:0500 PASS:0500 If WARNING, null value eliminated in set function? OR SQLSTA
 
 
 ---- ---- ---- ---- ---- ---- ----
-### 76/339 `nist/sql/sdl024.sql` (HU)
+### 76/339 `nist/sql/dml081.sql` (SCHANZLE)
 
-#### ☓ Ran 4 checks in 1 tests
+```sql
+SELECT COUNT(*) FROM HU.STAFF GROUP BY CITY HAVING SUM(GRADE/0) > 44
 
-* 1 failed
-* 75% of the checks and 0% of the tests were OK
-
-
----- ---- ---- ---- ---- ---- ----
-### 77/339 `nist/sql/dml081.sql` (SCHANZLE)
+TEST:0490 PASS:0490 If ERROR, data exception/division by zero, 0 rows selected? OR SQLSTATE = 22012 OR SQLCODE < 0?
+=> expected an error, got 3 rows
+```
 
 #### ☓ Ran 12 checks in 4 tests
 
@@ -1407,23 +1391,103 @@ TEST:0500 PASS:0500 If WARNING, null value eliminated in set function? OR SQLSTA
 
 
 ---- ---- ---- ---- ---- ---- ----
-### 78/339 `nist/sql/cdr029.sql` (SCHANZLE)
+### 77/339 `nist/sql/dml082.sql` (SCHANZLE)
 
-#### ☓ Ran 17 checks in 3 tests
+```sql
+INSERT INTO HU.STAFF SELECT 'E13','ff',KC,'gg' FROM CPBASE WHERE JUNK1 LIKE '%X%%X_' ESCAPE 'X'
 
-* 5 failed
-* 70% of the checks and 33% of the tests were OK
+TEST:0493 PASS:0493 If 1 row is inserted?
+=> expected 1 rows inserted, got error: Table does not exist: CPBASE
+```
+
+#### ☓ Ran 21 checks in 4 tests
+
+* 11 failed
+* 47% of the checks and 25% of the tests were OK
 
 
 ---- ---- ---- ---- ---- ---- ----
-### 79/339 `nist/sql/dml084.sql` (SCHANZLE)
+### 78/339 `nist/sql/sdl003.sql` (SCHANZLE)
 
 ```sql
-UPDATE HU.UPUNIQ SET COL2 = 'xx'
+SELECT EMPNUM,EMPNAME,USER FROM HU.STAFF WHERE EMPNUM = 'E3'
 
-TEST:0503 PASS:0503 If ERROR, syntax error or access rule violation? 0 rows updated OR SQLSTATE = 42000 OR SQLCODE < 0?
-=> expected an error, got count 6
+TEST:0139 PASS:0139 If EMPNAME = 'Carmen' and USER = 'SCHANZLE'?
+=> expected EMPNAME = 'Carmen', got error: Column does not exist: USER
 ```
+
+#### ☓ Ran 3 checks in 1 tests
+
+* 1 failed
+* 66% of the checks and 0% of the tests were OK
+
+
+---- ---- ---- ---- ---- ---- ----
+### 79/339 `nist/sql/dml091.sql` (SCHANZLE)
+
+```sql
+SELECT T_DECIMAL / .000000001 FROM FOUR_TYPES WHERE T_CHAR = 'X'
+
+TEST:0497 PASS:0497 If 1 row is selected and T_DECIMAL = 1.1112222E+16 ? OR ERROR, data exception/numeric value out of range? OR 0 rows selected OR SQLSTATE = 22003 OR SQLCODE < 0?
+=> unresolved: no column T_DECIMAL in T_DECIMAL / 1e-9
+```
+
+#### ☓ Ran 9 checks in 1 tests
+
+* 1 failed
+* 1 not resolved (the condition names a column the result does not have)
+* 87% of the checks and 0% of the tests were OK
+
+
+---- ---- ---- ---- ---- ---- ----
+### 80/339 `nist/sql/sdl023.sql` (SCHANZLE)
+
+#### ☓ Ran 4 checks in 1 tests
+
+* 3 failed
+* 25% of the checks and 0% of the tests were OK
+
+
+---- ---- ---- ---- ---- ---- ----
+### 81/339 `nist/sql/dml085.sql` (SCHANZLE)
+
+```sql
+SELECT COUNT(DISTINCT "sullivan.select") FROM "FLATER"."SULLIVAN.SELECT"
+
+TEST:0508 PASS:0508 If count = 2?
+=> expected count 2, got error: Parse error on line 2: ...) FROM "FLATER"."SULLIVAN.SELECT" ----------------------^ Expecting 'LITERAL', 'BRALITERAL', 'KEY', 'OPEN', 'CLOSE', 'SEPARATOR', 'EOF', 'WITH', 'COMMA', 'AS', 'RPAR', 'PIVOT', 'UNPIVOT', 'ORDER', 'WHERE', 'UNION', 'INTERSECT', 'EXCEPT', 'CROSS…
+```
+
+```sql
+SELECT "A<a"."sullivan.select" FROM "FLATER"."SULLIVAN.SELECT" "A<a"
+
+TEST:0508 PASS:0508 If 4 rows selected? If for each row, "sullivan.select" = 0 OR 1 ?
+=> unparsed: condition not read: for each row
+```
+
+```sql
+SELECT ">".CITY FROM HU.STAFF ">" WHERE EMPNUM = 'E5'
+
+TEST:0508 PASS:0508 If 1 row selected and CITY = 'Akron'?
+=> expected 1 rows selected, got error: Parse error on line 2: ... FROM HU.STAFF ">" WHERE EMPNU -----------------------^ Expecting 'LITERAL', 'BRALITERAL', 'KEY', 'OPEN', 'CLOSE', 'SEPARATOR', 'EOF', 'EndTransaction', 'WITH', 'COMMA', 'AS', 'LPAR', 'RPAR', 'SEARCH', 'PIVOT', 'FOR', 'UNPIVOT', 'ORDER'…
+```
+
+```sql
+SELECT HU.PROJ.CITY AS PCITY, HU.STAFF.CITY SCITY, BUDGET + GRADE * HOURS * 100 REAL_BUDGET FROM HU.STAFF, HU.PROJ, HU.WORKS WHERE HU.WORKS.EMPNUM = HU.STAFF.EMPNUM AND HU.WORKS.PNUM = HU.PROJ.PNUM AND EMPNAME = 'Alice' AND HU.PROJ.PNUM = 'P3'
+
+TEST:0554 PASS:0554 If PCITY = 'Tampa' AND SCITY = 'Deale'? AND REAL_BUDGET = 126000?
+=> expected PCITY = 'Tampa', got error: undefined is not an object (evaluating 'p['HU']['WORKS']')
+```
+
+#### ☓ Ran 27 checks in 3 tests
+
+* 25 failed
+* 1 not read (condition text the runner does not understand)
+* 3% of the checks and 33% of the tests were OK
+
+
+---- ---- ---- ---- ---- ---- ----
+### 82/339 `nist/sql/dml084.sql` (SCHANZLE)
 
 ```sql
 SELECT COL2 FROM HU.UPUPUP WHERE NUMKEY = 1
@@ -1461,84 +1525,13 @@ TEST:0504 PASS:0504 If the SQLSTATE value is the same as? the SQLSTATE value of 
 
 
 ---- ---- ---- ---- ---- ---- ----
-### 80/339 `nist/sql/dml091.sql` (SCHANZLE)
-
-```sql
-SELECT T_DECIMAL / .000000001 FROM FOUR_TYPES WHERE T_CHAR = 'X'
-
-TEST:0497 PASS:0497 If 1 row is selected and T_DECIMAL = 1.1112222E+16 ? OR ERROR, data exception/numeric value out of range? OR 0 rows selected OR SQLSTATE = 22003 OR SQLCODE < 0?
-=> unresolved: no column T_DECIMAL in T_DECIMAL / 1e-9
-```
-
-#### ☓ Ran 9 checks in 1 tests
-
-* 1 failed
-* 1 not resolved (the condition names a column the result does not have)
-* 87% of the checks and 0% of the tests were OK
-
-
----- ---- ---- ---- ---- ---- ----
-### 81/339 `nist/sql/dml085.sql` (SCHANZLE)
-
-```sql
-SELECT COUNT(DISTINCT "sullivan.select") FROM "FLATER"."SULLIVAN.SELECT"
-
-TEST:0508 PASS:0508 If count = 2?
-=> expected count 2, got error: Parse error on line 2: ...) FROM "FLATER"."SULLIVAN.SELECT" ----------------------^ Expecting 'LITERAL', 'BRALITERAL', 'KEY', 'OPEN', 'CLOSE', 'SEPARATOR', 'EOF', 'WITH', 'COMMA', 'AS', 'RPAR', 'PIVOT', 'UNPIVOT', 'ORDER', 'WHERE', 'UNION', 'INTERSECT', 'EXCEPT', 'CROSS…
-```
-
-```sql
-SELECT "A<a"."sullivan.select" FROM "FLATER"."SULLIVAN.SELECT" "A<a"
-
-TEST:0508 PASS:0508 If 4 rows selected? If for each row, "sullivan.select" = 0 OR 1 ?
-=> unparsed: condition not read: for each row
-```
-
-```sql
-SELECT "(".CITY FROM HU.STAFF "(" WHERE EMPNUM = 'E5'
-
-TEST:0508 PASS:0508 If 1 row selected and CITY = 'Akron'?
-=> expected 1 rows selected, got error: Parse error on line 2: ... FROM HU.STAFF "(" WHERE EMPNU -----------------------^ Expecting 'LITERAL', 'BRALITERAL', 'KEY', 'OPEN', 'CLOSE', 'SEPARATOR', 'EOF', 'EndTransaction', 'WITH', 'COMMA', 'AS', 'LPAR', 'RPAR', 'SEARCH', 'PIVOT', 'FOR', 'UNPIVOT', 'ORDER'…
-```
-
-```sql
-SELECT HU.PROJ.CITY AS PCITY, HU.STAFF.CITY SCITY, BUDGET + GRADE * HOURS * 100 REAL_BUDGET FROM HU.STAFF, HU.PROJ, HU.WORKS WHERE HU.WORKS.EMPNUM = HU.STAFF.EMPNUM AND HU.WORKS.PNUM = HU.PROJ.PNUM AND EMPNAME = 'Alice' AND HU.PROJ.PNUM = 'P3'
-
-TEST:0554 PASS:0554 If PCITY = 'Tampa' AND SCITY = 'Deale'? AND REAL_BUDGET = 126000?
-=> expected PCITY = 'Tampa', got error: undefined is not an object (evaluating 'p['HU']['WORKS']')
-```
-
-#### ☓ Ran 27 checks in 3 tests
-
-* 25 failed
-* 1 not read (condition text the runner does not understand)
-* 3% of the checks and 33% of the tests were OK
-
-
----- ---- ---- ---- ---- ---- ----
-### 82/339 `nist/sql/sdl003.sql` (SCHANZLE)
-
-```sql
-SELECT EMPNUM,EMPNAME,USER FROM HU.STAFF WHERE EMPNUM = 'E3'
-
-TEST:0139 PASS:0139 If EMPNAME = 'Carmen' and USER = 'SCHANZLE'?
-=> expected EMPNAME = 'Carmen', got error: Column does not exist: USER
-```
-
-#### ☓ Ran 3 checks in 1 tests
-
-* 1 failed
-* 66% of the checks and 0% of the tests were OK
-
-
----- ---- ---- ---- ---- ---- ----
 ### 83/339 `nist/sql/sdl030.sql` (SCHANZLE)
 
 ```sql
-SELECT COUNT(*) FROM CUGINI.EE
+SELECT COUNT(*) FROM CUGINI.EE WHERE INTTEST = 1
 
-TEST:0464 PASS:0464 If count = 1?
-=> expected count 1, got 2
+TEST:0464 PASS:0464 If count = 0?
+=> expected count 0, got 2
 ```
 
 #### ☓ Ran 19 checks in 4 tests
@@ -1551,10 +1544,10 @@ TEST:0464 PASS:0464 If count = 1?
 ### 84/339 `nist/sql/sdl029.sql` (SCHANZLE)
 
 ```sql
-SELECT CHARTEST FROM CUGINI.BB
+DELETE FROM CUGINI.BB
 
-TEST:0459 PASS:0459 IF ERROR, syntax error/access violation, 0 rows selected?
-=> expected an error, got 1 rows
+TEST:0459 PASS:0459 If ERROR, syntax error/access violation, 0 rows deleted?
+=> expected an error, got count 1
 ```
 
 #### ☓ Ran 19 checks in 4 tests
@@ -1564,7 +1557,32 @@ TEST:0459 PASS:0459 IF ERROR, syntax error/access violation, 0 rows selected?
 
 
 ---- ---- ---- ---- ---- ---- ----
-### 85/339 `nist/sql/sdl033.sql` (SCHANZLE)
+### 85/339 `nist/sql/cdr029.sql` (SCHANZLE)
+
+#### ☓ Ran 17 checks in 3 tests
+
+* 5 failed
+* 70% of the checks and 33% of the tests were OK
+
+
+---- ---- ---- ---- ---- ---- ----
+### 86/339 `nist/sql/sdl031.sql` (SCHANZLE)
+
+#### ☓ Ran 13 checks in 4 tests
+
+* 5 failed
+* 61% of the checks and 50% of the tests were OK
+
+
+---- ---- ---- ---- ---- ---- ----
+### 87/339 `nist/sql/sdl033.sql` (SCHANZLE)
+
+```sql
+DELETE FROM FLATER.BASE_VS1
+
+TEST:0473 PASS:0473 If ERROR, syntax error/access violation, 0 rows deleted?
+=> expected an error, got count 4
+```
 
 #### ☓ Ran 12 checks in 1 tests
 
@@ -1573,37 +1591,12 @@ TEST:0459 PASS:0459 IF ERROR, syntax error/access violation, 0 rows selected?
 
 
 ---- ---- ---- ---- ---- ---- ----
-### 86/339 `nist/sql/sdl023.sql` (SCHANZLE)
+### 88/339 `nist/sql/sdl036.sql` (SCHANZLE)
 
-```sql
-SELECT COUNT(*) FROM HU.STAFF4
+#### ☓ Ran 9 checks in 3 tests
 
-TEST:0201 PASS:0201 If ERROR, syntax error/access violation, OR count = 0?
-=> expected an error, got 1 rows
-```
-
-#### ☓ Ran 4 checks in 1 tests
-
-* 3 failed
-* 25% of the checks and 0% of the tests were OK
-
-
----- ---- ---- ---- ---- ---- ----
-### 87/339 `nist/sql/sdl034.sql` (SCHANZLE)
-
-#### ☓ Ran 4 checks in 3 tests
-
-* 4 failed
-* 0% of the checks and 0% of the tests were OK
-
-
----- ---- ---- ---- ---- ---- ----
-### 88/339 `nist/sql/sdl031.sql` (SCHANZLE)
-
-#### ☓ Ran 13 checks in 4 tests
-
-* 5 failed
-* 61% of the checks and 50% of the tests were OK
+* 7 failed
+* 22% of the checks and 0% of the tests were OK
 
 
 ---- ---- ---- ---- ---- ---- ----
@@ -1637,40 +1630,14 @@ TEST:0066 PASS:0066 If 1 row with values 'E2' and 10?
 
 
 ---- ---- ---- ---- ---- ---- ----
-### 90/339 `nist/sql/sdl035.sql` (SCHANZLE)
+### 90/339 `nist/sql/cdr022.sql` (SULLIVAN)
 
 ```sql
-SELECT CHARTEST FROM CUGINI.VAA
+SELECT COUNT(*) FROM WORKS_P WHERE EMPNUM = 'E2'
 
-TEST:0477 PASS:0477 If 1 row is selected and CHARTEST = "Twenty Characters..."?
-=> unparsed: condition not read: CHARTEST = "Twenty Characters..."
+TEST:0381 PASS:0381 If count = 2?
+=> expected count 2, got 0
 ```
-
-```sql
-UPDATE CUGINI.VBB SET CHARTEST = 'B'
-
-TEST:0478 PASS:0478 If syntax error/access violation, 0 rows updated?
-=> expected an error, got count 1
-```
-
-#### ☓ Ran 19 checks in 4 tests
-
-* 14 failed
-* 1 not read (condition text the runner does not understand)
-* 22% of the checks and 0% of the tests were OK
-
-
----- ---- ---- ---- ---- ---- ----
-### 91/339 `nist/sql/sdl002.sql` (SULLIVAN)
-
-#### ☓ Ran 3 checks in 1 tests
-
-* 1 failed
-* 66% of the checks and 0% of the tests were OK
-
-
----- ---- ---- ---- ---- ---- ----
-### 92/339 `nist/sql/cdr022.sql` (SULLIVAN)
 
 #### ☓ Ran 4 checks in 2 tests
 
@@ -1679,23 +1646,7 @@ TEST:0478 PASS:0478 If syntax error/access violation, 0 rows updated?
 
 
 ---- ---- ---- ---- ---- ---- ----
-### 93/339 `nist/sql/sdl009.sql` (SULLIVAN)
-
-```sql
-SELECT HU.STAFF.EMPNUM,EMPNAME,HOURS,USER FROM HU.STAFF,HU.WORKS WHERE HU.STAFF.EMPNUM='E1' AND PNUM='P3'
-
-TEST:0145 PASS:0145 If STAFF.EMPNAME = 'Alice', USER = 'SULLIVAN', HOURS =80?
-=> expected STAFF.EMPNAME = 'Alice', got error: Column does not exist: USER
-```
-
-#### ☓ Ran 1 checks in 1 tests
-
-* 1 failed
-* 0% of the checks and 0% of the tests were OK
-
-
----- ---- ---- ---- ---- ---- ----
-### 94/339 `nist/sql/sdl004.sql` (SULLIVAN)
+### 91/339 `nist/sql/sdl004.sql` (SULLIVAN)
 
 ```sql
 SELECT PNUM,PNAME,USER FROM HU.PROJ WHERE PNUM = 'P3'
@@ -1711,7 +1662,58 @@ TEST:0140 PASS:0140 If PNAME = 'SDP' and USER = 'SULLIVAN'?
 
 
 ---- ---- ---- ---- ---- ---- ----
-### 95/339 `nist/sql/sdl007.sql` (SULLIVAN)
+### 92/339 `nist/sql/sdl006.sql` (SULLIVAN)
+
+#### ☓ Ran 3 checks in 1 tests
+
+* 1 failed
+* 66% of the checks and 0% of the tests were OK
+
+
+---- ---- ---- ---- ---- ---- ----
+### 93/339 `nist/sql/sdl035.sql` (SCHANZLE)
+
+```sql
+SELECT CHARTEST FROM CUGINI.VAA
+
+TEST:0477 PASS:0477 If 1 row is selected and CHARTEST = "Twenty Characters..."?
+=> unparsed: condition not read: CHARTEST = "Twenty Characters..."
+```
+
+#### ☓ Ran 19 checks in 4 tests
+
+* 14 failed
+* 1 not read (condition text the runner does not understand)
+* 22% of the checks and 0% of the tests were OK
+
+
+---- ---- ---- ---- ---- ---- ----
+### 94/339 `nist/sql/sdl002.sql` (SULLIVAN)
+
+```sql
+SELECT EMPNUM,EMPNAME,USER FROM HU.STAFF WHERE EMPNUM = 'E3'
+
+TEST:0138 PASS:0138 If EMPNAME = 'Carmen' and USER = 'SULLIVAN'?
+=> expected EMPNAME = 'Carmen', got error: Column does not exist: USER
+```
+
+#### ☓ Ran 3 checks in 1 tests
+
+* 1 failed
+* 66% of the checks and 0% of the tests were OK
+
+
+---- ---- ---- ---- ---- ---- ----
+### 95/339 `nist/sql/sdl034.sql` (SCHANZLE)
+
+#### ☓ Ran 4 checks in 3 tests
+
+* 4 failed
+* 0% of the checks and 0% of the tests were OK
+
+
+---- ---- ---- ---- ---- ---- ----
+### 96/339 `nist/sql/sdl007.sql` (SULLIVAN)
 
 ```sql
 SELECT EMPNUM,EMPNAME,USER FROM HU.STAFF2 WHERE EMPNUM = 'E3'
@@ -1734,7 +1736,7 @@ TEST:0143 PASS:0143 If EMPNAME = 'Ling'?
 
 
 ---- ---- ---- ---- ---- ---- ----
-### 96/339 `nist/sql/sdl008.sql` (SULLIVAN)
+### 97/339 `nist/sql/sdl008.sql` (SULLIVAN)
 
 ```sql
 SELECT EMPNUM,EMPNAME,GRADE FROM HU.STAFF3 WHERE EMPNUM = 'E8'
@@ -1750,21 +1752,19 @@ TEST:0144 PASS:0144 If EMPNAME = 'Yang' and GRADE = 13?
 
 
 ---- ---- ---- ---- ---- ---- ----
-### 97/339 `nist/sql/sdl006.sql` (SULLIVAN)
+### 98/339 `nist/sql/sdl009.sql` (SULLIVAN)
 
-#### ☓ Ran 3 checks in 1 tests
+```sql
+SELECT HU.STAFF.EMPNUM,EMPNAME,HOURS,USER FROM HU.STAFF,HU.WORKS WHERE HU.STAFF.EMPNUM='E1' AND PNUM='P3'
+
+TEST:0145 PASS:0145 If STAFF.EMPNAME = 'Alice', USER = 'SULLIVAN', HOURS =80?
+=> expected STAFF.EMPNAME = 'Alice', got error: Column does not exist: USER
+```
+
+#### ☓ Ran 1 checks in 1 tests
 
 * 1 failed
-* 66% of the checks and 0% of the tests were OK
-
-
----- ---- ---- ---- ---- ---- ----
-### 98/339 `nist/sql/sdl036.sql` (SCHANZLE)
-
-#### ☓ Ran 9 checks in 3 tests
-
-* 7 failed
-* 22% of the checks and 0% of the tests were OK
+* 0% of the checks and 0% of the tests were OK
 
 
 ---- ---- ---- ---- ---- ---- ----
@@ -1777,34 +1777,7 @@ TEST:0144 PASS:0144 If EMPNAME = 'Yang' and GRADE = 13?
 
 
 ---- ---- ---- ---- ---- ---- ----
-### 100/339 `nist/sql/sdl010.sql` (SULLIVAN)
-
-#### ☓ Ran 6 checks in 1 tests
-
-* 1 failed
-* 83% of the checks and 0% of the tests were OK
-
-
----- ---- ---- ---- ---- ---- ----
-### 101/339 `nist/sql/sdl022.sql` (SULLIVAN)
-
-#### ☓ Ran 3 checks in 1 tests
-
-* 1 failed
-* 66% of the checks and 0% of the tests were OK
-
-
----- ---- ---- ---- ---- ---- ----
-### 102/339 `nist/sql/sdl037.sql` (SULLIVAN1)
-
-#### ☓ Ran 1 checks in 1 tests
-
-* 1 failed
-* 0% of the checks and 0% of the tests were OK
-
-
----- ---- ---- ---- ---- ---- ----
-### 103/339 `nist/sql/sdl011.sql` (SULLIVAN1)
+### 100/339 `nist/sql/sdl011.sql` (SULLIVAN1)
 
 ```sql
 SELECT FIRST1, USER FROM AUTH_TABLE
@@ -1820,12 +1793,46 @@ TEST:0147 PASS:0147 If FIRST1 = 100 and USER = 'SULLIVAN1'?
 
 
 ---- ---- ---- ---- ---- ---- ----
+### 101/339 `nist/sql/sdl010.sql` (SULLIVAN)
+
+#### ☓ Ran 6 checks in 1 tests
+
+* 1 failed
+* 83% of the checks and 0% of the tests were OK
+
+
+---- ---- ---- ---- ---- ---- ----
+### 102/339 `nist/sql/sdl037.sql` (SULLIVAN1)
+
+#### ☓ Ran 1 checks in 1 tests
+
+* 1 failed
+* 0% of the checks and 0% of the tests were OK
+
+
+---- ---- ---- ---- ---- ---- ----
+### 103/339 `nist/sql/cdr001.sql` (SUN)
+
+```sql
+SELECT EMPNAME FROM STAFF14 WHERE EMPNAME = 'SUN'
+
+TEST:0301 PASS:0301 If 1 row selected and EMPNAME = 'SUN'?
+=> expected 1 rows selected, got error: Table does not exist: STAFF14
+```
+
+#### ☓ Ran 8 checks in 3 tests
+
+* 2 failed
+* 75% of the checks and 33% of the tests were OK
+
+
+---- ---- ---- ---- ---- ---- ----
 ### 104/339 `nist/sql/cdr004.sql` (SUN)
 
 #### ☓ Ran 12 checks in 4 tests
 
-* 2 failed
-* 83% of the checks and 50% of the tests were OK
+* 1 failed
+* 91% of the checks and 75% of the tests were OK
 
 
 ---- ---- ---- ---- ---- ---- ----
@@ -1837,7 +1844,15 @@ TEST:0147 PASS:0147 If FIRST1 = 100 and USER = 'SULLIVAN1'?
 
 
 ---- ---- ---- ---- ---- ---- ----
-### 106/339 `nist/sql/cdr006.sql` (SUN)
+### 106/339 `nist/sql/cdr003.sql` (SUN)
+
+#### ★ Ran 12 checks in 4 tests
+
+* 100% of the checks and 100% of the tests were OK
+
+
+---- ---- ---- ---- ---- ---- ----
+### 107/339 `nist/sql/cdr006.sql` (SUN)
 
 #### ★ Ran 6 checks in 3 tests
 
@@ -1845,7 +1860,7 @@ TEST:0147 PASS:0147 If FIRST1 = 100 and USER = 'SULLIVAN1'?
 
 
 ---- ---- ---- ---- ---- ---- ----
-### 107/339 `nist/sql/cdr005.sql` (SUN)
+### 108/339 `nist/sql/cdr005.sql` (SUN)
 
 #### ★ Ran 6 checks in 3 tests
 
@@ -1853,14 +1868,23 @@ TEST:0147 PASS:0147 If FIRST1 = 100 and USER = 'SULLIVAN1'?
 
 
 ---- ---- ---- ---- ---- ---- ----
-### 108/339 `nist/sql/cdr008.sql` (SUN)
+### 109/339 `nist/sql/cdr007.sql` (SUN)
 
 ```sql
-SELECT COUNT(*) FROM WORKS3
+UPDATE STAFF12 SET GRADE = 5 WHERE EMPNUM = 'E3'
 
-TEST:0323 PASS:0323 If count = 2?
-=> expected count 2, got 0
+TEST:0321 PASS:0321 If ERROR, check constraint, 0 rows updated?
+=> expected an error, got count 0
 ```
+
+#### ☓ Ran 9 checks in 4 tests
+
+* 2 failed
+* 77% of the checks and 75% of the tests were OK
+
+
+---- ---- ---- ---- ---- ---- ----
+### 110/339 `nist/sql/cdr008.sql` (SUN)
 
 #### ☓ Ran 8 checks in 4 tests
 
@@ -1869,32 +1893,16 @@ TEST:0323 PASS:0323 If count = 2?
 
 
 ---- ---- ---- ---- ---- ---- ----
-### 109/339 `nist/sql/cdr001.sql` (SUN)
+### 111/339 `nist/sql/sdl022.sql` (SULLIVAN)
 
-```sql
-SELECT EMPNAME FROM STAFF14 WHERE EMPNAME = 'SUN'
+#### ☓ Ran 3 checks in 1 tests
 
-TEST:0301 PASS:0301 If 1 row selected and EMPNAME = 'SUN'?
-=> expected 1 rows selected, got error: Table does not exist: STAFF14
-```
-
-#### ☓ Ran 8 checks in 3 tests
-
-* 4 failed
-* 50% of the checks and 33% of the tests were OK
+* 1 failed
+* 66% of the checks and 0% of the tests were OK
 
 
 ---- ---- ---- ---- ---- ---- ----
-### 110/339 `nist/sql/cdr007.sql` (SUN)
-
-#### ☓ Ran 9 checks in 4 tests
-
-* 7 failed
-* 22% of the checks and 25% of the tests were OK
-
-
----- ---- ---- ---- ---- ---- ----
-### 111/339 `nist/sql/cdr009.sql` (SUN)
+### 112/339 `nist/sql/cdr009.sql` (SUN)
 
 #### ☓ Ran 12 checks in 5 tests
 
@@ -1903,46 +1911,37 @@ TEST:0301 PASS:0301 If 1 row selected and EMPNAME = 'SUN'?
 
 
 ---- ---- ---- ---- ---- ---- ----
-### 112/339 `nist/sql/cdr010.sql` (SUN)
+### 113/339 `nist/sql/cdr010.sql` (SUN)
+
+#### ☓ Ran 4 checks in 3 tests
+
+* 3 failed
+* 25% of the checks and 33% of the tests were OK
+
+
+---- ---- ---- ---- ---- ---- ----
+### 114/339 `nist/sql/cdr011.sql` (SUN)
 
 ```sql
 SELECT COUNT(*) FROM STAFF_C WHERE MGR = 'E1'
 
-TEST:0332 PASS:0332 If count = 3?
-=> expected count 3, got 0
+TEST:0338 PASS:0338 If count = 2?
+=> expected count 2, got 0
 ```
-
-#### ☓ Ran 4 checks in 3 tests
-
-* 3 failed
-* 25% of the checks and 33% of the tests were OK
-
-
----- ---- ---- ---- ---- ---- ----
-### 113/339 `nist/sql/cdr003.sql` (SUN)
-
-#### ☓ Ran 12 checks in 4 tests
-
-* 1 failed
-* 91% of the checks and 75% of the tests were OK
-
-
----- ---- ---- ---- ---- ---- ----
-### 114/339 `nist/sql/cdr012.sql` (SUN)
-
-#### ☓ Ran 4 checks in 3 tests
-
-* 3 failed
-* 25% of the checks and 33% of the tests were OK
-
-
----- ---- ---- ---- ---- ---- ----
-### 115/339 `nist/sql/cdr011.sql` (SUN)
 
 #### ☓ Ran 9 checks in 5 tests
 
 * 7 failed
 * 22% of the checks and 20% of the tests were OK
+
+
+---- ---- ---- ---- ---- ---- ----
+### 115/339 `nist/sql/cdr012.sql` (SUN)
+
+#### ☓ Ran 4 checks in 3 tests
+
+* 3 failed
+* 25% of the checks and 33% of the tests were OK
 
 
 ---- ---- ---- ---- ---- ---- ----
@@ -1955,12 +1954,21 @@ TEST:0332 PASS:0332 If count = 3?
 
 
 ---- ---- ---- ---- ---- ---- ----
-### 117/339 `nist/sql/cdr017.sql` (SUN)
+### 117/339 `nist/sql/cdr019.sql` (SUN)
+
+#### ☓ Ran 9 checks in 4 tests
+
+* 6 failed
+* 33% of the checks and 0% of the tests were OK
+
+
+---- ---- ---- ---- ---- ---- ----
+### 118/339 `nist/sql/cdr017.sql` (SUN)
 
 ```sql
-DELETE FROM SIZ2_P WHERE P1 = ' A'
+UPDATE SIZ2_P SET P10 = 100 WHERE P10 = 8
 
-TEST:0356 PASS:0356 If RI ERROR, children exist, 0 rows deleted?
+TEST:0357 PASS:0357 If RI ERROR, children exist, 0 rows updated?
 => expected an error, got count 1
 ```
 
@@ -1978,170 +1986,7 @@ TEST:0376 PASS:0376 If count = 4?
 
 
 ---- ---- ---- ---- ---- ---- ----
-### 118/339 `nist/sql/cdr021.sql` (SUN)
-
-#### ☓ Ran 4 checks in 2 tests
-
-* 4 failed
-* 0% of the checks and 0% of the tests were OK
-
-
----- ---- ---- ---- ---- ---- ----
-### 119/339 `nist/sql/cdr024.sql` (SUN)
-
-```sql
-INSERT INTO EXACT_DEF VALUES (98.3, -55556, .000001)
-
-TEST:0386 PASS:0386 If 1 row is inserted?
-=> expected 1 rows inserted, got error: Table 'EXACT_DEF' could not be found
-```
-
-```sql
-SELECT COUNT(*) FROM EXACT_DEF WHERE BODY_TEMP = 99.0 AND MAX_NUM = -55555 AND MIN_NUM = .000001 OR BODY_TEMP = 98.6 AND MAX_NUM = 100 AND MIN_NUM = .2
-
-TEST:0386 PASS:0386 If count = 2?
-=> expected count 2, got error: Table does not exist: EXACT_DEF
-```
-
-```sql
-INSERT INTO APPROX_DEF(X_COUNT) VALUES (5.0E5)
-
-TEST:0387 PASS:0387 If 1 row is inserted?
-=> expected 1 rows inserted, got error: Table 'APPROX_DEF' could not be found
-```
-
-```sql
-SELECT COUNT(*) FROM APPROX_DEF WHERE (Y_COUNT BETWEEN -9.991E10 AND -9.989E10) AND (Z_COUNT BETWEEN 3.44E-11 AND 3.46E-11) AND (ZZ_COUNT BETWEEN -7.6778E-7 AND -7.6776E-7) OR (X_COUNT BETWEEN 1.77E12 AND 1.79E12)
-
-TEST:0387 PASS:0387 If count = 2?
-=> expected count 2, got error: Table does not exist: APPROX_DEF
-```
-
-```sql
-SELECT COUNT(*) FROM SIZE_TAB WHERE COL4 BETWEEN -1.46E22 AND -1.048575E22 GROUP BY COL1, COL2, COL3
-
-TEST:0388 PASS:0388 If count = 2?
-=> expected count 2, got error: Table does not exist: SIZE_TAB
-```
-
-#### ☓ Ran 16 checks in 4 tests
-
-* 12 failed
-* 25% of the checks and 25% of the tests were OK
-
-
----- ---- ---- ---- ---- ---- ----
-### 120/339 `nist/sql/cdr019.sql` (SUN)
-
-#### ☓ Ran 9 checks in 4 tests
-
-* 6 failed
-* 33% of the checks and 0% of the tests were OK
-
-
----- ---- ---- ---- ---- ---- ----
-### 121/339 `nist/sql/cdr030.sql` (SUN)
-
-```sql
-INSERT INTO STAFF11 VALUES('E3','Susan',11,'Hawaii')
-
-TEST:0516 PASS:0516 If 1 row inserted?
-=> expected 1 rows inserted, got error: undefined is not an object (evaluating 'alasql.sets["5,22"].has')
-```
-
-#### ☓ Ran 10 checks in 1 tests
-
-* 5 failed
-* 50% of the checks and 0% of the tests were OK
-
-
----- ---- ---- ---- ---- ---- ----
-### 122/339 `nist/sql/dml099.sql` (FLATER)
-
-```sql
-SELECT C1, C2, C3 FROM ICAST2
-
-TEST:0582 PASS:0582 If 1 row is selected with C1 = 3 and C3 = 3.142?
-=> expected C3 = 3.142, got 3.142293
-```
-
-```sql
-SELECT C1, C2, C3 FROM ICAST2
-
-TEST:0582 PASS:0582 If 1 row is selected with C1 = 5 and C3 = 5.241?
-=> expected C3 = 5.241, got 5.2413
-```
-
-#### ☓ Ran 8 checks in 1 tests
-
-* 2 failed
-* 75% of the checks and 0% of the tests were OK
-
-
----- ---- ---- ---- ---- ---- ----
-### 123/339 `nist/sql/cdr025.sql` (SUN)
-
-```sql
-SELECT UNIT_PRICE, FROM_DATE, TO_DATE, COMMODITY FROM DOLLARS_PER_POUND ORDER BY COMMODITY DESC
-
-TEST:0402 PASS:0402 If the first row has the following values? If UNIT_PRICE is between 0.06 and 0.07? If FROM_DATE = 871012 and TO_DATE = 871212?
-=> expected a row 'If' 'FROM_DATE' '=' 871012 'and' 'TO_DATE' '=' 871212, got 0.0670745929118774 871012 871212 'Wheat' | 0.5 880707 880707 'Alfalfa'
-```
-
-```sql
-SELECT CURRENCY, MEASURE, UNIT_PRICE, COMMODITY FROM COST_PER_UNIT
-
-TEST:0403 PASS:0403 If for values CURRENCY = 'DM' and? MEASURE = 'KILO' and COMMODITY = 'Alfalfa'? UNIT_PRICE is between 2.42 and 2.47?
-=> unparsed: condition not read: for values CURRENCY = 'DM'
-```
-
-#### ☓ Ran 5 checks in 3 tests
-
-* 2 failed
-* 1 not read (condition text the runner does not understand)
-* 50% of the checks and 0% of the tests were OK
-
-
----- ---- ---- ---- ---- ---- ----
-### 124/339 `nist/sql/cdr027.sql` (SUN)
-
-```sql
-INSERT INTO STAFF9(EMPNUM,EMPNAME) VALUES('Z2','tina')
-
-TEST:0449 PASS:0449 If 1 row inserted?
-=> expected 1 rows inserted, got error: Violation of CHECK constraint
-```
-
-```sql
-INSERT INTO EMP VALUES(13,'MARY','Dancer',15,'VOLLEYBALL',010101)
-
-TEST:0450 PASS:0450 If 1 row inserted?
-=> expected 1 rows inserted, got error: Foreign key "VOLLEYBALL" not found in table "DEPT"
-```
-
-```sql
-SELECT * FROM DEPT ORDER BY DNO
-
-TEST:0450 PASS:0450 If 5 rows selected? If DNO values are 11, 12, 13, 14, 15? If DNAME = 'Education' (not 'EDUCATION') for DNO = 14?
-=> unparsed: condition not read: DNO values are 11
-```
-
-```sql
-SELECT ENO, ENAME, DNO, DNAME FROM EMP ORDER BY ENO
-
-TEST:0450 PASS:0450 If 8 rows selected? If ENO values are 13, 21 through 27? If DNAME = 'Physics' (not 'PHYSICS') for ENO = 25?
-=> unparsed: condition not read: ENO values are 13
-```
-
-#### ☓ Ran 32 checks in 5 tests
-
-* 6 failed
-* 2 not read (condition text the runner does not understand)
-* 80% of the checks and 40% of the tests were OK
-
-
----- ---- ---- ---- ---- ---- ----
-### 125/339 `nist/sql/cdr020.sql` (SUN)
+### 119/339 `nist/sql/cdr020.sql` (SUN)
 
 ```sql
 SELECT MAX(F1),MIN(F1) FROM SIZ3_P3
@@ -2171,7 +2016,102 @@ TEST:0371 PASS:0371 If MAX(F_KEY) = 4 and MIN(F_KEY) = 2 and? If MAX(P_KEY) = 6 
 
 
 ---- ---- ---- ---- ---- ---- ----
-### 126/339 `nist/sql/cdr026.sql` (SUN)
+### 120/339 `nist/sql/cdr024.sql` (SUN)
+
+```sql
+INSERT INTO EXACT_DEF VALUES (98.3, -55556, .000001)
+
+TEST:0386 PASS:0386 If 1 row is inserted?
+=> expected 1 rows inserted, got error: Table 'EXACT_DEF' could not be found
+```
+
+```sql
+SELECT COUNT(*) FROM EXACT_DEF WHERE BODY_TEMP = 99.0 AND MAX_NUM = -55555 AND MIN_NUM = .000001 OR BODY_TEMP = 98.6 AND MAX_NUM = 100 AND MIN_NUM = .2
+
+TEST:0386 PASS:0386 If count = 2?
+=> expected count 2, got error: Table does not exist: EXACT_DEF
+```
+
+```sql
+SELECT COUNT(*) FROM APPROX_DEF WHERE (Y_COUNT BETWEEN -9.991E10 AND -9.989E10) AND (Z_COUNT BETWEEN 3.44E-11 AND 3.46E-11) AND (ZZ_COUNT BETWEEN -7.6778E-7 AND -7.6776E-7) OR (X_COUNT BETWEEN 1.77E12 AND 1.79E12)
+
+TEST:0387 PASS:0387 If count = 2?
+=> expected count 2, got error: Table does not exist: APPROX_DEF
+```
+
+```sql
+SELECT COUNT(*) FROM SIZE_TAB WHERE COL4 BETWEEN -1.46E22 AND -1.048575E22 GROUP BY COL1, COL2, COL3
+
+TEST:0388 PASS:0388 If count = 2?
+=> expected count 2, got error: Table does not exist: SIZE_TAB
+```
+
+#### ☓ Ran 16 checks in 4 tests
+
+* 12 failed
+* 25% of the checks and 25% of the tests were OK
+
+
+---- ---- ---- ---- ---- ---- ----
+### 121/339 `nist/sql/cdr021.sql` (SUN)
+
+#### ☓ Ran 4 checks in 2 tests
+
+* 4 failed
+* 0% of the checks and 0% of the tests were OK
+
+
+---- ---- ---- ---- ---- ---- ----
+### 122/339 `nist/sql/cdr030.sql` (SUN)
+
+#### ☓ Ran 10 checks in 1 tests
+
+* 2 failed
+* 80% of the checks and 0% of the tests were OK
+
+
+---- ---- ---- ---- ---- ---- ----
+### 123/339 `nist/sql/dml099.sql` (FLATER)
+
+```sql
+SELECT C1, C2, C3 FROM ICAST2
+
+TEST:0582 PASS:0582 If 1 row is selected with C1 = 3 and C3 = 3.142?
+=> expected C3 = 3.142, got 3.142293
+```
+
+#### ☓ Ran 8 checks in 1 tests
+
+* 2 failed
+* 75% of the checks and 0% of the tests were OK
+
+
+---- ---- ---- ---- ---- ---- ----
+### 124/339 `nist/sql/cdr025.sql` (SUN)
+
+```sql
+SELECT UNIT_PRICE, FROM_DATE, TO_DATE, COMMODITY FROM DOLLARS_PER_POUND ORDER BY COMMODITY DESC
+
+TEST:0402 PASS:0402 If the first row has the following values? If UNIT_PRICE is between 0.06 and 0.07? If FROM_DATE = 871012 and TO_DATE = 871212?
+=> expected a row 'If' 'FROM_DATE' '=' 871012 'and' 'TO_DATE' '=' 871212, got 0.0670745929118774 871012 871212 'Wheat' | 0.5 880707 880707 'Alfalfa'
+```
+
+```sql
+SELECT CURRENCY, MEASURE, UNIT_PRICE, COMMODITY FROM COST_PER_UNIT
+
+TEST:0403 PASS:0403 If for values CURRENCY = 'DM' and? MEASURE = 'KILO' and COMMODITY = 'Alfalfa'? UNIT_PRICE is between 2.42 and 2.47?
+=> unparsed: condition not read: for values CURRENCY = 'DM'
+```
+
+#### ☓ Ran 5 checks in 3 tests
+
+* 2 failed
+* 1 not read (condition text the runner does not understand)
+* 50% of the checks and 0% of the tests were OK
+
+
+---- ---- ---- ---- ---- ---- ----
+### 125/339 `nist/sql/cdr026.sql` (SUN)
 
 ```sql
 SELECT EXP_NAME, BTH_DATE FROM EXPERIENCE WHERE EXP_NAME IS NOT NULL AND BTH_DATE IS NOT NULL AND DESCR = 'Car Mechanic'
@@ -2209,6 +2149,44 @@ TEST:0439 PASS:0439 If 17 rows are selected? If 'David' the 'Monk' has BTH_DATE 
 
 
 ---- ---- ---- ---- ---- ---- ----
+### 126/339 `nist/sql/cdr027.sql` (SUN)
+
+```sql
+INSERT INTO STAFF9(EMPNUM,EMPNAME) VALUES('Z2','tina')
+
+TEST:0449 PASS:0449 If 1 row inserted?
+=> expected 1 rows inserted, got error: Violation of CHECK constraint
+```
+
+```sql
+INSERT INTO EMP VALUES(13,'MARY','Dancer',15,'VOLLEYBALL',010101)
+
+TEST:0450 PASS:0450 If 1 row inserted?
+=> expected 1 rows inserted, got error: Foreign key "VOLLEYBALL" not found in table "DEPT"
+```
+
+```sql
+SELECT * FROM DEPT ORDER BY DNO
+
+TEST:0450 PASS:0450 If 5 rows selected? If DNO values are 11, 12, 13, 14, 15? If DNAME = 'Education' (not 'EDUCATION') for DNO = 14?
+=> unparsed: condition not read: DNO values are 11
+```
+
+```sql
+SELECT ENO, ENAME, DNO, DNAME FROM EMP ORDER BY ENO
+
+TEST:0450 PASS:0450 If 8 rows selected? If ENO values are 13, 21 through 27? If DNAME = 'Physics' (not 'PHYSICS') for ENO = 25?
+=> unparsed: condition not read: ENO values are 13
+```
+
+#### ☓ Ran 32 checks in 5 tests
+
+* 6 failed
+* 2 not read (condition text the runner does not understand)
+* 80% of the checks and 40% of the tests were OK
+
+
+---- ---- ---- ---- ---- ---- ----
 ### 127/339 `nist/sql/dml108.sql` (FLATER)
 
 ```sql
@@ -2226,14 +2204,14 @@ TEST:0617 PASS:0617 If 1 row is inserted?
 ```
 
 ```sql
-SELECT COUNT(*) FROM TEMPS WHERE HOUR_OUT IN (SELECT HOUR_IN + INTERVAL '8' HOUR FROM TEMPS)
+SELECT COUNT(*) FROM TEMPS WHERE LUNCH <= INTERVAL '1:00' HOUR TO MINUTE
 
-TEST:0617 PASS:0617 If count = 2?
-=> expected count 2, got error: Table does not exist: TEMPS
+TEST:0617 PASS:0617 If count = 3?
+=> expected count 3, got error: Parse error on line 3: ...NTERVAL '1:00' HOUR TO MINUTE -----------------------^ Expecting 'EOF', 'WITH', 'RPAR', 'IN', 'LIKE', 'ARROW', 'DOT', 'ORDER', 'CARET', 'EQ', 'SLASH', 'EXCLAMATION', 'MODULO', 'GT', 'LT', 'GTGT', 'LTLT', 'NOT', 'UNION', 'INTERSECT', 'EXCEPT', '…
 ```
 
 ```sql
-SELECT COUNT(*) FROM TEMPS WHERE HOUR_OUT = ANY (SELECT HOUR_IN + INTERVAL '8' HOUR FROM TEMPS)
+SELECT COUNT(*) FROM TEMPS WHERE HOUR_OUT IN (SELECT HOUR_IN + INTERVAL '8' HOUR FROM TEMPS)
 
 TEST:0617 PASS:0617 If count = 2?
 => expected count 2, got error: Table does not exist: TEMPS
@@ -2275,6 +2253,13 @@ SELECT COUNT(*), MAX(EMPNUM), MIN(EMPNUM), AVG(HOURS) FROM WORKWEEK
 
 TEST:0635 PASS:0635 If 1 row selected and count = 10 and MAX(EMPNUM) = 'E4'? AND MIN(EMPNUM) = 'E1' and AVG(HOURS) = 43 (approximately)?
 => unparsed: condition not read: AVG(HOURS) = 43 (approximately)
+```
+
+```sql
+CREATE VIEW QUALSTAR AS SELECT HU.STAFF.*, HOURS FROM HU.STAFF, HU.WORKS WHERE HU.STAFF.EMPNUM = HU.WORKS.EMPNUM
+
+TEST:0637 PASS:0637 If view is created?
+=> expected success, got error: Parse error on line 2: ...S SELECT HU.STAFF.*, HOURS FROM HU.STA ----------------------^ Expecting 'LITERAL', 'BRALITERAL', 'KEY', 'OPEN', 'CLOSE', 'SEPARATOR', 'LPAR', 'NUMBER', 'IF', 'CURRENT_DATE', 'REPLACE', 'DATEADD', 'DATEDIFF', 'TIMESTAMPDIFF', 'INTERVAL', got 'S…
 ```
 
 ```sql
@@ -2327,41 +2312,41 @@ TEST:0641 PASS:0641 If 1 row is inserted?
 
 
 ---- ---- ---- ---- ---- ---- ----
-### 129/339 `nist/sql/dml106.sql` (FLATER)
+### 129/339 `nist/sql/dml104.sql` (FLATER)
 
 ```sql
-SELECT * FROM ABOVE_AVERAGE ORDER BY COLUMN_1
+DROP TABLE GROUPS1 CASCADE
 
-TEST:0599 PASS:0599 If 4 rows selected with ordered rows and column values: ? MAX 30000 Tampa ? P2 30000 Vienna ? P3 30000 Tampa ? P6 50000 Deale ?
-=> expected P2   30000  Vienna ? | P3   30000  Tampa  ? | P6   50000  Deale  ?, got 'MAX' 30000 NULL | 'P2' 30000 'Vienna' | 'P3' 30000 'Tampa' | 'P6' 50000 'Deale'
+TEST:0591 PASS:0591 If table is dropped?
+=> expected success, got error: Parsing halted while starting to recover from another error.
 ```
 
 ```sql
-SELECT * FROM STAFF_DUP ORDER BY CITY
+SELECT EMPNUM FROM NMGRP2 WHERE NAME = 'MARY' AND GRP = 20
 
-TEST:0599 PASS:0599 If 10 rows selected ? If first row contains EMPNUM/CITY values E5 / Akron ? If second row contains EMPNUM/CITY values E5 / Akron ?
-=> unparsed: condition not read: first row contains EMPNUM/CITY values E5 / Akron
+TEST:0592 PASS:0592 If 1 row is selected and EMPNUM = 1?
+=> expected 1 rows selected, got error: Cannot resolve column "EMPNUM" because it exists in two source tables
 ```
 
 ```sql
-SELECT C2, C1, C3 FROM FOUR_CITIES ORDER BY C3, C2
+SELECT COUNT(*) FROM NMGRP2 WHERE NAME <> 'MARY' OR GRP <> 20 OR EMPNUM <> 1 OR NAME IS NULL OR GRP IS NULL OR EMPNUM IS NULL
 
-TEST:0599 PASS:0599 If 7 rows selected with ordered rows and column values ? Akron T -999 ? Deale T -999 ? Vienna X -1 ? Deale P 666 ? Vienna P 666 ? Deale S 777 ? Vienna S 777 ?
-=> expected Deale   T     -999  ? | Vienna  X       -1  ? | Deale   P      666  ? | Vienna  P      666  ? | Deale   S      777  ? | Vienna  S      777  ?, got 'Akron' 'T' -999 | 'Deale' 'T' -999 | 'Vienna' 'X' -1 | 'Vienna' 'X' -1 | 'Deale' 'P' 666 | 'Vienna' 'P' 666 | 'Deale' 'S' 777 | 'Vienna' 'S' 7…
+TEST:0592 PASS:0592 If count = 0?
+=> expected count 0, got error: Cannot resolve column "EMPNUM" because it exists in two source tables
 ```
 
 ```sql
-INSERT INTO TSSMALL VALUES ( CURRENT_DATE, CURRENT_TIME, CURRENT_TIMESTAMP)
+DROP TABLE GROUPS3 CASCADE
 
-TEST:0613 PASS:0613 If 1 row is inserted?
-=> expected 1 rows inserted, got error: undefined is not an object (evaluating 'undefined['undefined']')
+TEST:0593 PASS:0593 If table is dropped?
+=> expected success, got error: Parsing halted while starting to recover from another error.
 ```
 
-#### ☓ Ran 37 checks in 5 tests
+#### ☓ Ran 83 checks in 4 tests
 
-* 20 failed
-* 3 not read (condition text the runner does not understand)
-* 41% of the checks and 0% of the tests were OK
+* 6 failed
+* 4 not read (condition text the runner does not understand)
+* 92% of the checks and 0% of the tests were OK
 
 
 ---- ---- ---- ---- ---- ---- ----
@@ -2375,13 +2360,6 @@ TEST:0621 PASS:0621 If count = 1?
 ```
 
 ```sql
-SELECT EXTRACT (DAY FROM RDATE) FROM MERCH, TURNAROUND WHERE MERCH.ITEMKEY = TURNAROUND.ITEMKEY
-
-TEST:0621 PASS:0621 If 1 row selected and value is NULL?
-=> expected 1 rows selected, got error: Parse error on line 1: SELECT EXTRACT (DAY FROM RDATE) FRO --------------------^ Expecting 'EOF', 'COMMA', 'RPAR', 'IN', 'LIKE', 'ARROW', 'DOT', 'CARET', 'EQ', 'SLASH', 'EXCLAMATION', 'MODULO', 'GT', 'LT', 'GTGT', 'LTLT', 'NOT', 'AND', 'OR', 'PLUS', 'STAR', 'RBR…
-```
-
-```sql
 SELECT COUNT(*) FROM INVENTORY WHERE MWAIT IS NULL AND DWAIT IS NULL
 
 TEST:0621 PASS:0621 If count = 2?
@@ -2389,7 +2367,7 @@ TEST:0621 PASS:0621 If count = 2?
 ```
 
 ```sql
-DROP TABLE MERCH CASCADE
+DROP TABLE TURNAROUND CASCADE
 
 TEST:0621 PASS:0621 If table is dropped?
 => expected success, got error: Parsing halted while starting to recover from another error.
@@ -2417,13 +2395,6 @@ TEST:0623 PASS:0623 If value is 15 (approximately)?
 ```
 
 ```sql
-SELECT MAX(NUMBRR) FROM CHANGGVIEW
-
-TEST:0625 PASS:0625 If ERROR, column does not exist ?
-=> expected an error, got 1 rows
-```
-
-```sql
 INSERT INTO CHANGG VALUES ('OLIVIA', 20, '111-11-1111', 0)
 
 TEST:0625 PASS:0625 If 1 row is inserted?
@@ -2431,10 +2402,10 @@ TEST:0625 PASS:0625 If 1 row is inserted?
 ```
 
 ```sql
-SELECT EXTRACT (HOUR FROM CHECKIN) + EXTRACT (MINUTE FROM CHECKIN) + EXTRACT (SECOND FROM CHECKIN) FROM BIRTHS
+SELECT AGE, NUMBRR, DIVORCES FROM CHANGG WHERE NAAM = 'GOOBER'
 
-TEST:0631 PASS:0631 If 1 row selected with value 0?
-=> expected 1 rows selected, got error: Parse error on line 1: ...ELECT EXTRACT (HOUR FROM CHECKIN) + -----------------------^ Expecting 'EOF', 'COMMA', 'RPAR', 'IN', 'LIKE', 'ARROW', 'DOT', 'CARET', 'EQ', 'SLASH', 'EXCLAMATION', 'MODULO', 'GT', 'LT', 'GTGT', 'LTLT', 'NOT', 'AND', 'OR', 'PLUS', 'STAR'…
+TEST:0625 PASS:0625 If 1 row selected with values 16, 000-10-0001, 0 ?
+=> unparsed: condition not read: 000-10-0001
 ```
 
 ```sql
@@ -2442,6 +2413,13 @@ SELECT COUNT (*) FROM BIRTHS WHERE TESTING <> CHECKOUT OR CHECKOUT IS NULL
 
 TEST:0631 PASS:0631 If count = 0?
 => expected count 0, got error: Table does not exist: BIRTHS
+```
+
+```sql
+DROP TABLE OBITUARIES CASCADE
+
+TEST:0631 PASS:0631 If table is dropped?
+=> expected success, got error: Parsing halted while starting to recover from another error.
 ```
 
 ```sql
@@ -2456,13 +2434,6 @@ DELETE FROM WEIRDPAD WHERE TRIM(LEADING 'K' FROM 'Kest') = TRIM('T' FROM SPONSOR
 
 TEST:0633 PASS:0633 If 1 row is deleted?
 => expected 1 rows deleted, got error: Parse error on line 2: ...E TRIM(LEADING 'K' FROM 'Kest') = T ----------------------^ Expecting 'EOF', 'COMMA', 'RPAR', 'IN', 'LIKE', 'ARROW', 'DOT', 'CARET', 'EQ', 'SLASH', 'EXCLAMATION', 'MODULO', 'GT', 'LT', 'GTGT', 'LTLT', 'NOT', 'AND', 'OR', 'PLUS', 'STAR', …
-```
-
-```sql
-SELECT COUNT(*) FROM WEIRDPAD WHERE TRIM (PADCHAR FROM SPONSOR) = 'KEITH'
-
-TEST:0633 PASS:0633 If count = 1?
-=> expected count 1, got error: Parse error on line 2: ...WHERE TRIM (PADCHAR FROM SPONSOR) = 'KEI -----------------------^ Expecting 'EOF', 'COMMA', 'RPAR', 'IN', 'LIKE', 'ARROW', 'DOT', 'CARET', 'EQ', 'SLASH', 'EXCLAMATION', 'MODULO', 'GT', 'LT', 'GTGT', 'LTLT', 'NOT', 'AND', 'OR', 'PLUS', 'STAR', '…
 ```
 
 #### ☓ Ran 114 checks in 5 tests
@@ -2485,6 +2456,13 @@ TEST:0633 PASS:0633 If count = 1?
 ### 132/339 `nist/sql/dml131.sql` (FLATER)
 
 ```sql
+SELECT COUNT(*) FROM INFO_SCHEM.TABLES WHERE TABLE_SCHEM = 'FLATER' AND TABLE_NAME = 'VISCHANGE' AND TABLE_TYPE = 'BASE TABLE'
+
+TEST:0683 PASS:0683 If count = 1?
+=> expected count 1, got error: Parse error on line 1: ...(*) FROM INFO_SCHEM.TABLES WHERE TABLE -----------------------^ Expecting 'LITERAL', 'BRALITERAL', 'KEY', 'OPEN', 'CLOSE', 'SEPARATOR', got 'TABLE'
+```
+
+```sql
 SELECT COUNT(*) FROM INFO_SCHEM.VIEWS WHERE TABLE_SCHEM = 'HU' AND TABLE_NAME = 'TESTREPORT'
 
 TEST:0684 PASS:0684 If count = 1?
@@ -2492,17 +2470,17 @@ TEST:0684 PASS:0684 If count = 1?
 ```
 
 ```sql
-SELECT COUNT(*) FROM INFO_SCHEM.TABLES WHERE TABLE_SCHEM = 'HU' AND TABLE_NAME = 'FF'
+SELECT COUNT(*) FROM INFO_SCHEM.COLUMN_PRIVILEGES WHERE TABLE_SCHEM = 'FLATER' AND TABLE_NAME = 'VS1' AND GRANTOR = 'FLATER' AND GRANTEE = 'SCHANZLE' AND IS_GRANTABLE = 'NO'
 
-TEST:0684 PASS:0684 If count = 0?
-=> expected count 0, got error: Parse error on line 1: ...(*) FROM INFO_SCHEM.TABLES WHERE TABLE -----------------------^ Expecting 'LITERAL', 'BRALITERAL', 'KEY', 'OPEN', 'CLOSE', 'SEPARATOR', got 'TABLE'
+TEST:0685 PASS:0685 If count = 10?
+=> expected count 10, got error: undefined is not an object (evaluating 'alasql.databases[fr.databaseid || databaseid].tables')
 ```
 
 ```sql
-SELECT COUNT(*) FROM INFO_SCHEM.COLUMN_PRIVILEGES WHERE TABLE_SCHEM = 'FLATER' AND TABLE_NAME = 'BASE_WCOV' AND GRANTOR = 'FLATER' AND GRANTEE = 'CUGINI' AND PRIVILEGE_TYPE = 'DELETE' AND IS_GRANTABLE = 'NO'
+SELECT COUNT(*) FROM INFO_SCHEM.COLUMNS WHERE TABLE_SCHEM = 'FLATER' AND TABLE_NAME = 'FEAT16' AND COLUMN_NAME = 'PNUM' AND IS_NULLABLE = 'YES'
 
-TEST:0685 PASS:0685 If count = 1?
-=> expected count 1, got error: undefined is not an object (evaluating 'alasql.databases[fr.databaseid || databaseid].tables')
+TEST:0686 PASS:0686 If count = 1?
+=> expected count 1, got error: Parse error on line 2: ...) FROM INFO_SCHEM.COLUMNS WHERE TABLE_ ----------------------^ Expecting 'LITERAL', 'BRALITERAL', 'KEY', 'OPEN', 'CLOSE', 'SEPARATOR', got 'COLUMN'
 ```
 
 #### ☓ Ran 48 checks in 5 tests
@@ -2520,38 +2498,7 @@ TEST:0685 PASS:0685 If count = 1?
 
 
 ---- ---- ---- ---- ---- ---- ----
-### 134/339 `nist/sql/dml104.sql` (FLATER)
-
-```sql
-SELECT EMPNUM FROM NMGRP2 WHERE NAME = 'MARY' AND GRP = 20
-
-TEST:0592 PASS:0592 If 1 row is selected and EMPNUM = 1?
-=> expected 1 rows selected, got error: Cannot resolve column "EMPNUM" because it exists in two source tables
-```
-
-```sql
-SELECT COUNT(*) FROM NMGRP2 WHERE NAME <> 'MARY' OR GRP <> 20 OR EMPNUM <> 1 OR NAME IS NULL OR GRP IS NULL OR EMPNUM IS NULL
-
-TEST:0592 PASS:0592 If count = 0?
-=> expected count 0, got error: Cannot resolve column "EMPNUM" because it exists in two source tables
-```
-
-#### ☓ Ran 83 checks in 4 tests
-
-* 6 failed
-* 4 not read (condition text the runner does not understand)
-* 92% of the checks and 0% of the tests were OK
-
-
----- ---- ---- ---- ---- ---- ----
-### 135/339 `nist/sql/dml100.sql` (FLATER)
-
-```sql
-INSERT INTO SLACK VALUES (2.4)
-
-TEST:0587 PASS:0587 If ERROR, invalid transaction state, 0 rows inserted?
-=> expected an error, got count 1
-```
+### 134/339 `nist/sql/dml100.sql` (FLATER)
 
 #### ☓ Ran 17 checks in 1 tests
 
@@ -2560,7 +2507,7 @@ TEST:0587 PASS:0587 If ERROR, invalid transaction state, 0 rows inserted?
 
 
 ---- ---- ---- ---- ---- ---- ----
-### 136/339 `nist/sql/dml119.sql` (FLATER)
+### 135/339 `nist/sql/dml119.sql` (FLATER)
 
 ```sql
 SELECT AVG (USER_INPUT) FROM STANDARD_INPUT
@@ -2584,13 +2531,13 @@ TEST:0647 PASS:0647 If 1 row selected and first value is -95301 +- 4? AND second
 
 
 ---- ---- ---- ---- ---- ---- ----
-### 137/339 `nist/sql/dml117.sql` (FLATER)
+### 136/339 `nist/sql/dml117.sql` (FLATER)
 
 ```sql
-INSERT INTO AUDIT_RECORDS VALUES (2, 2, 1)
+INSERT INTO LUSERS VALUES ('Kibo', 2, 1, 1)
 
 TEST:0645 PASS:0645 If 1 row is inserted?
-=> expected 1 rows inserted, got error: Table 'AUDIT_RECORDS' could not be found
+=> expected 1 rows inserted, got error: Table 'LUSERS' could not be found
 ```
 
 ```sql
@@ -2622,10 +2569,10 @@ TEST:0645 PASS:0645 If count = 12?
 ```
 
 ```sql
-DROP TABLE AUDIT_RECORDS CASCADE
+SELECT COUNT(*) FROM AUDIT_RECORDS WHERE LUSER_ID IS NULL
 
-TEST:0645 PASS:0645 If table is dropped?
-=> expected success, got error: Parsing halted while starting to recover from another error.
+TEST:0645 PASS:0645 If count = 10?
+=> expected count 10, got error: Table does not exist: AUDIT_RECORDS
 ```
 
 #### ☓ Ran 44 checks in 1 tests
@@ -2635,10 +2582,48 @@ TEST:0645 PASS:0645 If table is dropped?
 
 
 ---- ---- ---- ---- ---- ---- ----
+### 137/339 `nist/sql/dml106.sql` (FLATER)
+
+```sql
+SELECT * FROM ABOVE_AVERAGE ORDER BY COLUMN_1
+
+TEST:0599 PASS:0599 If 4 rows selected with ordered rows and column values: ? MAX 30000 Tampa ? P2 30000 Vienna ? P3 30000 Tampa ? P6 50000 Deale ?
+=> expected P2   30000  Vienna ? | P3   30000  Tampa  ? | P6   50000  Deale  ?, got 'MAX' 30000 NULL | 'P2' 30000 'Vienna' | 'P3' 30000 'Tampa' | 'P6' 50000 'Deale'
+```
+
+```sql
+SELECT * FROM STAFF_DUP ORDER BY CITY
+
+TEST:0599 PASS:0599 If 10 rows selected ? If first row contains EMPNUM/CITY values E5 / Akron ? If second row contains EMPNUM/CITY values E5 / Akron ?
+=> unparsed: condition not read: first row contains EMPNUM/CITY values E5 / Akron
+```
+
+```sql
+SELECT C2, C1, C3 FROM FOUR_CITIES ORDER BY C3, C2
+
+TEST:0599 PASS:0599 If 7 rows selected with ordered rows and column values ? Akron T -999 ? Deale T -999 ? Vienna X -1 ? Deale P 666 ? Vienna P 666 ? Deale S 777 ? Vienna S 777 ?
+=> expected Deale   T     -999  ? | Vienna  X       -1  ? | Deale   P      666  ? | Vienna  P      666  ? | Deale   S      777  ? | Vienna  S      777  ?, got 'Akron' 'T' -999 | 'Deale' 'T' -999 | 'Vienna' 'X' -1 | 'Vienna' 'X' -1 | 'Deale' 'P' 666 | 'Vienna' 'P' 666 | 'Deale' 'S' 777 | 'Vienna' 'S' 7…
+```
+
+```sql
+CREATE TABLE TSFIPS ( FIPS1 TIME, FIPS2 TIMESTAMP, FIPS3 INTERVAL YEAR (2) TO MONTH, FIPS4 INTERVAL DAY (2) TO SECOND (6))
+
+TEST:0611 PASS:0611 If table is created?
+=> expected success, got error: Parse error on line 4: ... TIMESTAMP, FIPS3 INTERVAL YEAR (2) TO ----------------------^ Expecting 'LITERAL', 'EOF', 'COMMA', 'RPAR', 'END', 'ELSE', 'ColumnConstraints', 'ENUM', 'GO', 'SEMICOLON', got 'INTERVAL'
+```
+
+#### ☓ Ran 37 checks in 5 tests
+
+* 20 failed
+* 3 not read (condition text the runner does not understand)
+* 41% of the checks and 0% of the tests were OK
+
+
+---- ---- ---- ---- ---- ---- ----
 ### 138/339 `nist/sql/dml130.sql` (FLATER)
 
 ```sql
-SELECT COUNT(*) FROM INFO_SCHEM.COLUMNS WHERE TABLE_SCHEM = 'FLATER' AND TABLE_NAME = 'LOTSA_TYPES' AND COLUMN_NAME = 'RUDDER' AND ORDINAL_POSITION = 9 AND COLUMN_DEF IS NULL AND DATA_TYPE = 'DECIMAL' AND CHAR_MAX_LENGTH IS NULL AND CHAR_OCTET_LENGTH IS NULL AND NUM_PREC >= 2 AND NUM_SCALE = 0 AND …
+SELECT COUNT(*) FROM INFO_SCHEM.COLUMNS WHERE TABLE_SCHEM = 'FLATER' AND TABLE_NAME = 'LOTSA_TYPES' AND COLUMN_NAME = 'FLAAG' AND ORDINAL_POSITION = 1 AND COLUMN_DEF = '''Y''' AND DATA_TYPE = 'CHARACTER' AND CHAR_MAX_LENGTH = 1 AND CHAR_OCTET_LENGTH > 0 AND NUM_PREC IS NULL AND NUM_PREC_RADIX IS NU…
 
 TEST:0679 PASS:0679 If count = 1?
 => expected count 1, got error: Parse error on line 1: ...(*) FROM INFO_SCHEM.COLUMNS WHERE TABL -----------------------^ Expecting 'LITERAL', 'BRALITERAL', 'KEY', 'OPEN', 'CLOSE', 'SEPARATOR', got 'COLUMN'
@@ -2652,9 +2637,9 @@ TEST:0680 PASS:0680 If view is created?
 ```
 
 ```sql
-SELECT COUNT(*) FROM INFO_SCHEM.COLUMNS WHERE TABLE_SCHEM = 'FLATER' AND TABLE_NAME = 'LOTSA_DATETIMES' AND COLUMN_NAME = 'C6' AND ORDINAL_POSITION = 6 AND COLUMN_DEF IS NULL AND DATA_TYPE = 'INTERVAL' AND CHAR_MAX_LENGTH IS NULL AND CHAR_OCTET_LENGTH IS NULL AND NUM_PREC IS NULL AND NUM_PREC_RADIX…
+SELECT COUNT(*) FROM INFO_SCHEM.COLUMNS WHERE TABLE_SCHEM = 'FLATER' AND TABLE_NAME = 'LOTSA_TYPES' AND COLUMN_NAME = 'RUDDER' AND ORDINAL_POSITION = 9 AND COLUMN_DEF IS NULL AND DATA_TYPE = 'DECIMAL' AND CHAR_MAX_LENGTH IS NULL AND CHAR_OCTET_LENGTH IS NULL AND NUM_PREC >= 2 AND NUM_SCALE = 0 AND …
 
-TEST:0682 PASS:0682 If count = 1?
+TEST:0680 PASS:0680 If count = 1?
 => expected count 1, got error: Parse error on line 1: ...(*) FROM INFO_SCHEM.COLUMNS WHERE TABL -----------------------^ Expecting 'LITERAL', 'BRALITERAL', 'KEY', 'OPEN', 'CLOSE', 'SEPARATOR', got 'COLUMN'
 ```
 
@@ -2720,13 +2705,6 @@ TEST:0844 PASS:0844 If 6 rows selected with ordered rows and column values ? Akr
 ```
 
 ```sql
-SELECT HU.STAFF.CITY,EMPNAME,PNAME,BUDGET FROM HU.STAFF LEFT JOIN HU.PROJ ON HU.STAFF.CITY = HU.PROJ.CITY AND HU.STAFF.CITY <> 'Vienna' WHERE (BUDGET > 15000 OR BUDGET IS NULL) AND EMPNAME <> 'Don' ORDER BY HU.STAFF.CITY, EMPNAME, BUDGET
-
-TEST:0844 PASS:0844 If 5 rows selected with ordered rows and column values ? Akron Ed NULL NULL ? Deale Alice SDP 20000 ? Deale Alice PAYR 50000 ? Vienna Betty NULL NULL ? Vienna Carmen NULL NULL ?
-=> expected rows, got error: undefined is not an object (evaluating 'p['HU']['STAFF']')
-```
-
-```sql
 SELECT XX.T_INT, YY.T_INT FROM SEVEN_TYPES XX RIGHT OUTER JOIN SEVEN_TYPES YY ON XX.T_INT = YY.T_INT +1 ORDER BY YY.T_INT
 
 TEST:0844 PASS:0844 If 5 rows selected with ordered rows and column values ? 2 1 ? 3 2 ? NULL 3 ? NULL 12 ? NULL 12 ?
@@ -2748,13 +2726,53 @@ TEST:0844 PASS:0844 If 5 rows selected with ordered rows and column values ? 10 
 
 
 ---- ---- ---- ---- ---- ---- ----
-### 141/339 `nist/sql/dml121.sql` (FLATER)
+### 141/339 `nist/sql/dml136.sql` (FLATER)
+
+```sql
+CREATE VIEW ALLSCORES (PLAYER_NO, SPLAT_SCORE, FOOM_SCORE1, FOOM_SCORE2, MAX_FOOM_SCORE1, MAX_FOOM_SCORE2, MAX_SPLAT_SCORE) AS SELECT PLAYER_NO, SPLAT_AVG.*, FOOM_AVG.*, MAXIMA.* FROM FOOM_AVG NATURAL JOIN SPLAT_AVG, MAXIMA
+
+TEST:0696 PASS:0696 If view is created?
+=> expected success, got error: undefined is not an object (evaluating 'self.select.columns[idx].as = vcol.columnid')
+```
+
+```sql
+SELECT * FROM NORMALIZED_AVGS ORDER BY PLAYER_NO
+
+TEST:0696 PASS:0696 If 2 rows selected with ordered rows and column values? 1 0.74398 +- 0.0001 ? 2 0.87826 +- 0.0001 ?
+=> expected 2   0.87826 +- 0.0001 ?, got 
+```
+
+#### ☓ Ran 21 checks in 1 tests
+
+* 10 failed
+* 2 not read (condition text the runner does not understand)
+* 47% of the checks and 0% of the tests were OK
+
+
+---- ---- ---- ---- ---- ---- ----
+### 142/339 `nist/sql/dml137.sql` (FLATER)
+
+#### ☓ Ran 6 checks in 1 tests
+
+* 4 failed
+* 33% of the checks and 0% of the tests were OK
+
+
+---- ---- ---- ---- ---- ---- ----
+### 143/339 `nist/sql/dml121.sql` (FLATER)
 
 ```sql
 SELECT COUNT(*) FROM SSSLOG WHERE ENTERED_BY = 'FLATER' AND SEVERITY = 1 AND PROBLEM IS NULL
 
 TEST:0649 PASS:0649 If count = 2?
 => expected count 2, got error: Table does not exist: SSSLOG
+```
+
+```sql
+INSERT INTO LOTSA_DATETIMES VALUES ( CAST ('1976-06-21' AS DATE), CAST ('13:24:00' AS TIME), CAST ('1927-11-30 07:10:00' AS TIMESTAMP), CAST ('-1' AS INTERVAL YEAR), CAST ('+2' AS INTERVAL MONTH), CAST ('-3' AS INTERVAL DAY), CAST ('4' AS INTERVAL HOUR), CAST ('-5' AS INTERVAL MINUTE), CAST ('6.333…
+
+TEST:0661 PASS:0661 If 1 row is inserted?
+=> expected 1 rows inserted, got error: Parse error on line 5: ...P), CAST ('-1' AS INTERVAL YEAR), CA ----------------------^ Expecting 'LITERAL', 'ENUM', got 'INTERVAL'
 ```
 
 #### ☓ Ran 21 checks in 4 tests
@@ -2764,14 +2782,7 @@ TEST:0649 PASS:0649 If count = 2?
 
 
 ---- ---- ---- ---- ---- ---- ----
-### 142/339 `nist/sql/dml135.sql` (FLATER)
-
-```sql
-CREATE VIEW "PTypes" ("TYPE", NUM) AS SELECT PTYPE, COUNT(*) FROM "Proj" GROUP BY PTYPE
-
-TEST:0692 PASS:0692 If view is created?
-=> expected success, got error: Parse error on line 1: CREATE VIEW "PTypes" ("TYPE", NU ------------^ Expecting 'LITERAL', 'BRALITERAL', 'KEY', 'OPEN', 'CLOSE', 'SEPARATOR', 'IF', got 'STRING'
-```
+### 144/339 `nist/sql/dml135.sql` (FLATER)
 
 ```sql
 CREATE VIEW PTYPES AS SELECT * FROM "PTypes" WHERE NUM > 1
@@ -2802,10 +2813,10 @@ TEST:0692 PASS:0692 If 3 rows from "Proj" and 5 rows from "Works" are deleted?
 ```
 
 ```sql
-SET TRANSACTION READ ONLY
+DROP TABLE "Works" CASCADE
 
-TEST:0693 PASS:0693 If successful completion?
-=> expected success, got error: Parsing halted while starting to recover from another error.
+TEST:0692 PASS:0692 If table and view are dropped?
+=> unparsed: condition not read: table
 ```
 
 ```sql
@@ -2823,38 +2834,7 @@ TEST:0693 PASS:0693 If 8 rows selected with ordered rows and column values ? CRE
 
 
 ---- ---- ---- ---- ---- ---- ----
-### 143/339 `nist/sql/dml136.sql` (FLATER)
-
-```sql
-CREATE VIEW ALLSCORES (PLAYER_NO, SPLAT_SCORE, FOOM_SCORE1, FOOM_SCORE2, MAX_FOOM_SCORE1, MAX_FOOM_SCORE2, MAX_SPLAT_SCORE) AS SELECT PLAYER_NO, SPLAT_AVG.*, FOOM_AVG.*, MAXIMA.* FROM FOOM_AVG NATURAL JOIN SPLAT_AVG, MAXIMA
-
-TEST:0696 PASS:0696 If view is created?
-=> expected success, got error: undefined is not an object (evaluating 'self.select.columns[idx].as = vcol.columnid')
-```
-
-```sql
-INSERT INTO FOOM VALUES (1, 1, 98.0, INTERVAL '09:48' MINUTE TO SECOND)
-
-TEST:0696 PASS:0696 If 1 row is inserted?
-=> expected 1 rows inserted, got error: Parse error on line 1: ...RVAL '09:48' MINUTE TO SECOND) -----------------------^ Expecting 'COMMA', 'RPAR', 'IN', 'LIKE', 'ARROW', 'DOT', 'CARET', 'EQ', 'SLASH', 'EXCLAMATION', 'MODULO', 'GT', 'LT', 'GTGT', 'LTLT', 'NOT', 'AND', 'OR', 'PLUS', 'STAR', 'REGEXP', …
-```
-
-```sql
-SELECT * FROM NORMALIZED_AVGS ORDER BY PLAYER_NO
-
-TEST:0696 PASS:0696 If 2 rows selected with ordered rows and column values? 1 0.74398 +- 0.0001 ? 2 0.87826 +- 0.0001 ?
-=> expected 2   0.87826 +- 0.0001 ?, got 
-```
-
-#### ☓ Ran 21 checks in 1 tests
-
-* 10 failed
-* 2 not read (condition text the runner does not understand)
-* 47% of the checks and 0% of the tests were OK
-
-
----- ---- ---- ---- ---- ---- ----
-### 144/339 `nist/sql/dml144.sql` (FLATER)
+### 145/339 `nist/sql/dml144.sql` (FLATER)
 
 ```sql
 SELECT CHAR_LENGTH (EMPNAME) FROM HU.STAFF WHERE GRADE = 10
@@ -2884,6 +2864,13 @@ TEST:0835 PASS:0835 If 1 row selected and S1 = 'els'?
 => expected 1 rows selected, got error: Table does not exist: X4
 ```
 
+```sql
+SELECT SUBSTRING (C1 FROM ID FOR 1) FROM MOREGRUB
+
+TEST:0835 PASS:0835 If 1 row selected and value is NULL?
+=> expected 1 rows selected, got error: Parse error on line 1: ...ELECT SUBSTRING (C1 FROM ID FOR 1) FR -----------------------^ Expecting 'EOF', 'COMMA', 'RPAR', 'IN', 'LIKE', 'ARROW', 'DOT', 'CARET', 'EQ', 'SLASH', 'EXCLAMATION', 'MODULO', 'GT', 'LT', 'GTGT', 'LTLT', 'NOT', 'AND', 'OR', 'PLUS', 'STA…
+```
+
 #### ☓ Ran 33 checks in 3 tests
 
 * 23 failed
@@ -2892,23 +2879,7 @@ TEST:0835 PASS:0835 If 1 row selected and S1 = 'els'?
 
 
 ---- ---- ---- ---- ---- ---- ----
-### 145/339 `nist/sql/dml137.sql` (FLATER)
-
-#### ☓ Ran 6 checks in 1 tests
-
-* 4 failed
-* 33% of the checks and 0% of the tests were OK
-
-
----- ---- ---- ---- ---- ---- ----
 ### 146/339 `nist/sql/dml149.sql` (FLATER)
-
-```sql
-INSERT INTO USIG VALUES (10, 20)
-
-TEST:0561 PASS:0561 If ERROR, invalid transaction state, 0 rows inserted?
-=> expected an error, got count 1
-```
 
 ```sql
 SELECT CAST (CAST (3 AS DEC (5, 3)) AS CHAR (5)) FROM HU.ECCO
@@ -2925,10 +2896,10 @@ TEST:0846 PASS:0846 If 1 row selected and OSPREY = '12.00 '?
 ```
 
 ```sql
-SELECT CAST (ALBATROSS AS CHAR (4)) FROM NO_DUCK
+SELECT CAST (-GOOSE AS CHAR (5)) FROM NO_DUCK
 
 TEST:0846 PASS:0846 If ERROR, string data, right truncation, 0 rows selected?
-=> expected an error, got 1 rows
+=> expected an error, got 4 rows
 ```
 
 ```sql
@@ -2953,47 +2924,7 @@ TEST:0846 PASS:0846 If 1 row selected and value is NULL?
 
 
 ---- ---- ---- ---- ---- ---- ----
-### 147/339 `nist/sql/dml157.sql` (FLATER)
-
-#### ☓ Ran 2 checks in 1 tests
-
-* 2 failed
-* 0% of the checks and 0% of the tests were OK
-
-
----- ---- ---- ---- ---- ---- ----
-### 148/339 `nist/sql/ist002.sql` (FLATER)
-
-```sql
-SELECT COUNT(*) FROM INFO_SCHEM.VIEWS
-
-TEST:0604 PASS:0604 If count is same as that of next statement?
-=> unparsed: condition not read: count is same as that of next statement
-```
-
-```sql
-SELECT COUNT(*) FROM INFO_SCHEM.VIEWS A, INFO_SCHEM.VIEWS B WHERE A.TABLE_SCHEM = B.TABLE_SCHEM AND A.TABLE_NAME = B.TABLE_NAME
-
-TEST:0604 PASS:0604 If count is same as that of previous statement?
-=> unparsed: condition not read: count is same as that of previous statement
-```
-
-```sql
-SELECT CHECK_OPTION, IS_UPDATABLE FROM INFO_SCHEM.VIEWS WHERE TABLE_SCHEM = 'FLATER' AND TABLE_NAME = 'VS4'
-
-TEST:0604 PASS:0604 If 1 row selected AND CHECK_OPTION = NONE? AND IS_UPDATABLE = NO?
-=> expected 1 rows selected, got error: undefined is not an object (evaluating 'alasql.databases[fr.databaseid || databaseid].tables')
-```
-
-#### ☓ Ran 17 checks in 1 tests
-
-* 15 failed
-* 2 not read (condition text the runner does not understand)
-* 0% of the checks and 0% of the tests were OK
-
-
----- ---- ---- ---- ---- ---- ----
-### 149/339 `nist/sql/dml153.sql` (FLATER)
+### 147/339 `nist/sql/dml153.sql` (FLATER)
 
 #### ☓ Ran 5 checks in 1 tests
 
@@ -3002,10 +2933,26 @@ TEST:0604 PASS:0604 If 1 row selected AND CHECK_OPTION = NONE? AND IS_UPDATABLE 
 
 
 ---- ---- ---- ---- ---- ---- ----
-### 150/339 `nist/sql/dml162.sql` (FLATER)
+### 148/339 `nist/sql/dml157.sql` (FLATER)
+
+#### ☓ Ran 2 checks in 1 tests
+
+* 2 failed
+* 0% of the checks and 0% of the tests were OK
+
+
+---- ---- ---- ---- ---- ---- ----
+### 149/339 `nist/sql/dml162.sql` (FLATER)
 
 ```sql
 SELECT COUNT(*) FROM BLIVET WHERE EMPNUM = 'E1'
+
+TEST:0863 PASS:0863 If COUNT = 3?
+=> expected count 3, got error: Table does not exist: BLIVET
+```
+
+```sql
+SELECT COUNT(*) FROM BLIVET WHERE EMPNUM <> 'E1'
 
 TEST:0863 PASS:0863 If COUNT = 3?
 => expected count 3, got error: Table does not exist: BLIVET
@@ -3018,7 +2965,7 @@ TEST:0863 PASS:0863 If COUNT = 3?
 
 
 ---- ---- ---- ---- ---- ---- ----
-### 151/339 `nist/sql/dml185.sql` (FLATER)
+### 150/339 `nist/sql/dml185.sql` (FLATER)
 
 ```sql
 SELECT COLUMN_DEF FROM INFO_SCHEM.COLUMNS WHERE TABLE_SCHEM = 'FLATER' AND TABLE_NAME = 'XX' AND COLUMN_DEF = 'USER'
@@ -3069,13 +3016,6 @@ TEST:0898 PASS:0898 If COLUMN_DEF = NULL value?
 => expected COLUMN_DEF = NULL value, got error: Parse error on line 2: ... FROM INFO_SCHEM.COLUMNS WHERE TABLE_ -----------------------^ Expecting 'LITERAL', 'BRALITERAL', 'KEY', 'OPEN', 'CLOSE', 'SEPARATOR', got 'COLUMN'
 ```
 
-```sql
-DROP TABLE XX CASCADE
-
-TEST:0898 PASS:0898 If table dropped successfully?
-=> expected success, got error: Parsing halted while starting to recover from another error.
-```
-
 #### ☓ Ran 11 checks in 1 tests
 
 * 6 failed
@@ -3084,12 +3024,26 @@ TEST:0898 PASS:0898 If table dropped successfully?
 
 
 ---- ---- ---- ---- ---- ---- ----
-### 152/339 `nist/sql/ist001.sql` (FLATER)
+### 151/339 `nist/sql/ist001.sql` (FLATER)
 
 ```sql
-SELECT TABLE_TYPE FROM INFO_SCHEM.TABLES WHERE TABLE_SCHEM = 'FLATER' AND TABLE_NAME = 'VS6'
+SELECT COUNT(*) FROM INFO_SCHEM.TABLES
 
-TEST:0603 PASS:0603 If 1 row selected and TABLE_TYPE = VIEW?
+TEST:0603 PASS:0603 If count is same as that of next statement?
+=> unparsed: condition not read: count is same as that of next statement
+```
+
+```sql
+SELECT COUNT(*) FROM INFO_SCHEM.TABLES A, INFO_SCHEM.TABLES B WHERE A.TABLE_SCHEM = B.TABLE_SCHEM AND A.TABLE_NAME = B.TABLE_NAME
+
+TEST:0603 PASS:0603 If count is same as that of previous statement?
+=> unparsed: condition not read: count is same as that of previous statement
+```
+
+```sql
+SELECT TABLE_TYPE FROM INFO_SCHEM.TABLES WHERE TABLE_SCHEM = 'FLATER' AND TABLE_NAME = 'USIG'
+
+TEST:0603 PASS:0603 If 1 row selected and TABLE_TYPE = BASE TABLE?
 => expected 1 rows selected, got error: Parse error on line 1: ...YPE FROM INFO_SCHEM.TABLES WHERE TABL -----------------------^ Expecting 'LITERAL', 'BRALITERAL', 'KEY', 'OPEN', 'CLOSE', 'SEPARATOR', got 'TABLE'
 ```
 
@@ -3097,6 +3051,23 @@ TEST:0603 PASS:0603 If 1 row selected and TABLE_TYPE = VIEW?
 
 * 18 failed
 * 2 not read (condition text the runner does not understand)
+* 0% of the checks and 0% of the tests were OK
+
+
+---- ---- ---- ---- ---- ---- ----
+### 152/339 `nist/sql/ist006.sql` (FLATER)
+
+```sql
+SELECT COUNT(*) FROM INFO_SCHEM.COLUMN_PRIVILEGES WHERE GRANTOR = '_SYSTEM' AND GRANTEE = 'FLATER' AND IS_GRANTABLE = 'YES' AND TABLE_SCHEM = 'FLATER' AND TABLE_NAME = 'USIG' AND COLUMN_NAME = 'C_1' AND PRIVILEGE_TYPE = 'UPDATE'
+
+TEST:0608 PASS:0608 If count = 1?
+=> expected count 1, got error: undefined is not an object (evaluating 'alasql.databases[fr.databaseid || databaseid].tables')
+```
+
+#### ☓ Ran 16 checks in 1 tests
+
+* 15 failed
+* 1 not read (condition text the runner does not understand)
 * 0% of the checks and 0% of the tests were OK
 
 
@@ -3111,17 +3082,17 @@ TEST:0609 PASS:0609 If count = 0 or 1?
 ```
 
 ```sql
+SELECT COUNT(*) FROM INFO_SCHEM.TABLE_PRIVILEGES WHERE TABLE_CAT <> (SELECT TABLE_CAT FROM INFO_SCHEM.TABLES WHERE TABLE_NAME = 'WCOV') OR TABLE_CAT IS NULL
+
+TEST:0609 PASS:0609 If count = 0?
+=> expected count 0, got error: Parse error on line 4: ...CAT FROM INFO_SCHEM.TABLES WHERE TABLE_N -----------------------^ Expecting 'LITERAL', 'BRALITERAL', 'KEY', 'OPEN', 'CLOSE', 'SEPARATOR', got 'TABLE'
+```
+
+```sql
 SELECT CHAR_SET_CAT, CHAR_SET_SCHEM, CHAR_SET_NAME, COLLATION_CAT, COLLATION_SCHEM, COLLATION_NAME, DOMAIN_CAT, DOMAIN_SCHEM, DOMAIN_NAME, INTERVAL_TYPE, INTERVAL_PREC FROM INFO_SCHEM.COLUMNS WHERE TABLE_SCHEM = 'FLATER' AND TABLE_NAME = 'USIG' AND COLUMN_NAME = 'C1'
 
 TEST:0609 PASS:0609 If successful completion? OR WARNING: string data, right truncation?
 => unparsed: condition not read: OR right truncation
-```
-
-```sql
-SELECT COUNT(*) FROM INFO_SCHEM.USAGE_PRIVILEGES WHERE IS_GRANTABLE IS NULL
-
-TEST:0609 PASS:0609 If count = 0?
-=> expected count 0, got error: undefined is not an object (evaluating 'alasql.databases[fr.databaseid || databaseid].tables')
 ```
 
 #### ☓ Ran 23 checks in 1 tests
@@ -3140,36 +3111,28 @@ TEST:0609 PASS:0609 If count = 0?
 
 
 ---- ---- ---- ---- ---- ---- ----
-### 155/339 `nist/sql/ist003.sql` (FLATER)
+### 155/339 `nist/sql/ist002.sql` (FLATER)
 
-#### ☓ Ran 14 checks in 1 tests
+```sql
+SELECT CHECK_OPTION, IS_UPDATABLE FROM INFO_SCHEM.VIEWS WHERE TABLE_SCHEM = 'FLATER' AND TABLE_NAME = 'DV1'
 
-* 11 failed
+TEST:0604 PASS:0604 If 1 row selected AND CHECK_OPTION = NONE? AND IS_UPDATABLE = YES?
+=> expected 1 rows selected, got error: undefined is not an object (evaluating 'alasql.databases[fr.databaseid || databaseid].tables')
+```
+
+#### ☓ Ran 17 checks in 1 tests
+
+* 15 failed
 * 2 not read (condition text the runner does not understand)
-* 8% of the checks and 0% of the tests were OK
+* 0% of the checks and 0% of the tests were OK
 
 
 ---- ---- ---- ---- ---- ---- ----
-### 156/339 `nist/sql/dml154.sql` (FLATER)
+### 156/339 `nist/sql/mpa010b.sql` (FLATER)
 
-```sql
-SELECT * FROM TRANSIENT ORDER BY WINDOW_ID
+#### ★ Ran 0 checks in 0 tests
 
-TEST:0854 PASS:0854 If 2 rows are selected with the following order? window_id ========= If 1 ? If 2 ?
-=> expected If     1      ? | If     2      ?, got 1 | 2
-```
-
-```sql
-DROP TABLE TRANSIENT CASCADE
-
-TEST:0854 PASS:0854 If table dropped successfully?
-=> expected success, got error: Parsing halted while starting to recover from another error.
-```
-
-#### ☓ Ran 5 checks in 2 tests
-
-* 4 failed
-* 20% of the checks and 0% of the tests were OK
+* 0% of the checks and 0% of the tests were OK
 
 
 ---- ---- ---- ---- ---- ---- ----
@@ -3183,10 +3146,10 @@ TEST:0690 PASS:0690 If view is created?
 ```
 
 ```sql
-INSERT INTO PORGRAM VALUES ( 10, TIME '12:55:00', CAST ('03:00' AS INTERVAL MINUTE TO SECOND), 'Stupid commercials')
+INSERT INTO PORGRAM VALUES ( 3, TIME '12:14:30', CAST ('12:30' AS INTERVAL MINUTE TO SECOND), 'Braunschweiger, plug Explosion Man II')
 
 TEST:0690 PASS:0690 If 1 row is inserted?
-=> expected 1 rows inserted, got error: Parse error on line 2: ...VALUES ( 10, TIME '12:55:00', CAST ( ----------------------^ Expecting 'COMMA', 'RPAR', 'IN', 'LIKE', 'ARROW', 'DOT', 'CARET', 'EQ', 'SLASH', 'EXCLAMATION', 'MODULO', 'GT', 'LT', 'GTGT', 'LTLT', 'NOT', 'AND', 'OR', 'PLUS', 'STAR', 'REGE…
+=> expected 1 rows inserted, got error: Parse error on line 2: ... VALUES ( 3, TIME '12:14:30', CAST ( ----------------------^ Expecting 'COMMA', 'RPAR', 'IN', 'LIKE', 'ARROW', 'DOT', 'CARET', 'EQ', 'SLASH', 'EXCLAMATION', 'MODULO', 'GT', 'LT', 'GTGT', 'LTLT', 'NOT', 'AND', 'OR', 'PLUS', 'STAR', 'REGE…
 ```
 
 ```sql
@@ -3210,6 +3173,13 @@ TEST:0690 PASS:0690 If 1 row selected and SEGNO = 10?
 => expected 1 rows selected, got error: Table does not exist: GAPS
 ```
 
+```sql
+UPDATE PORGRAM SET STARTS = STARTS + CAST (30. AS INTERVAL SECOND) WHERE SEGNO = 10
+
+TEST:0690 PASS:0690 If 1 row is updated?
+=> expected 1 rows updated, got error: Parse error on line 2: ...TS + CAST (30. AS INTERVAL SECOND) WHE ----------------------^ Expecting 'LITERAL', 'ENUM', got 'INTERVAL'
+```
+
 #### ☓ Ran 66 checks in 3 tests
 
 * 33 failed
@@ -3218,13 +3188,39 @@ TEST:0690 PASS:0690 If 1 row selected and SEGNO = 10?
 
 
 ---- ---- ---- ---- ---- ---- ----
-### 158/339 `nist/sql/ist005.sql` (FLATER)
+### 158/339 `nist/sql/dml154.sql` (FLATER)
 
 ```sql
-SELECT COUNT(*) FROM INFO_SCHEM.TABLE_PRIVILEGES A, INFO_SCHEM.TABLE_PRIVILEGES B WHERE A.GRANTOR = B.GRANTOR AND A.GRANTEE = B.GRANTEE AND A.TABLE_SCHEM = B.TABLE_SCHEM AND A.TABLE_NAME = B.TABLE_NAME AND A.PRIVILEGE_TYPE = B.PRIVILEGE_TYPE
+SELECT * FROM TRANSIENT ORDER BY WINDOW_ID
 
-TEST:0607 PASS:0607 If count is same as that of previous statement?
-=> unparsed: condition not read: count is same as that of previous statement
+TEST:0854 PASS:0854 If 2 rows are selected with the following order? window_id ========= If 1 ? If 2 ?
+=> expected If     1      ? | If     2      ?, got 1 | 2
+```
+
+#### ☓ Ran 5 checks in 2 tests
+
+* 4 failed
+* 20% of the checks and 0% of the tests were OK
+
+
+---- ---- ---- ---- ---- ---- ----
+### 159/339 `nist/sql/ist003.sql` (FLATER)
+
+#### ☓ Ran 14 checks in 1 tests
+
+* 11 failed
+* 2 not read (condition text the runner does not understand)
+* 8% of the checks and 0% of the tests were OK
+
+
+---- ---- ---- ---- ---- ---- ----
+### 160/339 `nist/sql/ist005.sql` (FLATER)
+
+```sql
+SELECT COUNT(*) FROM INFO_SCHEM.TABLE_PRIVILEGES WHERE GRANTEE NOT IN ('PUBLIC', USER) AND GRANTOR <> USER
+
+TEST:0607 PASS:0607 If count = 0?
+=> expected count 0, got error: undefined is not an object (evaluating 'alasql.databases[fr.databaseid || databaseid].tables')
 ```
 
 ```sql
@@ -3242,37 +3238,14 @@ TEST:0607 PASS:0607 If count > 5?
 
 
 ---- ---- ---- ---- ---- ---- ----
-### 159/339 `nist/sql/mpb010c.sql` (HU)
+### 161/339 `nist/sql/ist004.sql` (FLATER)
 
 ```sql
-SELECT COUNT(*) FROM FLATER.GRANT010
+SELECT COUNT(*) FROM INFO_SCHEM.SCHEMATA WHERE SCHEM_NAME IS NULL
 
-TEST:0627 PASS:0627 If count = 1?
-=> expected count 1, got error: Table does not exist: GRANT010
+TEST:0606 PASS:0606 If count = 0?
+=> expected count 0, got error: Parse error on line 2: ...(*)FROM INFO_SCHEM.SCHEMATAWHERE SCHEM ----------------------^ Expecting 'LITERAL', 'BRALITERAL', 'KEY', 'OPEN', 'CLOSE', 'SEPARATOR', got 'DATABASE'
 ```
-
-```sql
-UPDATE FLATER.GRANT010 SET C1 = 0
-
-TEST:0627 PASS:0627 If 2 rows are updated?
-=> expected 2 rows updated, got error: undefined is not an object (evaluating 'alasql.databases[databaseid].tables[tableid].onupdatefns')
-```
-
-```sql
-DELETE FROM FLATER.GRANT010
-
-TEST:0627 PASS:0627 If 2 rows are deleted?
-=> expected 2 rows deleted, got error: undefined is not an object (evaluating 'table.dirty = !0')
-```
-
-#### ☓ Ran 8 checks in 1 tests
-
-* 8 failed
-* 0% of the checks and 0% of the tests were OK
-
-
----- ---- ---- ---- ---- ---- ----
-### 160/339 `nist/sql/ist004.sql` (FLATER)
 
 #### ☓ Ran 5 checks in 1 tests
 
@@ -3281,7 +3254,7 @@ TEST:0627 PASS:0627 If 2 rows are deleted?
 
 
 ---- ---- ---- ---- ---- ---- ----
-### 161/339 `nist/sql/mpb010d.sql` (HU)
+### 162/339 `nist/sql/mpb010d.sql` (HU)
 
 #### ☓ Ran 4 checks in 1 tests
 
@@ -3290,40 +3263,7 @@ TEST:0627 PASS:0627 If 2 rows are deleted?
 
 
 ---- ---- ---- ---- ---- ---- ----
-### 162/339 `nist/sql/mpa010e.sql` (FLATER)
-
-#### ★ Ran 0 checks in 0 tests
-
-* 0% of the checks and 0% of the tests were OK
-
-
----- ---- ---- ---- ---- ---- ----
-### 163/339 `nist/sql/ist006.sql` (FLATER)
-
-```sql
-SELECT COUNT(*) FROM INFO_SCHEM.COLUMN_PRIVILEGES WHERE GRANTOR = 'FLATER' AND GRANTEE = 'SCHANZLE' AND IS_GRANTABLE = 'NO' AND TABLE_SCHEM = 'FLATER' AND TABLE_NAME = 'WCOV' AND COLUMN_NAME = 'C1' AND PRIVILEGE_TYPE = 'INSERT'
-
-TEST:0608 PASS:0608 If count = 1?
-=> expected count 1, got error: undefined is not an object (evaluating 'alasql.databases[fr.databaseid || databaseid].tables')
-```
-
-#### ☓ Ran 16 checks in 1 tests
-
-* 15 failed
-* 1 not read (condition text the runner does not understand)
-* 0% of the checks and 0% of the tests were OK
-
-
----- ---- ---- ---- ---- ---- ----
-### 164/339 `nist/sql/mpa010f.sql` (FLATER)
-
-#### ★ Ran 0 checks in 0 tests
-
-* 0% of the checks and 0% of the tests were OK
-
-
----- ---- ---- ---- ---- ---- ----
-### 165/339 `nist/sql/mpb010a.sql` (HU)
+### 163/339 `nist/sql/mpb010e.sql` (HU)
 
 #### ★ Ran 4 checks in 1 tests
 
@@ -3331,7 +3271,7 @@ TEST:0608 PASS:0608 If count = 1?
 
 
 ---- ---- ---- ---- ---- ---- ----
-### 166/339 `nist/sql/mpa010g.sql` (FLATER)
+### 164/339 `nist/sql/mpa010e.sql` (FLATER)
 
 #### ★ Ran 0 checks in 0 tests
 
@@ -3339,7 +3279,7 @@ TEST:0608 PASS:0608 If count = 1?
 
 
 ---- ---- ---- ---- ---- ---- ----
-### 167/339 `nist/sql/mpa010b.sql` (FLATER)
+### 165/339 `nist/sql/mpa010f.sql` (FLATER)
 
 #### ★ Ran 0 checks in 0 tests
 
@@ -3347,12 +3287,57 @@ TEST:0608 PASS:0608 If count = 1?
 
 
 ---- ---- ---- ---- ---- ---- ----
-### 168/339 `nist/sql/mpb010b.sql` (HU)
+### 166/339 `nist/sql/mpb010a.sql` (HU)
+
+#### ★ Ran 4 checks in 1 tests
+
+* 100% of the checks and 100% of the tests were OK
+
+
+---- ---- ---- ---- ---- ---- ----
+### 167/339 `nist/sql/mpb010b.sql` (HU)
+
+```sql
+SELECT COUNT(*) FROM FLATER.GRANT010
+
+TEST:0627 PASS:0627 If count = 1?
+=> expected count 1, got error: Table does not exist: GRANT010
+```
 
 #### ☓ Ran 4 checks in 1 tests
 
 * 1 failed
 * 75% of the checks and 0% of the tests were OK
+
+
+---- ---- ---- ---- ---- ---- ----
+### 168/339 `nist/sql/dml158.sql` (HU)
+
+```sql
+DELETE FROM WORKS WHERE EXISTS (SELECT * FROM PROJ JOIN STAFF ON PROJ.CITY <> STAFF.CITY AND EMPNUM = WORKS.EMPNUM AND PNUM = WORKS.PNUM)
+
+TEST:0857 PASS:0857 If delete completed successfully?
+=> expected success, got error: undefined is not an object (evaluating 'p['WORKS']['EMPNUM']')
+```
+
+```sql
+SELECT EMPNUM, PNUM FROM WORKS ORDER BY EMPNUM, PNUM
+
+TEST:0857 PASS:0857 If 6 rows are returned in the following order? empnum pnum ====== ==== If E1 P1 ? If E1 P4 ? If E1 P6 ? If E2 P2 ? If E3 P2 ? If E4 P4 ?
+=> expected ======    ==== | If    E1        P1  ? | If    E1        P4  ? | If    E1        P6  ? | If    E2        P2  ? | If    E3        P2  ? | If    E4        P4  ?, got 'E1' 'P1' | 'E1' 'P2' | 'E1' 'P3' | 'E1' 'P4' | 'E1' 'P5' | 'E1' 'P6' | 'E2' 'P1' | 'E2' 'P2' | 'E3' 'P2' | 'E4' 'P2' | 'E4' '…
+```
+
+```sql
+SELECT EMPNUM, SUM (HOURS) FROM WORKS OWORKS GROUP BY EMPNUM HAVING EMPNUM IN ( SELECT WORKS.EMPNUM FROM WORKS JOIN STAFF ON WORKS.EMPNUM = STAFF.EMPNUM AND HOURS < SUM (OWORKS.HOURS) / 3 AND GRADE > 10) ORDER BY EMPNUM
+
+TEST:0857 PASS:0857 If 2 rows are returned in the following order? empnum sum(hours) ====== ========== If E1 184 ? If E4 140 ?
+=> expected rows, got error: g is not defined
+```
+
+#### ☓ Ran 4 checks in 1 tests
+
+* 4 failed
+* 0% of the checks and 0% of the tests were OK
 
 
 ---- ---- ---- ---- ---- ---- ----
@@ -3387,7 +3372,30 @@ TEST:7001 PASS:7001 If SUM = 195016?
 
 
 ---- ---- ---- ---- ---- ---- ----
-### 170/339 `nist/sql/xts701.sql` (CTS1)
+### 170/339 `nist/sql/mpb010c.sql` (HU)
+
+```sql
+UPDATE FLATER.GRANT010 SET C1 = 0
+
+TEST:0627 PASS:0627 If 2 rows are updated?
+=> expected 2 rows updated, got error: undefined is not an object (evaluating 'alasql.databases[databaseid].tables[tableid].onupdatefns')
+```
+
+```sql
+GRANT SELECT ON FLATER.GRANT010 TO SCHANZLE
+
+TEST:0627 PASS:0627 If WARNING: privilege not granted?
+=> expected success, got error: Parse error on line 1: GRANT SELECT ON FLATER.GRA ------^ Expecting 'EOF', 'COMMA', 'LPAR', 'RPAR', 'END', 'ELSE', 'COLONDASH', 'GO', 'SEMICOLON', got 'SELECT'
+```
+
+#### ☓ Ran 8 checks in 1 tests
+
+* 8 failed
+* 0% of the checks and 0% of the tests were OK
+
+
+---- ---- ---- ---- ---- ---- ----
+### 171/339 `nist/sql/xts701.sql` (CTS1)
 
 ```sql
 SELECT NUM6 FROM T4 WHERE NUM6 = 2 AND STR110 <= 'Second character ' 'literal.'
@@ -3401,13 +3409,6 @@ SELECT COUNT(*) FROM T4 WHERE STR110 < 'An indifferent' ' charac' 'ter literal.'
 
 TEST:7004 PASS:7004 If sum of this COUNT and the next COUNT = 3?
 => unparsed: condition not read: sum of this COUNT
-```
-
-```sql
-INSERT INTO T4 VALUES('This is a comp' 'ound character literal,' ' in the second table row.',12,NULL,NULL)
-
-TEST:7005 PASS:7005 If 1 row inserted successfully?
-=> expected success, got error: Parse error on line 2: ...is a comp' 'ound character lite... ----------------------^ Expecting 'COMMA', 'RPAR', 'IN', 'LIKE', 'ARROW', 'DOT', 'CARET', 'EQ', 'SLASH', 'EXCLAMATION', 'MODULO', 'GT', 'LT', 'GTGT', 'LTLT', 'NOT', 'AND', 'OR', 'PLUS', 'STAR', 'REGEXP', 'TILD…
 ```
 
 ```sql
@@ -3439,16 +3440,14 @@ TEST:7006 PASS:7006 If 1st value = 'First fragment of a compound character liter
 
 
 ---- ---- ---- ---- ---- ---- ----
-### 171/339 `nist/sql/xts702.sql` (CTS1)
-
-#### ☓ Ran 11 checks in 3 tests
-
-* 2 failed
-* 81% of the checks and 33% of the tests were OK
-
-
----- ---- ---- ---- ---- ---- ----
 ### 172/339 `nist/sql/xts703.sql` (CTS1)
+
+```sql
+SELECT COUNT(*) FROM STAFF WHERE UNIQUE(SELECT GRADE FROM STAFF)
+
+TEST:7011 PASS:7011 If COUNT = 0?
+=> expected count 0, got error: Parse error on line 3: ... STAFF WHERE UNIQUE(SELECT GRADE ----------------------^ Expecting 'LITERAL', 'BRALITERAL', 'KEY', 'OPEN', 'CLOSE', 'SEPARATOR', 'LPAR', 'NUMBER', 'STRING', 'SHARP', 'DOLLAR', 'AT', 'VALUE', 'COLON', 'NOT', 'IF', 'PLUS', 'STAR', 'QUESTION', 'IN…
+```
 
 ```sql
 SELECT EMPNUM, GRADE FROM STAFF X WHERE (UNIQUE(SELECT GRADE FROM STAFF Y WHERE X.GRADE = Y.GRADE))
@@ -3483,13 +3482,6 @@ TEST:7011 PASS:7011 If EMPNUM = E2? If GRADE = 10?
 
 ---- ---- ---- ---- ---- ---- ----
 ### 175/339 `nist/sql/xts718.sql` (CTS1)
-
-```sql
-SET SESSION AUTHORIZATION 'CTS2'
-
-TEST:7018 PASS:7018 If statement executed successfully without ERRORs?
-=> expected success, got error: Parse error on line 1: SET SESSION AUTHORIZATION 'CTS2' ------------^ Expecting 'ARROW', 'DOT', 'EQ', 'ON', 'OFF', got 'LITERAL'
-```
 
 #### ☓ Ran 8 checks in 1 tests
 
@@ -3536,15 +3528,14 @@ TEST:7027 PASS:7027 If values = 1004, MORRIS, 4004, PARGA?
 
 
 ---- ---- ---- ---- ---- ---- ----
-### 177/339 `nist/sql/mpa010c.sql` (FLATER)
+### 177/339 `nist/sql/xts728.sql` (CTS1)
 
-#### ★ Ran 0 checks in 0 tests
+```sql
+INSERT INTO CTS1.TABLE728b SELECT * FROM CTS1.TABLE728a WHERE (C1,C2) IS NOT NULL
 
-* 0% of the checks and 0% of the tests were OK
-
-
----- ---- ---- ---- ---- ---- ----
-### 178/339 `nist/sql/xts728.sql` (CTS1)
+TEST:7028 PASS:7028 If INSERT completed successfully?
+=> expected success, got error: Parse error on line 3: ...a WHERE (C1,C2) IS NOT NULL ----------------------^ Expecting 'RPAR', 'IN', 'LIKE', 'ARROW', 'DOT', 'CARET', 'EQ', 'SLASH', 'EXCLAMATION', 'MODULO', 'GT', 'LT', 'GTGT', 'LTLT', 'NOT', 'AND', 'OR', 'PLUS', 'STAR', 'REGEXP', 'TILDA', 'GLOB', 'NOT…
+```
 
 ```sql
 SELECT COL_1,COL_2 FROM CTS1.TABLE728b WHERE COL_1 = 'NICKOS' AND COL_2 = 'GEORGE'
@@ -3567,23 +3558,7 @@ TEST:7028 PASS:7028 If COL_1 = HARRY and COL_2 = TANIA?
 
 
 ---- ---- ---- ---- ---- ---- ----
-### 179/339 `nist/sql/xts730.sql` (CTS1)
-
-```sql
-DROP TABLE "LONGIDENTIFIERSAAAA" CASCADE
-
-TEST:7030 PASS:7030 If table dropped successfully?
-=> expected success, got error: Parse error on line 1: DROP TABLE "LONGIDENTIFIERSAAAA... -----------^ Expecting 'LITERAL', 'BRALITERAL', 'KEY', 'OPEN', 'CLOSE', 'SEPARATOR', 'IF', got 'STRING'
-```
-
-#### ☓ Ran 12 checks in 1 tests
-
-* 12 failed
-* 0% of the checks and 0% of the tests were OK
-
-
----- ---- ---- ---- ---- ---- ----
-### 180/339 `nist/sql/mpa010d.sql` (FLATER)
+### 178/339 `nist/sql/mpa010c.sql` (FLATER)
 
 #### ★ Ran 0 checks in 0 tests
 
@@ -3591,278 +3566,7 @@ TEST:7030 PASS:7030 If table dropped successfully?
 
 
 ---- ---- ---- ---- ---- ---- ----
-### 181/339 `nist/sql/mpb010e.sql` (HU)
-
-#### ★ Ran 4 checks in 1 tests
-
-* 100% of the checks and 100% of the tests were OK
-
-
----- ---- ---- ---- ---- ---- ----
-### 182/339 `nist/sql/mpb010f.sql` (HU)
-
-```sql
-SELECT COUNT(*) FROM FLATER.X WHERE A = 0 AND B = 2 AND C = 0 AND D = 0
-
-TEST:0560 PASS:0560 If count = 1?
-=> expected count 1, got error: Table does not exist: X
-```
-
-#### ☓ Ran 5 checks in 1 tests
-
-* 4 failed
-* 20% of the checks and 0% of the tests were OK
-
-
----- ---- ---- ---- ---- ---- ----
-### 183/339 `nist/sql/xts733.sql` (CTS1)
-
-```sql
-SELECT * FROM TEST6840A FULL OUTER JOIN TEST6840B ON NUM_A = NUM_B ORDER BY NUM_A
-
-TEST:7033 PASS:7033 If 3 rows selected in one of the following orders? c1 c2 c3 c4 c1 c2 c3 c4 === === === === === === === === If 1 A NULL NULL? or NULL NULL 3 A ? If 2 B 2 C ? or 1 A NULL NULL? If NULL NULL 3 A ? or 2 B 2 C ?
-=> expected ===  ===  ===   ===          ===  ===  ===   === | If    1    A   NULL  NULL?   or   NULL  NULL  3     A  ? | If    2    B    2     C  ?   or    1     A   NULL  NULL? | If   NULL NULL  3     A  ?   or    2     B    2     C  ?, got NULL NULL 3 'A' | 1 'A' NULL NULL | 2 'B' 2 'C'
-```
-
-```sql
-SELECT * FROM (TEST6840B FULL JOIN TEST6840A AS CN1 ON TEST6840B.CH_B = CN1.CH_A) FULL JOIN TEST6840A AS CN2 ON TEST6840B.NUM_B = CN2.NUM_A ORDER BY TEST6840B.NUM_B, CN1.NUM_A
-
-TEST:7033 PASS:7033 If nulls first? ==== ==== ==== ==== ==== ==== If NULL NULL NULL NULL 1 A ? If NULL NULL 2 B NULL NULL? If 2 C NULL NULL 2 B ? If 3 A 1 A NULL NULL?
-=> unparsed: condition not read: nulls first ====    ====   ====   ====   ====    ====
-```
-
-#### ☓ Ran 17 checks in 1 tests
-
-* 9 failed
-* 1 not read (condition text the runner does not understand)
-* 43% of the checks and 0% of the tests were OK
-
-
----- ---- ---- ---- ---- ---- ----
-### 184/339 `nist/sql/xts735.sql` (CTS1)
-
-```sql
-SELECT C1,C2 FROM CTS1.TAB735 ORDER BY C1
-
-TEST:7035 PASS:7035 If 3 rows are selected with the following order? c1 c2 ---- ---- If 1 NULL? If 2 ! ? If 3 ! ?
-=> expected ----    ---- | If    1      NULL? | If    2       !  ? | If    3       !  ?, got 1 NULL | 2 '!' | 3 '  !'
-```
-
-```sql
-DROP TABLE TAB735 CASCADE
-
-TEST:7035 PASS:7035 If table dropped successfully?
-=> expected success, got error: Parsing halted while starting to recover from another error.
-```
-
-#### ☓ Ran 6 checks in 1 tests
-
-* 2 failed
-* 66% of the checks and 0% of the tests were OK
-
-
----- ---- ---- ---- ---- ---- ----
-### 185/339 `nist/sql/xts734.sql` (CTS1)
-
-#### ☓ Ran 7 checks in 1 tests
-
-* 4 failed
-* 42% of the checks and 0% of the tests were OK
-
-
----- ---- ---- ---- ---- ---- ----
-### 186/339 `nist/sql/xts740.sql` (CTS1)
-
-#### ☓ Ran 17 checks in 1 tests
-
-* 9 failed
-* 47% of the checks and 0% of the tests were OK
-
-
----- ---- ---- ---- ---- ---- ----
-### 187/339 `nist/sql/xts741.sql` (CTS1)
-
-```sql
-SELECT COUNT(ALL NULLIF ('Nickos','Nickos ')) FROM EMPTY740
-
-TEST:7041 PASS:7041 If COUNT = 0 and ? WARNING - null value eliminated in set function ?
-=> expected count 0, got NULL
-```
-
-#### ☓ Ran 14 checks in 1 tests
-
-* 12 failed
-* 14% of the checks and 0% of the tests were OK
-
-
----- ---- ---- ---- ---- ---- ----
-### 188/339 `nist/sql/xts742.sql` (CTS1)
-
-```sql
-SELECT COUNT(ALL 115.5), COUNT(ALL 'ATHINA'), COUNT(ALL 255), COUNT(*) FROM CL_DATA_TYPE
-
-TEST:7042 PASS:7042 If COUNTs are 6, 6, 6, 6?
-=> unparsed: condition not read: COUNTs are 6
-```
-
-#### ★ Ran 6 checks in 1 tests
-
-* 3 not read (condition text the runner does not understand)
-* 100% of the checks and 0% of the tests were OK
-
-
----- ---- ---- ---- ---- ---- ----
-### 189/339 `nist/sql/xts744.sql` (CTS1)
-
-```sql
-SELECT CHARACTER_SET_SCHEMA, CHARACTER_SET_NAME,NUMBER_OF_CHARACTERS,CHARACTER_SET_CATALOG, DEFAULT_COLLATE_CATALOG, DEFAULT_COLLATE_SCHEMA, DEFAULT_COLLATE_NAME FROM INFORMATION_SCHEMA.CHARACTER_SETS WHERE CHARACTER_SET_SCHEMA = 'INFORMATION_SCHEMA' AND CHARACTER_SET_NAME = 'SQL_CHARACTER'
-
-TEST:7044 PASS:7044 If CHARACTER_SET_SCHEMA = INFORMATION SCHEMA? If CHARACTER_SET_NAME = SQL_CHARACTER? If NUMBER_OF_CHARACTERS = 83? If CHARACTER_SET_CATALOG not NULL? If DEFAULT_COLLATE_CATALOG not NULL? If DEFAULT_COLLATE_SCHEMA not NULL? If DEFAULT_COLLATE_NAME not NULL?
-=> unparsed: condition not read: CHARACTER_SET_CATALOG not NULL
-```
-
-#### ★ Ran 1 checks in 1 tests
-
-* 1 not read (condition text the runner does not understand)
-* 0% of the checks and 0% of the tests were OK
-
-
----- ---- ---- ---- ---- ---- ----
-### 190/339 `nist/sql/xts745.sql` (CTS1)
-
-```sql
-SELECT COUNT(*) FROM INFORMATION_SCHEMA.CHARACTER_SETS WHERE CHARACTER_SET_SCHEMA = 'INFORMATION_SCHEMA' AND CHARACTER_SET_NAME = 'ASCII_GRAPHIC' AND NUMBER_OF_CHARACTERS = 95 AND CHARACTER_SET_CATALOG IS NOT NULL AND DEFAULT_COLLATE_CATALOG IS NOT NULL AND DEFAULT_COLLATE_SCHEMA IS NOT NULL AND DE…
-
-TEST:7045 PASS:7045 If COUNT = 1?
-=> expected count 1, got error: Unknown INFORMATION_SCHEMA table
-```
-
-#### ☓ Ran 1 checks in 1 tests
-
-* 1 failed
-* 0% of the checks and 0% of the tests were OK
-
-
----- ---- ---- ---- ---- ---- ----
-### 191/339 `nist/sql/xts746.sql` (CTS1)
-
-#### ☓ Ran 1 checks in 1 tests
-
-* 1 failed
-* 0% of the checks and 0% of the tests were OK
-
-
----- ---- ---- ---- ---- ---- ----
-### 192/339 `nist/sql/xts747.sql` (CTS1)
-
-#### ☓ Ran 1 checks in 1 tests
-
-* 1 failed
-* 0% of the checks and 0% of the tests were OK
-
-
----- ---- ---- ---- ---- ---- ----
-### 193/339 `nist/sql/xts748.sql` (CTS1)
-
-```sql
-SELECT CONSTRAINT_NAME, TABLE_NAME, CONSTRAINT_TYPE FROM INFORMATION_SCHEMA.TABLE_CONSTRAINTS WHERE CONSTRAINT_SCHEMA = 'T12549PC' AND TABLE_SCHEMA = 'T12549PC' ORDER BY CONSTRAINT_NAME
-
-TEST:7048 PASS:7048 If 3 rows are selected in the following order? cname tname ctype ===== ===== ===== If CND12549A TEST12549 CHECK? If CND12549B TEST12549 UNIQUE? If CND12549C TEST12549 CHECK?
-=> expected rows, got error: Unknown INFORMATION_SCHEMA table
-```
-
-```sql
-DROP SCHEMA DT12549PC CASCADE
-
-TEST:7048 PASS:7048 If schema dropped successfully?
-=> expected success, got error: Parsing halted while starting to recover from another error.
-```
-
-#### ☓ Ran 8 checks in 1 tests
-
-* 8 failed
-* 0% of the checks and 0% of the tests were OK
-
-
----- ---- ---- ---- ---- ---- ----
-### 194/339 `nist/sql/dml158.sql` (HU)
-
-```sql
-DELETE FROM WORKS WHERE EXISTS (SELECT * FROM PROJ JOIN STAFF ON PROJ.CITY <> STAFF.CITY AND EMPNUM = WORKS.EMPNUM AND PNUM = WORKS.PNUM)
-
-TEST:0857 PASS:0857 If delete completed successfully?
-=> expected success, got error: undefined is not an object (evaluating 'p['WORKS']['EMPNUM']')
-```
-
-```sql
-SELECT EMPNUM, PNUM FROM WORKS ORDER BY EMPNUM, PNUM
-
-TEST:0857 PASS:0857 If 6 rows are returned in the following order? empnum pnum ====== ==== If E1 P1 ? If E1 P4 ? If E1 P6 ? If E2 P2 ? If E3 P2 ? If E4 P4 ?
-=> expected ======    ==== | If    E1        P1  ? | If    E1        P4  ? | If    E1        P6  ? | If    E2        P2  ? | If    E3        P2  ? | If    E4        P4  ?, got 'E1' 'P1' | 'E1' 'P2' | 'E1' 'P3' | 'E1' 'P4' | 'E1' 'P5' | 'E1' 'P6' | 'E2' 'P1' | 'E2' 'P2' | 'E3' 'P2' | 'E4' 'P2' | 'E4' '…
-```
-
-```sql
-SELECT EMPNUM, SUM (HOURS) FROM WORKS OWORKS GROUP BY EMPNUM HAVING EMPNUM IN ( SELECT WORKS.EMPNUM FROM WORKS JOIN STAFF ON WORKS.EMPNUM = STAFF.EMPNUM AND HOURS < SUM (OWORKS.HOURS) / 3 AND GRADE > 10) ORDER BY EMPNUM
-
-TEST:0857 PASS:0857 If 2 rows are returned in the following order? empnum sum(hours) ====== ========== If E1 184 ? If E4 140 ?
-=> expected rows, got error: g is not defined
-```
-
-#### ☓ Ran 4 checks in 1 tests
-
-* 4 failed
-* 0% of the checks and 0% of the tests were OK
-
-
----- ---- ---- ---- ---- ---- ----
-### 195/339 `nist/sql/xts750.sql` (CTS1)
-
-```sql
-SELECT CONSTRAINT_NAME FROM INFORMATION_SCHEMA.DOMAIN_CONSTRAINTS WHERE CONSTRAINT_SCHEMA = 'CTS1' AND DOMAIN_SCHEMA = 'CTS1' AND DOMAIN_NAME = 'D12749'
-
-TEST:7050 PASS:7050 If cname = CND12749?
-=> expected cname = CND12749, got error: Unknown INFORMATION_SCHEMA table
-```
-
-#### ☓ Ran 4 checks in 1 tests
-
-* 4 failed
-* 0% of the checks and 0% of the tests were OK
-
-
----- ---- ---- ---- ---- ---- ----
-### 196/339 `nist/sql/xts732.sql` (CTS1)
-
-```sql
-SELECT * FROM TEST6740A NATURAL FULL JOIN TEST6740B FOR READ ONLY
-
-TEST:7032 PASS:7032 If 1 AA NULL?
-=> unparsed: condition not read: 1   AA   NULL
-```
-
-```sql
-SELECT * FROM TEST6740B NATURAL FULL JOIN TEST6740A FOR READ ONLY
-
-TEST:7032 PASS:7032 If 1 NULL AA?
-=> unparsed: condition not read: 1   NULL   AA
-```
-
-```sql
-SELECT * FROM TESTV6740 ORDER BY VNUM1
-
-TEST:7032 PASS:7032 If 2 rows selected in following order? c1 c2 c3 c4 == == == == If 6 PP 1 AA? If 7 QQ 1 AA?
-=> expected rows, got error: Table does not exist: TESTV6740
-```
-
-#### ☓ Ran 17 checks in 1 tests
-
-* 6 failed
-* 2 not read (condition text the runner does not understand)
-* 60% of the checks and 0% of the tests were OK
-
-
----- ---- ---- ---- ---- ---- ----
-### 197/339 `nist/sql/xts729.sql` (CTS1)
+### 179/339 `nist/sql/xts729.sql` (CTS1)
 
 ```sql
 SELECT * FROM CTS1.TESTB6439 ORDER BY cOlUmNoFNUMERIC123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901_0
@@ -3900,7 +3604,71 @@ TEST:7029 PASS:7029 If 3 rows selected in the following order? === === If aaa bb
 
 
 ---- ---- ---- ---- ---- ---- ----
-### 198/339 `nist/sql/dml147.sql` (FLATER)
+### 180/339 `nist/sql/mpa010d.sql` (FLATER)
+
+#### ★ Ran 0 checks in 0 tests
+
+* 0% of the checks and 0% of the tests were OK
+
+
+---- ---- ---- ---- ---- ---- ----
+### 181/339 `nist/sql/mpa010g.sql` (FLATER)
+
+#### ★ Ran 0 checks in 0 tests
+
+* 0% of the checks and 0% of the tests were OK
+
+
+---- ---- ---- ---- ---- ---- ----
+### 182/339 `nist/sql/mpb010f.sql` (HU)
+
+```sql
+SELECT COUNT(*) FROM FLATER.X WHERE A = 0 AND B = 2 AND C = 0 AND D = 0
+
+TEST:0560 PASS:0560 If count = 1?
+=> expected count 1, got error: Table does not exist: X
+```
+
+#### ☓ Ran 5 checks in 1 tests
+
+* 4 failed
+* 20% of the checks and 0% of the tests were OK
+
+
+---- ---- ---- ---- ---- ---- ----
+### 183/339 `nist/sql/xts734.sql` (CTS1)
+
+#### ☓ Ran 7 checks in 1 tests
+
+* 4 failed
+* 42% of the checks and 0% of the tests were OK
+
+
+---- ---- ---- ---- ---- ---- ----
+### 184/339 `nist/sql/xts735.sql` (CTS1)
+
+```sql
+SELECT C1,C2 FROM CTS1.TAB735 ORDER BY C1
+
+TEST:7035 PASS:7035 If 3 rows are selected with the following order? c1 c2 ---- ---- If 1 NULL? If 2 ! ? If 3 ! ?
+=> expected ----    ---- | If    1      NULL? | If    2       !  ? | If    3       !  ?, got 1 NULL | 2 '!' | 3 '  !'
+```
+
+```sql
+DROP TABLE TAB735 CASCADE
+
+TEST:7035 PASS:7035 If table dropped successfully?
+=> expected success, got error: Parsing halted while starting to recover from another error.
+```
+
+#### ☓ Ran 6 checks in 1 tests
+
+* 2 failed
+* 66% of the checks and 0% of the tests were OK
+
+
+---- ---- ---- ---- ---- ---- ----
+### 185/339 `nist/sql/dml147.sql` (FLATER)
 
 ```sql
 SELECT EMPNUM FROM HU.STAFF3 NATURAL LEFT JOIN HU.STAFF NATURAL INNER JOIN HU.STAFF4 ORDER BY EMPNUM DESC
@@ -3938,43 +3706,167 @@ TEST:0842 PASS:0842 If 4 rows selected with ordered rows and column values ? E2 
 
 
 ---- ---- ---- ---- ---- ---- ----
-### 199/339 `nist/sql/xts736.sql` (CTS1)
+### 186/339 `nist/sql/xts702.sql` (CTS1)
 
-```sql
-INSERT INTO TAB736 VALUES(1,DEFAULT,DEFAULT,N'ATHENS')
+#### ☓ Ran 11 checks in 3 tests
 
-TEST:7036 PASS:7036 If 1 row inserted successfully?
-=> expected success, got error: Parse error on line 1: ...NTO TAB736 VALUES(1,DEFAULT,DEFAULT,N'AT -----------------------^ Expecting 'LITERAL', 'BRALITERAL', 'KEY', 'OPEN', 'CLOSE', 'SEPARATOR', 'LPAR', 'NUMBER', 'STRING', 'SHARP', 'DOLLAR', 'AT', 'VALUE', 'COLON', 'NOT', 'IF', 'PLUS', 'STAR', 'QUEST…
-```
-
-```sql
-SELECT COLK,COL1,COL2,COL3 FROM TAB736 ORDER BY COLK DESC
-
-TEST:7036 PASS:7036 If 2 rows selected in the following order? colk col1 col2 col3 ==== ==== ==== ==== If 2 KILLER HELLAS NEW YORK? If 1 KILLER HELLAS ATHENS ?
-=> expected ====     ====     ====     ==== | If     2       KILLER   HELLAS   NEW YORK? | If     1       KILLER   HELLAS   ATHENS  ?, got 
-```
-
-#### ☓ Ran 12 checks in 1 tests
-
-* 11 failed
-* 8% of the checks and 0% of the tests were OK
+* 2 failed
+* 81% of the checks and 33% of the tests were OK
 
 
 ---- ---- ---- ---- ---- ---- ----
-### 200/339 `nist/sql/xts731.sql` (CTS1)
+### 187/339 `nist/sql/xts741.sql` (CTS1)
+
+```sql
+INSERT INTO EMPTY740 VALUES('BUCK','BUCK',NULL,12,TIME'16:29:22')
+
+TEST:7041 PASS:7041 If 1 row inserted successfully?
+=> expected success, got error: Parse error on line 2: ...,'BUCK',NULL,12,TIME'16:29:22') -----------------------^ Expecting 'COMMA', 'RPAR', 'IN', 'LIKE', 'ARROW', 'DOT', 'CARET', 'EQ', 'SLASH', 'EXCLAMATION', 'MODULO', 'GT', 'LT', 'GTGT', 'LTLT', 'NOT', 'AND', 'OR', 'PLUS', 'STAR', 'REGEXP', 'TILDA'…
+```
+
+```sql
+SELECT COUNT(ALL NULLIF ('Nickos','Nickos ')) FROM EMPTY740
+
+TEST:7041 PASS:7041 If COUNT = 0 and ? WARNING - null value eliminated in set function ?
+=> expected count 0, got NULL
+```
+
+#### ☓ Ran 14 checks in 1 tests
+
+* 12 failed
+* 14% of the checks and 0% of the tests were OK
+
+
+---- ---- ---- ---- ---- ---- ----
+### 188/339 `nist/sql/xts733.sql` (CTS1)
+
+```sql
+SELECT * FROM TEST6840A FULL OUTER JOIN TEST6840B ON NUM_A = NUM_B ORDER BY NUM_A
+
+TEST:7033 PASS:7033 If 3 rows selected in one of the following orders? c1 c2 c3 c4 c1 c2 c3 c4 === === === === === === === === If 1 A NULL NULL? or NULL NULL 3 A ? If 2 B 2 C ? or 1 A NULL NULL? If NULL NULL 3 A ? or 2 B 2 C ?
+=> expected ===  ===  ===   ===          ===  ===  ===   === | If    1    A   NULL  NULL?   or   NULL  NULL  3     A  ? | If    2    B    2     C  ?   or    1     A   NULL  NULL? | If   NULL NULL  3     A  ?   or    2     B    2     C  ?, got NULL NULL 3 'A' | 1 'A' NULL NULL | 2 'B' 2 'C'
+```
+
+```sql
+SELECT * FROM (TEST6840B FULL JOIN TEST6840A AS CN1 ON TEST6840B.CH_B = CN1.CH_A) FULL JOIN TEST6840A AS CN2 ON TEST6840B.NUM_B = CN2.NUM_A ORDER BY TEST6840B.NUM_B, CN1.NUM_A
+
+TEST:7033 PASS:7033 If nulls first? ==== ==== ==== ==== ==== ==== If NULL NULL NULL NULL 1 A ? If NULL NULL 2 B NULL NULL? If 2 C NULL NULL 2 B ? If 3 A 1 A NULL NULL?
+=> unparsed: condition not read: nulls first ====    ====   ====   ====   ====    ====
+```
+
+#### ☓ Ran 17 checks in 1 tests
+
+* 9 failed
+* 1 not read (condition text the runner does not understand)
+* 43% of the checks and 0% of the tests were OK
+
+
+---- ---- ---- ---- ---- ---- ----
+### 189/339 `nist/sql/xts742.sql` (CTS1)
+
+```sql
+SELECT COUNT(ALL 115.5), COUNT(ALL 'ATHINA'), COUNT(ALL 255), COUNT(*) FROM CL_DATA_TYPE
+
+TEST:7042 PASS:7042 If COUNTs are 6, 6, 6, 6?
+=> unparsed: condition not read: COUNTs are 6
+```
+
+#### ★ Ran 6 checks in 1 tests
+
+* 3 not read (condition text the runner does not understand)
+* 100% of the checks and 0% of the tests were OK
+
+
+---- ---- ---- ---- ---- ---- ----
+### 190/339 `nist/sql/xts744.sql` (CTS1)
+
+```sql
+SELECT CHARACTER_SET_SCHEMA, CHARACTER_SET_NAME,NUMBER_OF_CHARACTERS,CHARACTER_SET_CATALOG, DEFAULT_COLLATE_CATALOG, DEFAULT_COLLATE_SCHEMA, DEFAULT_COLLATE_NAME FROM INFORMATION_SCHEMA.CHARACTER_SETS WHERE CHARACTER_SET_SCHEMA = 'INFORMATION_SCHEMA' AND CHARACTER_SET_NAME = 'SQL_CHARACTER'
+
+TEST:7044 PASS:7044 If CHARACTER_SET_SCHEMA = INFORMATION SCHEMA? If CHARACTER_SET_NAME = SQL_CHARACTER? If NUMBER_OF_CHARACTERS = 83? If CHARACTER_SET_CATALOG not NULL? If DEFAULT_COLLATE_CATALOG not NULL? If DEFAULT_COLLATE_SCHEMA not NULL? If DEFAULT_COLLATE_NAME not NULL?
+=> unparsed: condition not read: CHARACTER_SET_CATALOG not NULL
+```
+
+#### ★ Ran 1 checks in 1 tests
+
+* 1 not read (condition text the runner does not understand)
+* 0% of the checks and 0% of the tests were OK
+
+
+---- ---- ---- ---- ---- ---- ----
+### 191/339 `nist/sql/xts745.sql` (CTS1)
+
+```sql
+SELECT COUNT(*) FROM INFORMATION_SCHEMA.CHARACTER_SETS WHERE CHARACTER_SET_SCHEMA = 'INFORMATION_SCHEMA' AND CHARACTER_SET_NAME = 'ASCII_GRAPHIC' AND NUMBER_OF_CHARACTERS = 95 AND CHARACTER_SET_CATALOG IS NOT NULL AND DEFAULT_COLLATE_CATALOG IS NOT NULL AND DEFAULT_COLLATE_SCHEMA IS NOT NULL AND DE…
+
+TEST:7045 PASS:7045 If COUNT = 1?
+=> expected count 1, got error: Unknown INFORMATION_SCHEMA table
+```
+
+#### ☓ Ran 1 checks in 1 tests
+
+* 1 failed
+* 0% of the checks and 0% of the tests were OK
+
+
+---- ---- ---- ---- ---- ---- ----
+### 192/339 `nist/sql/xts746.sql` (CTS1)
+
+#### ☓ Ran 1 checks in 1 tests
+
+* 1 failed
+* 0% of the checks and 0% of the tests were OK
+
+
+---- ---- ---- ---- ---- ---- ----
+### 193/339 `nist/sql/xts747.sql` (CTS1)
+
+#### ☓ Ran 1 checks in 1 tests
+
+* 1 failed
+* 0% of the checks and 0% of the tests were OK
+
+
+---- ---- ---- ---- ---- ---- ----
+### 194/339 `nist/sql/xts748.sql` (CTS1)
+
+```sql
+SELECT CONSTRAINT_NAME, TABLE_NAME, CONSTRAINT_TYPE FROM INFORMATION_SCHEMA.TABLE_CONSTRAINTS WHERE CONSTRAINT_SCHEMA = 'T12549PC' AND TABLE_SCHEMA = 'T12549PC' ORDER BY CONSTRAINT_NAME
+
+TEST:7048 PASS:7048 If 3 rows are selected in the following order? cname tname ctype ===== ===== ===== If CND12549A TEST12549 CHECK? If CND12549B TEST12549 UNIQUE? If CND12549C TEST12549 CHECK?
+=> expected rows, got error: Unknown INFORMATION_SCHEMA table
+```
+
+#### ☓ Ran 8 checks in 1 tests
+
+* 8 failed
+* 0% of the checks and 0% of the tests were OK
+
+
+---- ---- ---- ---- ---- ---- ----
+### 195/339 `nist/sql/xts749.sql` (CTS1)
+
+#### ☓ Ran 4 checks in 1 tests
+
+* 3 failed
+* 25% of the checks and 0% of the tests were OK
+
+
+---- ---- ---- ---- ---- ---- ----
+### 196/339 `nist/sql/xts731.sql` (CTS1)
+
+```sql
+SELECT TABLE_NAME FROM INFORMATION_SCHEMA.VIEWS WHERE TABLE_SCHEMA = 'CTS1' AND (TABLE_NAME = 'LONGIDENTIFIERSAAAAABBBBBBBBBBCCCCCCCCCCDDDDDDDDDDEEEEEEEEEEFFFFFFFFFFGGGGGGGGGGHHHHHHHHHHIIIIIIIIIIJJJJJJJJJJKKKKKKKKKKAAAAAAAA' OR TABLE_NAME = 'longidentifiersaaaaabbbbbbbbbbccccccccccddddddddddeeeeeee…
+
+TEST:7031 PASS:7031 If 5 rows are selected in the following order?
+=> expected 5 rows selected, got 0
+```
 
 ```sql
 SELECT TABLE_NAME FROM INFORMATION_SCHEMA.VIEWS WHERE TABLE_SCHEMA = 'CTS1' AND (TABLE_NAME = 'LONGIDENTIFIERSAAAAABBBBBBBBBBCCCCCCCCCCDDDDDDDDDDEEEEEEEEEEFFFFFFFFFFGGGGGGGGGGHHHHHHHHHHIIIIIIIIIIJJJJJJJJJJKKKKKKKKKKAAAAAAAA' OR TABLE_NAME = 'longidentifiersaaaaabbbbbbbbbbccccccccccddddddddddeeeeeee…
 
 TEST:7031 PASS:7031 If TABLE_NAME = '0"LONGIDENTIFIERSWWWAAAAAAAAAABBBBBBBBBB CCCCCCCCCCDDDDDDDDDDEEEEEEEEEEFFFFFFFFFF GGGGGGGGGGHHHHHHHHHHIIIIIIIIIIJJJJJJJJJJWWWWWW_1'? If TABLE_NAME = '0"LONGIDENTIFIERSWWWAAAAAAAAAABBBBBBBBBB CCCCCCCCCCDDDDDDDDDDEEEEEEEEEEFFFFFFFFFF GGGGGGGGGGHHHHHHHHHHIIIIIIIIIIJJJJJJJJJJWWWWWW_2'?…
 => unparsed: condition not read: TABLE_NAME = 'longIDENTIFIERSWWWWWAAAAAAAAAABBBBBBBBBB CCCCCCCCCCDDDDDDDDDDEEEEEEEEEEFFFFFFFFFF GGGGGGGGGGHHHHHHHHHHIIIIIIIIIIJJJJJJJJJJWW% .
-```
-
-```sql
-CREATE VIEW "ZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZ""69W" (MYCOUNT) AS SELECT COUNT (*) FROM WORKS
-
-TEST:7031 PASS:7031 If view created successfully?
-=> expected success, got error: Parse error on line 1: CREATE VIEW"ZZZZZZZZZZZZZZZZZZZ... -----------^ Expecting 'LITERAL', 'BRALITERAL', 'KEY', 'OPEN', 'CLOSE', 'SEPARATOR', 'IF', got 'STRING'
 ```
 
 ```sql
@@ -3992,25 +3884,93 @@ TEST:7031 PASS:7031 If MYCOUNT = 12?
 
 
 ---- ---- ---- ---- ---- ---- ----
-### 201/339 `nist/sql/xts749.sql` (CTS1)
+### 197/339 `nist/sql/xts730.sql` (CTS1)
+
+```sql
+DROP TABLE "LONGIDENTIFIERSAAAA" CASCADE
+
+TEST:7030 PASS:7030 If table dropped successfully?
+=> expected success, got error: Parse error on line 1: DROP TABLE "LONGIDENTIFIERSAAAA... -----------^ Expecting 'LITERAL', 'BRALITERAL', 'KEY', 'OPEN', 'CLOSE', 'SEPARATOR', 'IF', got 'STRING'
+```
+
+#### ☓ Ran 12 checks in 1 tests
+
+* 12 failed
+* 0% of the checks and 0% of the tests were OK
+
+
+---- ---- ---- ---- ---- ---- ----
+### 198/339 `nist/sql/xts732.sql` (CTS1)
+
+```sql
+SELECT * FROM TEST6740A NATURAL FULL JOIN TEST6740B FOR READ ONLY
+
+TEST:7032 PASS:7032 If 1 AA NULL?
+=> unparsed: condition not read: 1   AA   NULL
+```
+
+```sql
+SELECT * FROM TEST6740B NATURAL FULL JOIN TEST6740A FOR READ ONLY
+
+TEST:7032 PASS:7032 If 1 NULL AA?
+=> unparsed: condition not read: 1   NULL   AA
+```
+
+```sql
+SELECT * FROM TESTV6740 ORDER BY VNUM1
+
+TEST:7032 PASS:7032 If 2 rows selected in following order? c1 c2 c3 c4 == == == == If 6 PP 1 AA? If 7 QQ 1 AA?
+=> expected rows, got error: Table does not exist: TESTV6740
+```
+
+#### ☓ Ran 17 checks in 1 tests
+
+* 6 failed
+* 2 not read (condition text the runner does not understand)
+* 60% of the checks and 0% of the tests were OK
+
+
+---- ---- ---- ---- ---- ---- ----
+### 199/339 `nist/sql/xts736.sql` (CTS1)
+
+```sql
+SELECT COLK,COL1,COL2,COL3 FROM TAB736 ORDER BY COLK DESC
+
+TEST:7036 PASS:7036 If 2 rows selected in the following order? colk col1 col2 col3 ==== ==== ==== ==== If 2 KILLER HELLAS NEW YORK? If 1 KILLER HELLAS ATHENS ?
+=> expected ====     ====     ====     ==== | If     2       KILLER   HELLAS   NEW YORK? | If     1       KILLER   HELLAS   ATHENS  ?, got 
+```
+
+```sql
+DROP TABLE TAB736 CASCADE
+
+TEST:7036 PASS:7036 If table dropped successfully?
+=> expected success, got error: Parsing halted while starting to recover from another error.
+```
+
+#### ☓ Ran 12 checks in 1 tests
+
+* 11 failed
+* 8% of the checks and 0% of the tests were OK
+
+
+---- ---- ---- ---- ---- ---- ----
+### 200/339 `nist/sql/xts750.sql` (CTS1)
+
+```sql
+SELECT CONSTRAINT_NAME FROM INFORMATION_SCHEMA.DOMAIN_CONSTRAINTS WHERE CONSTRAINT_SCHEMA = 'CTS1' AND DOMAIN_SCHEMA = 'CTS1' AND DOMAIN_NAME = 'D12749'
+
+TEST:7050 PASS:7050 If cname = CND12749?
+=> expected cname = CND12749, got error: Unknown INFORMATION_SCHEMA table
+```
 
 #### ☓ Ran 4 checks in 1 tests
 
-* 3 failed
-* 25% of the checks and 0% of the tests were OK
+* 4 failed
+* 0% of the checks and 0% of the tests were OK
 
 
 ---- ---- ---- ---- ---- ---- ----
-### 202/339 `nist/sql/xts752.sql` (CTS1)
-
-#### ☓ Ran 10 checks in 1 tests
-
-* 8 failed
-* 20% of the checks and 0% of the tests were OK
-
-
----- ---- ---- ---- ---- ---- ----
-### 203/339 `nist/sql/xts754.sql` (CTS1)
+### 201/339 `nist/sql/xts754.sql` (CTS1)
 
 ```sql
 INSERT INTO TAB754 VALUES(1000,766,1990)
@@ -4026,7 +3986,23 @@ TEST:7054 PASS:7054 If 1 row inserted successfully?
 
 
 ---- ---- ---- ---- ---- ---- ----
-### 204/339 `nist/sql/xts753.sql` (CTS1)
+### 202/339 `nist/sql/xts752.sql` (CTS1)
+
+```sql
+DROP TABLE TAB752a CASCADE
+
+TEST:7052 PASS:7052 If table dropped successfully?
+=> expected success, got error: Parsing halted while starting to recover from another error.
+```
+
+#### ☓ Ran 10 checks in 1 tests
+
+* 8 failed
+* 20% of the checks and 0% of the tests were OK
+
+
+---- ---- ---- ---- ---- ---- ----
+### 203/339 `nist/sql/xts753.sql` (CTS1)
 
 ```sql
 SELECT COL1,COL2,COL3,COL4,COL5 FROM TAB753 ORDER BY COL1
@@ -4042,172 +4018,23 @@ TEST:7053 PASS:7053 If 2 rows are selected in the following order? col1 col2 col
 
 
 ---- ---- ---- ---- ---- ---- ----
-### 205/339 `nist/sql/xts760.sql` (CTS1)
+### 204/339 `nist/sql/xts740.sql` (CTS1)
 
-#### ☓ Ran 3 checks in 1 tests
+#### ☓ Ran 17 checks in 1 tests
 
-* 1 failed
-* 66% of the checks and 0% of the tests were OK
-
-
----- ---- ---- ---- ---- ---- ----
-### 206/339 `nist/sql/xts761.sql` (CTS1)
-
-```sql
-SELECT COUNT(*) FROM TABCS WHERE COLSTR1 = COLSTR2
-
-TEST:7061 PASS:7061 If COUNT = 0?
-=> expected count 0, got error: Table does not exist: TABCS
-```
-
-#### ☓ Ran 4 checks in 1 tests
-
-* 4 failed
-* 0% of the checks and 0% of the tests were OK
+* 9 failed
+* 47% of the checks and 0% of the tests were OK
 
 
 ---- ---- ---- ---- ---- ---- ----
-### 207/339 `nist/sql/xts756.sql` (CTS1)
-
-#### ☓ Ran 13 checks in 1 tests
-
-* 7 failed
-* 46% of the checks and 0% of the tests were OK
-
-
----- ---- ---- ---- ---- ---- ----
-### 208/339 `nist/sql/xts766.sql` (CTS1)
+### 205/339 `nist/sql/xts764.sql` (CTS1)
 
 ```sql
-SELECT GRANTOR, GRANTEE, OBJECT_SCHEMA, OBJECT_NAME, OBJECT_TYPE FROM INFORMATION_SCHEMA.USAGE_PRIVILEGES WHERE OBJECT_TYPE = 'CHARACTER SET' AND OBJECT_NAME = 'TESTSET'
+SELECT COUNT(*) FROM INFORMATION_SCHEMA.USAGE_PRIVILEGES WHERE GRANTOR = 'CTS1' AND GRANTEE = 'CTS2' AND OBJECT_NAME = 'CS' AND OBJECT_TYPE = 'CHARACTER SET' AND IS_GRANTABLE = 'YES'
 
-TEST:7066 PASS:7066 If GRANTOR = _SYSTEM? If GRANTEE = CTS1? If OBJECT_SCHEMA = CTS1? If OBJECT_NAME = TESTSET? If OBJECT_TYPE = CHARACTER SET?
-=> unparsed: condition not read: GRANTOR = _SYSTEM
+TEST:7064 PASS:7064 If COUNT = 1?
+=> expected count 1, got error: Unknown INFORMATION_SCHEMA table
 ```
-
-#### ☓ Ran 4 checks in 1 tests
-
-* 3 failed
-* 1 not read (condition text the runner does not understand)
-* 0% of the checks and 0% of the tests were OK
-
-
----- ---- ---- ---- ---- ---- ----
-### 209/339 `nist/sql/xts762.sql` (CTS1)
-
-#### ☓ Ran 2 checks in 1 tests
-
-* 2 failed
-* 0% of the checks and 0% of the tests were OK
-
-
----- ---- ---- ---- ---- ---- ----
-### 210/339 `nist/sql/xts798.sql` (CTS1)
-
-```sql
-SELECT EMPNAME, NULLIF (SALARY,HOURS) FROM CTS1.STAFFb WHERE SEX = 'M' AND PNUM NOT IN ('P1','P2','P3','P6','P8') AND (SALARY <> HOURS OR SALARY IS NULL OR HOURS IS NULL) ORDER BY PNUM
-
-TEST:7002 PASS:7002 If 3 rows selected in the following order? EMPNAME SALARY ======= ====== If Nickos NULL ? If George 10010 ? If Gregory 10001 ?
-=> expected =======          ====== | If   Nickos           NULL   ? | If   George           10010  ? | If   Gregory          10001  ?, got 'Nickos' NULL | 'George' 10010 | 'Gregory' 10001
-```
-
-```sql
-SELECT NULLIF (EMPNAME,CITY), SALARY FROM CTS1.STAFFb WHERE SEX = 'M' AND PNUM NOT IN ('P1','P2','P3','P5','P7') AND (EMPNAME <> CITY OR EMPNAME IS NULL OR CITY IS NULL) ORDER BY PNUM
-
-TEST:7002 PASS:7002 If 3 row selected in the following order? EMPNAME SALARY ======= ====== If Kilroy 10000 ? If NULL 10005 ? If Gregory 10001 ?
-=> expected =======           ====== | If   Kilroy            10000  ? | If   NULL              10005  ? | If   Gregory           10001  ?, got 'Kilroy' 10000 | NULL 10005 | 'Gregory' 10001
-```
-
-```sql
-SELECT * FROM CTS1.TEMP1426 ORDER BY EMPNAME
-
-TEST:7002 PASS:7002 If 3 rows selected in the following order? EMPNAME SALARY ======= ====== If George 10000 ? If Kilroy NULL ? If Nickos 10000 ?
-=> expected =======        ====== | If     George         10000  ? | If     Kilroy         NULL   ? | If     Nickos         10000  ?, got NULL 'George' | NULL 'Kilroy' | NULL 'Nickos'
-```
-
-#### ☓ Ran 18 checks in 1 tests
-
-* 5 failed
-* 72% of the checks and 0% of the tests were OK
-
-
----- ---- ---- ---- ---- ---- ----
-### 211/339 `nist/sql/xts755.sql` (CTS1)
-
-#### ☓ Ran 7 checks in 1 tests
-
-* 4 failed
-* 42% of the checks and 0% of the tests were OK
-
-
----- ---- ---- ---- ---- ---- ----
-### 212/339 `nist/sql/xts765.sql` (CTS1)
-
-```sql
-SELECT TABLE_NAME, COLUMN_NAME, CHARACTER_SET_NAME, ORDINAL_POSITION FROM INFORMATION_SCHEMA.COLUMNS WHERE COLUMN_NAME = 'COLCH1'
-
-TEST:7065 PASS:7065 If TABLE_NAME = TEMP765A? If COLUMN_NAME = COLCH1? If CHARACTER_SET_NAME = CS? If ORDINAL_POSITION = 1?
-=> expected TABLE_NAME = TEMP765A, got error: Parse error on line 3: ... INFORMATION_SCHEMA.COLUMNS WHE -----------------------^ Expecting 'LITERAL', 'BRALITERAL', 'KEY', 'OPEN', 'CLOSE', 'SEPARATOR', got 'COLUMN'
-```
-
-```sql
-SELECT TABLE_NAME, COLUMN_NAME, ORDINAL_POSITION FROM INFORMATION_SCHEMA.COLUMNS WHERE COLUMN_NAME = 'COLN'
-
-TEST:7065 PASS:7065 If TABLE_NAME = TEMP765A? If COLUMN_NAME = COLN? If ORDINAL POSITION = 2?
-=> unparsed: condition not read: ORDINAL POSITION = 2
-```
-
-```sql
-SET SESSION AUTHORIZATION 'CTS3'
-
-TEST:7065 PASS:7065 If statement completed successfully?
-=> expected success, got error: Parse error on line 1: SET SESSION AUTHORIZATION 'CTS3' ------------^ Expecting 'ARROW', 'DOT', 'EQ', 'ON', 'OFF', got 'LITERAL'
-```
-
-```sql
-SELECT TABLE_NAME, COLUMN_NAME, CHARACTER_SET_NAME, ORDINAL_POSITION FROM INFORMATION_SCHEMA.COLUMNS WHERE COLUMN_NAME = 'COLSTR1'
-
-TEST:7065 PASS:7065 If TABLE_NAME = TEMP765B? If COLUMN_NAME = COLSTR1? If CHARACTER_SET_NAME = CS? If ORDINAL_POSITION = 1?
-=> expected TABLE_NAME = TEMP765B, got error: Parse error on line 3: ... INFORMATION_SCHEMA.COLUMNS WHE -----------------------^ Expecting 'LITERAL', 'BRALITERAL', 'KEY', 'OPEN', 'CLOSE', 'SEPARATOR', got 'COLUMN'
-```
-
-```sql
-SELECT GRANTOR, GRANTEE, OBJECT_NAME, OBJECT_TYPE, IS_GRANTABLE FROM INFORMATION_SCHEMA.USAGE_PRIVILEGES WHERE OBJECT_NAME = 'CS'
-
-TEST:7065 PASS:7065 If GRANTOR = CTS1? If GRANTEE = CTS2? If OBJECT_NAME = CS? If OBJECT_TYPE = CHARACTER SET? If IS_GRANTABLE = NO?
-=> expected GRANTOR = CTS1, got error: Unknown INFORMATION_SCHEMA table
-```
-
-```sql
-SELECT TABLE_NAME, COLUMN_NAME, CHARACTER_SET_NAME, ORDINAL_POSITION FROM INFORMATION_SCHEMA.COLUMNS WHERE COLUMN_NAME = 'COLNIK1'
-
-TEST:7065 PASS:7065 If TABLE_NAME = TEMP765C? If COLUMN_NAME = COLNIK1? If CHARACTER_SET_NAME = CS? If ORDINAL_POSITION = 1?
-=> expected TABLE_NAME = TEMP765C, got error: Parse error on line 3: ... INFORMATION_SCHEMA.COLUMNS WHE -----------------------^ Expecting 'LITERAL', 'BRALITERAL', 'KEY', 'OPEN', 'CLOSE', 'SEPARATOR', got 'COLUMN'
-```
-
-```sql
-SELECT TABLE_NAME, COLUMN_NAME, ORDINAL_POSITION FROM INFORMATION_SCHEMA.COLUMNS WHERE COLUMN_NAME = 'COLNUMBER1'
-
-TEST:7065 PASS:7065 If TABLE_NAME = TEMP765C? If COLUMN_NAME = COLNUMBER1? If ORDINAL_POSITION = 2?
-=> expected TABLE_NAME = TEMP765C, got error: Parse error on line 3: ... INFORMATION_SCHEMA.COLUMNS WHE -----------------------^ Expecting 'LITERAL', 'BRALITERAL', 'KEY', 'OPEN', 'CLOSE', 'SEPARATOR', got 'COLUMN'
-```
-
-```sql
-SELECT TABLE_NAME, COLUMN_NAME, ORDINAL_POSITION FROM INFORMATION_SCHEMA.COLUMNS WHERE COLUMN_NAME = 'COLNUMBER1'
-
-TEST:7065 PASS:7065 If TABLE_NAME = TEMP765C? If COLUMN_NAME = CP;MI,BER1? If ORDINAL_POSITION = 1?
-=> unparsed: condition not read: MI
-```
-
-#### ☓ Ran 40 checks in 1 tests
-
-* 38 failed
-* 2 not read (condition text the runner does not understand)
-* 0% of the checks and 0% of the tests were OK
-
-
----- ---- ---- ---- ---- ---- ----
-### 213/339 `nist/sql/xts764.sql` (CTS1)
 
 ```sql
 SELECT IS_GRANTABLE FROM INFORMATION_SCHEMA.USAGE_PRIVILEGES WHERE GRANTOR = 'CTS1' AND GRANTEE = 'CTS3' AND OBJECT_TYPE = 'CHARACTER SET' AND OBJECT_NAME = 'CS'
@@ -4224,7 +4051,57 @@ TEST:7064 PASS:7064 If IS_GRANTABLE is "YES"?
 
 
 ---- ---- ---- ---- ---- ---- ----
-### 214/339 `nist/sql/xts768.sql` (CTS1)
+### 206/339 `nist/sql/xts756.sql` (CTS1)
+
+#### ☓ Ran 13 checks in 1 tests
+
+* 7 failed
+* 46% of the checks and 0% of the tests were OK
+
+
+---- ---- ---- ---- ---- ---- ----
+### 207/339 `nist/sql/xts760.sql` (CTS1)
+
+```sql
+DROP VIEW V000V CASCADE
+
+TEST:7060 PASS:7060 If view dropped successfully?
+=> expected success, got error: Parsing halted while starting to recover from another error.
+```
+
+#### ☓ Ran 3 checks in 1 tests
+
+* 1 failed
+* 66% of the checks and 0% of the tests were OK
+
+
+---- ---- ---- ---- ---- ---- ----
+### 208/339 `nist/sql/xts761.sql` (CTS1)
+
+```sql
+SELECT COUNT(*) FROM TABCS WHERE COLSTR1 = COLSTR2
+
+TEST:7061 PASS:7061 If COUNT = 0?
+=> expected count 0, got error: Table does not exist: TABCS
+```
+
+#### ☓ Ran 4 checks in 1 tests
+
+* 4 failed
+* 0% of the checks and 0% of the tests were OK
+
+
+---- ---- ---- ---- ---- ---- ----
+### 209/339 `nist/sql/xts762.sql` (CTS1)
+
+#### ☓ Ran 2 checks in 1 tests
+
+* 2 failed
+* 0% of the checks and 0% of the tests were OK
+
+
+---- ---- ---- ---- ---- ---- ----
+### 210/339 `nist/sql/xts768.sql` (CTS1)
 
 ```sql
 SELECT DEFAULT_COLLATE_SCHEMA,DEFAULT_COLLATE_NAME, CHARACTER_SET_CATALOG,DEFAULT_COLLATE_CATALOG, NUMBER_OF_CHARACTERS FROM INFORMATION_SCHEMA.CHARACTER_SETS WHERE CHARACTER_SET_SCHEMA = 'INFORMATION_SCHEMA' AND CHARACTER_SET_NAME = 'SQL_TEXT'
@@ -4241,55 +4118,7 @@ TEST:7068 PASS:7068 If DEFAULT_COLLATE_SCHEMA = INFORMATION_SCHEMA? If DEFAULT_C
 
 
 ---- ---- ---- ---- ---- ---- ----
-### 215/339 `nist/sql/xts763.sql` (CTS1)
-
-```sql
-SELECT CHARACTER_SET_CATALOG, DEFAULT_COLLATE_CATALOG, FORM_OF_USE, NUMBER_OF_CHARACTERS FROM INFORMATION_SCHEMA.CHARACTER_SETS WHERE CHARACTER_SET_SCHEMA = 'CTS1' AND CHARACTER_SET_NAME = 'CS'
-
-TEST:7063 PASS:7063 If 1 row is returned with 4 non-null values?
-=> expected 1 rows returned, got error: Unknown INFORMATION_SCHEMA table
-```
-
-#### ☓ Ran 3 checks in 1 tests
-
-* 3 failed
-* 0% of the checks and 0% of the tests were OK
-
-
----- ---- ---- ---- ---- ---- ----
-### 216/339 `nist/sql/xts767.sql` (CTS1)
-
-```sql
-CREATE TABLE TEMP767 ( COLCH1 CHAR(10) CHARACTER SET CTS1.TESTSET, COLCH2 CHAR(5) CHARACTER SET CTS1.TESTSET)
-
-TEST:7067 PASS:7067 If table created successfully?
-=> expected success, got error: Parse error on line 2: ... ( COLCH1 CHAR(10) CHARACTER SET CTS1.T -----------------------^ Expecting 'EOF', 'COMMA', 'RPAR', 'NOT', 'UNIQUE', 'ON', 'NULL', 'END', 'ELSE', 'DEFAULT', 'IDENTITY', 'CHECK', 'PRIMARY', 'FOREIGN', 'REFERENCES', 'GO', 'SEMICOLON', got 'LITERAL'
-```
-
-#### ☓ Ran 12 checks in 1 tests
-
-* 12 failed
-* 0% of the checks and 0% of the tests were OK
-
-
----- ---- ---- ---- ---- ---- ----
-### 217/339 `nist/sql/yts754.sql` (CTS1)
-
-```sql
-SELECT litt1 FROM char_in_use ORDER BY numm
-
-TEST:7504 PASS:7504 If 3 rows are selected in the following order? litt1 ===== If a? If z? If A?
-=> expected If    a? | If    z? | If    A?, got 'a' | 'z' | 'A'
-```
-
-#### ☓ Ran 9 checks in 1 tests
-
-* 4 failed
-* 55% of the checks and 0% of the tests were OK
-
-
----- ---- ---- ---- ---- ---- ----
-### 218/339 `nist/sql/xts799.sql` (CTS1)
+### 211/339 `nist/sql/xts799.sql` (CTS1)
 
 ```sql
 SELECT EMPNUM, COALESCE(SALARY,GRADE,HOURS), COALESCE(EMPNAME,LOC,DEPTNO) FROM CTS1.CL_EMPLOYEE ORDER BY EMPNUM
@@ -4326,56 +4155,7 @@ TEST:7003 PASS:7003 If 8000 PAGRATI 12000?
 
 
 ---- ---- ---- ---- ---- ---- ----
-### 219/339 `nist/sql/yts757.sql` (CTS1)
-
-```sql
-SELECT col1, col2 FROM dom_chk
-
-TEST:7507 PASS:7507 If col1 = "c" and col2 = 38?
-=> unparsed: condition not read: col1 = "c"
-```
-
-```sql
-UPDATE dom_chk SET col1 = 'q' WHERE col2 = 38
-
-TEST:7507 PASS:7507 If ERROR - integrity constraint violation?
-=> expected an error, got count 1
-```
-
-#### ☓ Ran 11 checks in 2 tests
-
-* 7 failed
-* 1 not read (condition text the runner does not understand)
-* 30% of the checks and 0% of the tests were OK
-
-
----- ---- ---- ---- ---- ---- ----
-### 220/339 `nist/sql/yts751.sql` (CTS1)
-
-```sql
-SELECT DOMAIN_CATALOG, DATA_TYPE, CHARACTER_MAXIMUM_LENGTH, CHARACTER_OCTET_LENGTH, COLLATION_CATALOG, COLLATION_SCHEMA, COLLATION_NAME, CHARACTER_SET_CATALOG, CHARACTER_SET_SCHEMA, CHARACTER_SET_NAME, NUMERIC_PRECISION, NUMERIC_PRECISION_RADIX, NUMERIC_SCALE, DATETIME_PRECISION, DOMAIN_DEFAULT FRO…
-
-TEST:7501 PASS:7501 If DOMAIN_CATALOG = not NULL? If DATA_TYPE = CHARACTER? If CHARACTER_MAXIMUM_LENGTH = 10? If CHARACTER_OCTET_LENGTH = not NULL? If COLLATION_CATALOG = not NULL? If COLLATION_SCHEMA = not NULL? If COLLATION_NAME = not NULL? If CHARACTER_SET_CATALOG = not NULL? If CHARACTER_SET_SCHEMA = not NULL? If …
-=> expected DOMAIN_CATALOG = not NULL, got error: Unknown INFORMATION_SCHEMA table
-```
-
-#### ☓ Ran 4 checks in 1 tests
-
-* 4 failed
-* 0% of the checks and 0% of the tests were OK
-
-
----- ---- ---- ---- ---- ---- ----
-### 221/339 `nist/sql/yts752.sql` (CTS1)
-
-#### ☓ Ran 11 checks in 1 tests
-
-* 6 failed
-* 45% of the checks and 0% of the tests were OK
-
-
----- ---- ---- ---- ---- ---- ----
-### 222/339 `nist/sql/yts750.sql` (CTS1)
+### 212/339 `nist/sql/yts750.sql` (CTS1)
 
 ```sql
 SELECT DOMAIN_CATALOG, DATA_TYPE, CHARACTER_MAXIMUM_LENGTH, CHARACTER_OCTET_LENGTH, COLLATION_CATALOG, COLLATION_SCHEMA, COLLATION_NAME, CHARACTER_SET_CATALOG, CHARACTER_SET_SCHEMA, CHARACTER_SET_NAME, NUMERIC_PRECISION, NUMERIC_PRECISION_RADIX, NUMERIC_SCALE, DATETIME_PRECISION, DOMAIN_DEFAULT, IN…
@@ -4392,19 +4172,230 @@ TEST:7500 PASS:7500 If DOMAIN_CATALOG = not NULL? If DATA_TYPE = INTEGER? If CHA
 
 
 ---- ---- ---- ---- ---- ---- ----
-### 223/339 `nist/sql/yts753.sql` (CTS1)
+### 213/339 `nist/sql/xts798.sql` (CTS1)
 
 ```sql
-DROP DOMAIN intdomain RESTRICT
+SELECT EMPNAME, NULLIF (SALARY,HOURS) FROM CTS1.STAFFb WHERE SEX = 'M' AND PNUM NOT IN ('P1','P2','P3','P6','P8') AND (SALARY <> HOURS OR SALARY IS NULL OR HOURS IS NULL) ORDER BY PNUM
 
-TEST:7503 PASS:7503 If domain dropped successfully?
-=> expected success, got error: Parse error on line 1: DROP DOMAIN intdomain RESTRICT ------------^ Expecting 'DATABASE', got 'LITERAL'
+TEST:7002 PASS:7002 If 3 rows selected in the following order? EMPNAME SALARY ======= ====== If Nickos NULL ? If George 10010 ? If Gregory 10001 ?
+=> expected =======          ====== | If   Nickos           NULL   ? | If   George           10010  ? | If   Gregory          10001  ?, got 'Nickos' NULL | 'George' 10010 | 'Gregory' 10001
 ```
+
+```sql
+SELECT NULLIF (EMPNAME,CITY), SALARY FROM CTS1.STAFFb WHERE SEX = 'M' AND PNUM NOT IN ('P1','P2','P3','P5','P7') AND (EMPNAME <> CITY OR EMPNAME IS NULL OR CITY IS NULL) ORDER BY PNUM
+
+TEST:7002 PASS:7002 If 3 row selected in the following order? EMPNAME SALARY ======= ====== If Kilroy 10000 ? If NULL 10005 ? If Gregory 10001 ?
+=> expected =======           ====== | If   Kilroy            10000  ? | If   NULL              10005  ? | If   Gregory           10001  ?, got 'Kilroy' 10000 | NULL 10005 | 'Gregory' 10001
+```
+
+```sql
+SELECT * FROM CTS1.TEMP1426 ORDER BY EMPNAME
+
+TEST:7002 PASS:7002 If 3 rows selected in the following order? EMPNAME SALARY ======= ====== If George 10000 ? If Kilroy NULL ? If Nickos 10000 ?
+=> expected =======        ====== | If     George         10000  ? | If     Kilroy         NULL   ? | If     Nickos         10000  ?, got NULL 'George' | NULL 'Kilroy' | NULL 'Nickos'
+```
+
+```sql
+DROP TABLE TEMP1426 CASCADE
+
+TEST:7002 PASS:7002 If table dropped successfully?
+=> expected success, got error: Parsing halted while starting to recover from another error.
+```
+
+#### ☓ Ran 18 checks in 1 tests
+
+* 5 failed
+* 72% of the checks and 0% of the tests were OK
+
+
+---- ---- ---- ---- ---- ---- ----
+### 214/339 `nist/sql/xts763.sql` (CTS1)
+
+```sql
+SELECT CHARACTER_SET_CATALOG, DEFAULT_COLLATE_CATALOG, FORM_OF_USE, NUMBER_OF_CHARACTERS FROM INFORMATION_SCHEMA.CHARACTER_SETS WHERE CHARACTER_SET_SCHEMA = 'CTS1' AND CHARACTER_SET_NAME = 'CS'
+
+TEST:7063 PASS:7063 If 1 row is returned with 4 non-null values?
+=> expected 1 rows returned, got error: Unknown INFORMATION_SCHEMA table
+```
+
+#### ☓ Ran 3 checks in 1 tests
+
+* 3 failed
+* 0% of the checks and 0% of the tests were OK
+
+
+---- ---- ---- ---- ---- ---- ----
+### 215/339 `nist/sql/xts755.sql` (CTS1)
+
+#### ☓ Ran 7 checks in 1 tests
+
+* 4 failed
+* 42% of the checks and 0% of the tests were OK
+
+
+---- ---- ---- ---- ---- ---- ----
+### 216/339 `nist/sql/xts765.sql` (CTS1)
+
+```sql
+SELECT TABLE_NAME, COLUMN_NAME, CHARACTER_SET_NAME, ORDINAL_POSITION FROM INFORMATION_SCHEMA.COLUMNS WHERE COLUMN_NAME = 'COLCH1'
+
+TEST:7065 PASS:7065 If TABLE_NAME = TEMP765A? If COLUMN_NAME = COLCH1? If CHARACTER_SET_NAME = CS? If ORDINAL_POSITION = 1?
+=> expected TABLE_NAME = TEMP765A, got error: Parse error on line 3: ... INFORMATION_SCHEMA.COLUMNS WHE -----------------------^ Expecting 'LITERAL', 'BRALITERAL', 'KEY', 'OPEN', 'CLOSE', 'SEPARATOR', got 'COLUMN'
+```
+
+```sql
+SELECT TABLE_NAME, COLUMN_NAME, ORDINAL_POSITION FROM INFORMATION_SCHEMA.COLUMNS WHERE COLUMN_NAME = 'COLN'
+
+TEST:7065 PASS:7065 If TABLE_NAME = TEMP765A? If COLUMN_NAME = COLN? If ORDINAL POSITION = 2?
+=> unparsed: condition not read: ORDINAL POSITION = 2
+```
+
+```sql
+SELECT TABLE_NAME, COLUMN_NAME, CHARACTER_SET_NAME, ORDINAL_POSITION FROM INFORMATION_SCHEMA.COLUMNS WHERE COLUMN_NAME = 'COLSTR1'
+
+TEST:7065 PASS:7065 If TABLE_NAME = TEMP765B? If COLUMN_NAME = COLSTR1? If CHARACTER_SET_NAME = CS? If ORDINAL_POSITION = 1?
+=> expected TABLE_NAME = TEMP765B, got error: Parse error on line 3: ... INFORMATION_SCHEMA.COLUMNS WHE -----------------------^ Expecting 'LITERAL', 'BRALITERAL', 'KEY', 'OPEN', 'CLOSE', 'SEPARATOR', got 'COLUMN'
+```
+
+```sql
+SET SESSION AUTHORIZATION 'CTS2'
+
+TEST:7065 PASS:7065 If statement completed successfully?
+=> expected success, got error: Parse error on line 1: SET SESSION AUTHORIZATION 'CTS2' ------------^ Expecting 'ARROW', 'DOT', 'EQ', 'ON', 'OFF', got 'LITERAL'
+```
+
+```sql
+SELECT GRANTOR, GRANTEE, OBJECT_NAME, OBJECT_TYPE, IS_GRANTABLE FROM INFORMATION_SCHEMA.USAGE_PRIVILEGES WHERE OBJECT_NAME = 'CS'
+
+TEST:7065 PASS:7065 If GRANTOR = CTS1? If GRANTEE = CTS2? If OBJECT_NAME = CS? If OBJECT_TYPE = CHARACTER SET? If IS_GRANTABLE = NO?
+=> expected GRANTOR = CTS1, got error: Unknown INFORMATION_SCHEMA table
+```
+
+```sql
+SELECT TABLE_NAME, COLUMN_NAME, CHARACTER_SET_NAME, ORDINAL_POSITION FROM INFORMATION_SCHEMA.COLUMNS WHERE COLUMN_NAME = 'COLNIK1'
+
+TEST:7065 PASS:7065 If TABLE_NAME = TEMP765C? If COLUMN_NAME = COLNIK1? If CHARACTER_SET_NAME = CS? If ORDINAL_POSITION = 1?
+=> expected TABLE_NAME = TEMP765C, got error: Parse error on line 3: ... INFORMATION_SCHEMA.COLUMNS WHE -----------------------^ Expecting 'LITERAL', 'BRALITERAL', 'KEY', 'OPEN', 'CLOSE', 'SEPARATOR', got 'COLUMN'
+```
+
+```sql
+SELECT COUNT(*) FROM INFORMATION_SCHEMA.USAGE_PRIVILEGES WHERE OBJECT_NAME = 'CS' AND (GRANTOR = 'CTS2' OR GRANTEE = 'CTS2')
+
+TEST:7065 PASS:7065 If COUNT = 0?
+=> expected count 0, got error: Unknown INFORMATION_SCHEMA table
+```
+
+```sql
+SELECT TABLE_NAME, COLUMN_NAME, ORDINAL_POSITION FROM INFORMATION_SCHEMA.COLUMNS WHERE COLUMN_NAME = 'COLNUMBER1'
+
+TEST:7065 PASS:7065 If TABLE_NAME = TEMP765C? If COLUMN_NAME = CP;MI,BER1? If ORDINAL_POSITION = 1?
+=> unparsed: condition not read: MI
+```
+
+#### ☓ Ran 40 checks in 1 tests
+
+* 38 failed
+* 2 not read (condition text the runner does not understand)
+* 0% of the checks and 0% of the tests were OK
+
+
+---- ---- ---- ---- ---- ---- ----
+### 217/339 `nist/sql/xts766.sql` (CTS1)
+
+```sql
+SELECT GRANTOR, GRANTEE, OBJECT_SCHEMA, OBJECT_NAME, OBJECT_TYPE FROM INFORMATION_SCHEMA.USAGE_PRIVILEGES WHERE OBJECT_TYPE = 'CHARACTER SET' AND OBJECT_NAME = 'TESTSET'
+
+TEST:7066 PASS:7066 If GRANTOR = _SYSTEM? If GRANTEE = CTS1? If OBJECT_SCHEMA = CTS1? If OBJECT_NAME = TESTSET? If OBJECT_TYPE = CHARACTER SET?
+=> unparsed: condition not read: GRANTOR = _SYSTEM
+```
+
+#### ☓ Ran 4 checks in 1 tests
+
+* 3 failed
+* 1 not read (condition text the runner does not understand)
+* 0% of the checks and 0% of the tests were OK
+
+
+---- ---- ---- ---- ---- ---- ----
+### 218/339 `nist/sql/xts767.sql` (CTS1)
+
+```sql
+SET SESSION AUTHORIZATION 'CTS1'
+
+TEST:7067 PASS:7067 If statement completed successfully?
+=> expected success, got error: Parse error on line 1: SET SESSION AUTHORIZATION 'CTS1' ------------^ Expecting 'ARROW', 'DOT', 'EQ', 'ON', 'OFF', got 'LITERAL'
+```
+
+#### ☓ Ran 12 checks in 1 tests
+
+* 12 failed
+* 0% of the checks and 0% of the tests were OK
+
+
+---- ---- ---- ---- ---- ---- ----
+### 219/339 `nist/sql/yts753.sql` (CTS1)
 
 #### ☓ Ran 6 checks in 1 tests
 
 * 3 failed
 * 50% of the checks and 0% of the tests were OK
+
+
+---- ---- ---- ---- ---- ---- ----
+### 220/339 `nist/sql/yts752.sql` (CTS1)
+
+#### ☓ Ran 11 checks in 1 tests
+
+* 6 failed
+* 45% of the checks and 0% of the tests were OK
+
+
+---- ---- ---- ---- ---- ---- ----
+### 221/339 `nist/sql/yts751.sql` (CTS1)
+
+```sql
+SELECT DOMAIN_CATALOG, DATA_TYPE, CHARACTER_MAXIMUM_LENGTH, CHARACTER_OCTET_LENGTH, COLLATION_CATALOG, COLLATION_SCHEMA, COLLATION_NAME, CHARACTER_SET_CATALOG, CHARACTER_SET_SCHEMA, CHARACTER_SET_NAME, NUMERIC_PRECISION, NUMERIC_PRECISION_RADIX, NUMERIC_SCALE, DATETIME_PRECISION, DOMAIN_DEFAULT FRO…
+
+TEST:7501 PASS:7501 If DOMAIN_CATALOG = not NULL? If DATA_TYPE = CHARACTER? If CHARACTER_MAXIMUM_LENGTH = 10? If CHARACTER_OCTET_LENGTH = not NULL? If COLLATION_CATALOG = not NULL? If COLLATION_SCHEMA = not NULL? If COLLATION_NAME = not NULL? If CHARACTER_SET_CATALOG = not NULL? If CHARACTER_SET_SCHEMA = not NULL? If …
+=> expected DOMAIN_CATALOG = not NULL, got error: Unknown INFORMATION_SCHEMA table
+```
+
+#### ☓ Ran 4 checks in 1 tests
+
+* 4 failed
+* 0% of the checks and 0% of the tests were OK
+
+
+---- ---- ---- ---- ---- ---- ----
+### 222/339 `nist/sql/yts754.sql` (CTS1)
+
+```sql
+SELECT litt1 FROM char_in_use ORDER BY numm
+
+TEST:7504 PASS:7504 If 3 rows are selected in the following order? litt1 ===== If a? If z? If A?
+=> expected If    a? | If    z? | If    A?, got 'a' | 'z' | 'A'
+```
+
+```sql
+DROP TABLE char_in_use CASCADE
+
+TEST:7504 PASS:7504 If table dropped successfully?
+=> expected success, got error: Parsing halted while starting to recover from another error.
+```
+
+#### ☓ Ran 9 checks in 1 tests
+
+* 4 failed
+* 55% of the checks and 0% of the tests were OK
+
+
+---- ---- ---- ---- ---- ---- ----
+### 223/339 `nist/sql/yts756.sql` (CTS1)
+
+#### ☓ Ran 12 checks in 1 tests
+
+* 10 failed
+* 16% of the checks and 0% of the tests were OK
 
 
 ---- ---- ---- ---- ---- ---- ----
@@ -4424,22 +4415,155 @@ TEST:7505 PASS:7505 If num = 15?
 
 
 ---- ---- ---- ---- ---- ---- ----
-### 225/339 `nist/sql/yts756.sql` (CTS1)
+### 225/339 `nist/sql/dml139.sql` (HU)
 
-#### ☓ Ran 12 checks in 1 tests
+#### ☓ Ran 5 checks in 1 tests
 
-* 10 failed
-* 16% of the checks and 0% of the tests were OK
+* 3 failed
+* 40% of the checks and 0% of the tests were OK
 
 
 ---- ---- ---- ---- ---- ---- ----
-### 226/339 `nist/sql/yts759.sql` (CTS1)
+### 226/339 `nist/sql/yts761.sql` (CTS1)
 
 ```sql
-INSERT INTO EMP_INFO VALUES (1, 'watters',20000)
+SELECT COUNT (*) FROM STAFFd WHERE GRADE = 22
+
+TEST:7535 PASS:7535 If COUNT = 3?
+=> expected count 3, got 0
+```
+
+#### ☓ Ran 8 checks in 1 tests
+
+* 7 failed
+* 12% of the checks and 0% of the tests were OK
+
+
+---- ---- ---- ---- ---- ---- ----
+### 227/339 `nist/sql/yts757.sql` (CTS1)
+
+```sql
+SELECT col1, col2 FROM dom_chk
+
+TEST:7507 PASS:7507 If col1 = "c" and col2 = 38?
+=> unparsed: condition not read: col1 = "c"
+```
+
+#### ☓ Ran 11 checks in 2 tests
+
+* 7 failed
+* 1 not read (condition text the runner does not understand)
+* 30% of the checks and 0% of the tests were OK
+
+
+---- ---- ---- ---- ---- ---- ----
+### 228/339 `nist/sql/yts766.sql` (CTS1)
+
+```sql
+SELECT CONSTRAINT_NAME FROM INFORMATION_SCHEMA.TABLE_CONSTRAINTS WHERE TABLE_NAME = 'WORKS3A' AND CONSTRAINT_TYPE = 'FOREIGN KEY'
+
+TEST:7540 PASS:7540 If select completed successfully?
+=> expected success, got error: Unknown INFORMATION_SCHEMA table
+```
+
+```sql
+SELECT CONSTRAINT_NAME, UNIQUE_CONSTRAINT_SCHEMA, MATCH_OPTION,UPDATE_RULE,DELETE_RULE FROM INFORMATION_SCHEMA.REFERENTIAL_CONSTRAINTS ORDER BY CONSTRAINT_NAME
+
+TEST:7540 PASS:7540 If CONST_NAME = previous CONST_NAME for exactly 1 row?
+=> unparsed: condition not read: CONST_NAME = previous CONST_NAME for exactly 1 row
+```
+
+```sql
+SELECT CONSTRAINT_NAME, UNIQUE_CONSTRAINT_SCHEMA, MATCH_OPTION,UPDATE_RULE,DELETE_RULE FROM INFORMATION_SCHEMA.REFERENTIAL_CONSTRAINTS ORDER BY CONSTRAINT_NAME
+
+TEST:7540 PASS:7540 If MATCH_OPTION = NONE? If UPDATE_RULE = NO ACTION? If DELETE_RULE = NO ACTION?
+=> expected MATCH_OPTION = NONE, got error: Unknown INFORMATION_SCHEMA table
+```
+
+```sql
+SELECT CONSTRAINT_NAME, UNIQUE_CONSTRAINT_SCHEMA, MATCH_OPTION,UPDATE_RULE,DELETE_RULE FROM INFORMATION_SCHEMA.REFERENTIAL_CONSTRAINTS ORDER BY CONSTRAINT_NAME
+
+TEST:7540 PASS:7540 If MATCH_OPTION = NONE? If UPDATE_RULE = NO ACTION? If DELETE_RULE = NO ACTION?
+=> expected MATCH_OPTION = NONE, got error: Unknown INFORMATION_SCHEMA table
+```
+
+```sql
+SELECT COUNT (*) FROM INFORMATION_SCHEMA.REFERENTIAL_CONSTRAINTS
+
+TEST:7542 PASS:7542 If this COUNT is = to the next COUNT?
+=> unparsed: condition not read: this COUNT is = to the next COUNT
+```
+
+```sql
+SELECT COUNT (*) FROM INFORMATION_SCHEMA.REFERENTIAL_CONSTRAINTS AS T WHERE UNIQUE ( SELECT * FROM INFORMATION_SCHEMA.REFERENTIAL_CONSTRAINTS WHERE CONSTRAINT_CATALOG = T.CONSTRAINT_CATALOG AND CONSTRAINT_NAME = T.CONSTRAINT_NAME AND CONSTRAINT_SCHEMA = T.CONSTRAINT_SCHEMA )
+
+TEST:7542 PASS:7542 If this COUNT is = to the previous COUNT?
+=> unparsed: condition not read: this COUNT is = to the previous COUNT
+```
+
+```sql
+SELECT COUNT (*) FROM INFORMATION_SCHEMA.REFERENTIAL_CONSTRAINTS
+
+TEST:7543 PASS:7543 If this COUNT (referenced as COUNT#1) is = to ? the next three COUNTs ?
+=> unparsed: condition not read: this COUNT (referenced as COUNT#1) is = to    the next three COUNTs
+```
+
+```sql
+SELECT COUNT (*) FROM INFORMATION_SCHEMA.REFERENTIAL_CONSTRAINTS WHERE UPDATE_RULE IN ('CASCADE','SET NULL','SET DEFAULT','NO ACTION')
+
+TEST:7543 PASS:7543 If this COUNT is = to the previous COUNT#1?
+=> unparsed: condition not read: this COUNT is = to the previous COUNT#1
+```
+
+#### ☓ Ran 27 checks in 4 tests
+
+* 17 failed
+* 10 not read (condition text the runner does not understand)
+* 0% of the checks and 0% of the tests were OK
+
+
+---- ---- ---- ---- ---- ---- ----
+### 229/339 `nist/sql/yts768.sql` (CTS1)
+
+#### ☓ Ran 3 checks in 1 tests
+
+* 3 failed
+* 0% of the checks and 0% of the tests were OK
+
+
+---- ---- ---- ---- ---- ---- ----
+### 230/339 `nist/sql/yts769.sql` (CTS1)
+
+#### ☓ Ran 7 checks in 1 tests
+
+* 7 failed
+* 0% of the checks and 0% of the tests were OK
+
+
+---- ---- ---- ---- ---- ---- ----
+### 231/339 `nist/sql/yts763.sql` (CTS1)
+
+```sql
+SELECT col2, col3, col4 FROM CTS1.ET ORDER BY col3, col4
+
+TEST:7518 PASS:7518 If 3 rows are selected in the following order? col2 col3 col4 ==== ==== ==== If Betty 10 Vienna? If Don 12 Deale? If Carmen 13 Vienna?
+=> expected ====     ====     ==== | If   Betty    10       Vienna? | If   Don      12       Deale? | If   Carmen   13       Vienna?, got 
+```
+
+#### ☓ Ran 4 checks in 1 tests
+
+* 1 failed
+* 75% of the checks and 0% of the tests were OK
+
+
+---- ---- ---- ---- ---- ---- ----
+### 232/339 `nist/sql/yts759.sql` (CTS1)
+
+```sql
+INSERT INTO emp VALUES (2, 'pratt')
 
 TEST:7509 PASS:7509 If 1 row inserted successfully?
-=> expected success, got error: Table 'EMP_INFO' could not be found
+=> expected success, got error: Table 'emp' could not be found
 ```
 
 ```sql
@@ -4456,40 +4580,7 @@ TEST:7509 PASS:7509 If col1 = 2?
 
 
 ---- ---- ---- ---- ---- ---- ----
-### 227/339 `nist/sql/yts762.sql` (CTS1)
-
-```sql
-SELECT * FROM CTS1.STAFF1 EXCEPT SELECT * FROM CTS1.STAFF4
-
-TEST:7517 PASS:7517 If 3 rows are selected in any order? If E9 Imogen 10 Prague? If E10 John 20 Brussels? If E12 Laura 20 Deale?
-=> unparsed: condition not read: E9   Imogen   10   Prague
-```
-
-#### ☓ Ran 29 checks in 1 tests
-
-* 8 failed
-* 1 not read (condition text the runner does not understand)
-* 71% of the checks and 0% of the tests were OK
-
-
----- ---- ---- ---- ---- ---- ----
-### 228/339 `nist/sql/yts761.sql` (CTS1)
-
-```sql
-SELECT COUNT (*) FROM STAFFd WHERE GRADE = 24
-
-TEST:7535 PASS:7535 If COUNT = 1?
-=> expected count 1, got 0
-```
-
-#### ☓ Ran 8 checks in 1 tests
-
-* 7 failed
-* 12% of the checks and 0% of the tests were OK
-
-
----- ---- ---- ---- ---- ---- ----
-### 229/339 `nist/sql/yts760.sql` (CTS1)
+### 233/339 `nist/sql/yts760.sql` (CTS1)
 
 ```sql
 UPDATE CTS1.STAFFc SET GRADE = CASE GRADE WHEN 13 THEN 23 END, MGR = CASE MGR WHEN 'E5' THEN 'E9' ELSE 'E8' END
@@ -4519,68 +4610,7 @@ TEST:7534 PASS:7534 If MGR = E9?
 
 
 ---- ---- ---- ---- ---- ---- ----
-### 230/339 `nist/sql/yts767.sql` (CTS1)
-
-```sql
-SELECT CONSTRAINT_SCHEMA, CONSTRAINT_NAME FROM INFORMATION_SCHEMA.TABLE_CONSTRAINTS WHERE TABLE_SCHEMA = 'CTS1' AND TABLE_NAME = 'STAFF7' AND CONSTRAINT_TYPE = 'CHECK'
-
-TEST:7544 PASS:7544 If 1 row selected?
-=> expected 1 rows selected, got error: Unknown INFORMATION_SCHEMA table
-```
-
-```sql
-SELECT CONSTRAINT_SCHEMA, CONSTRAINT_NAME, CHECK_CLAUSE FROM INFORMATION_SCHEMA.CHECK_CONSTRAINTS ORDER BY CONSTRAINT_SCHEMA, CONSTRAINT_NAME
-
-TEST:7544 PASS:7544 If CONSTRAINT_SCHEMA & CONSTRAINT_NAME = previous ? CONSTRAINT_SCHEMA & CONSTRAINT_NAME for exactly ? 1 row and CHECK_CLAUSE is either NULL or ? 'CHECK (GRADE BETWEEN 1 AND 20)' ?
-=> unparsed: condition not read: CONSTRAINT_SCHEMA & CONSTRAINT_NAME = previous    CONSTRAINT_SCHEMA & CONSTRAINT_NAME for exactly   1 row
-```
-
-```sql
-SELECT CONSTRAINT_SCHEMA, CONSTRAINT_NAME, CHECK_CLAUSE FROM INFORMATION_SCHEMA.CHECK_CONSTRAINTS ORDER BY CONSTRAINT_SCHEMA, CONSTRAINT_NAME
-
-TEST:7545 PASS:7545 If matches above and CHECK_CLAUSE is NULL or ? 'CHECK (SALARY > 0)' ?
-=> unparsed: condition not read: matches above
-```
-
-```sql
-SELECT CONSTRAINT_SCHEMA, CONSTRAINT_NAME FROM INFORMATION_SCHEMA.TABLE_CONSTRAINTS WHERE TABLE_SCHEMA = 'CTS1B' AND CONSTRAINT_TYPE = 'CHECK' AND TABLE_NAME = 'STAFFZ'
-
-TEST:7545 PASS:7545 If 1 row selected?
-=> expected 1 rows selected, got error: Unknown INFORMATION_SCHEMA table
-```
-
-```sql
-SELECT COUNT (*) FROM INFORMATION_SCHEMA.CHECK_CONSTRAINTS
-
-TEST:7547 PASS:7547 If this COUNT is = to the next COUNT?
-=> unparsed: condition not read: this COUNT is = to the next COUNT
-```
-
-```sql
-SELECT COUNT (*) FROM INFORMATION_SCHEMA.CHECK_CONSTRAINTS AS T WHERE UNIQUE ( SELECT * FROM INFORMATION_SCHEMA.CHECK_CONSTRAINTS WHERE CONSTRAINT_CATALOG = T.CONSTRAINT_CATALOG AND CONSTRAINT_NAME = T.CONSTRAINT_NAME AND CONSTRAINT_SCHEMA = T.CONSTRAINT_SCHEMA )
-
-TEST:7547 PASS:7547 If this COUNT is = to the previous COUNT?
-=> unparsed: condition not read: this COUNT is = to the previous COUNT
-```
-
-#### ☓ Ran 21 checks in 4 tests
-
-* 11 failed
-* 10 not read (condition text the runner does not understand)
-* 0% of the checks and 0% of the tests were OK
-
-
----- ---- ---- ---- ---- ---- ----
-### 231/339 `nist/sql/yts768.sql` (CTS1)
-
-#### ☓ Ran 3 checks in 1 tests
-
-* 3 failed
-* 0% of the checks and 0% of the tests were OK
-
-
----- ---- ---- ---- ---- ---- ----
-### 232/339 `nist/sql/yts771.sql` (CTS1)
+### 234/339 `nist/sql/yts771.sql` (CTS1)
 
 ```sql
 SELECT CHARACTER_SET_CATALOG, DEFAULT_COLLATE_CATALOG, DEFAULT_COLLATE_SCHEMA, DEFAULT_COLLATE_NAME FROM INFORMATION_SCHEMA.CHARACTER_SETS WHERE CHARACTER_SET_SCHEMA = 'INFORMATION_SCHEMA' AND CHARACTER_SET_NAME = 'SQL_TEXT'
@@ -4596,29 +4626,13 @@ TEST:7553 PASS:7553 If CHARACTER_SET_CATALOG = DEFAULT_COLLATE_CATALOG? If DEFAU
 
 
 ---- ---- ---- ---- ---- ---- ----
-### 233/339 `nist/sql/yts769.sql` (CTS1)
+### 235/339 `nist/sql/yts773.sql` (CTS1)
 
 ```sql
-DROP DOMAIN cts1b.esal CASCADE
+SELECT COUNT (*) FROM INFORMATION_SCHEMA.SQL_LANGUAGES WHERE SQL_LANGUAGE_BINDING_STYLE = 'EMBEDDED' AND SQL_LANGUAGE_PROGRAMMING_LANGUAGE = 'C'
 
-TEST:7551 PASS:7551 If DOMAIN dropped successfully?
-=> expected success, got error: Parse error on line 1: DROP DOMAIN cts1b.esal CASCADE ------------^ Expecting 'DATABASE', got 'LITERAL'
-```
-
-#### ☓ Ran 7 checks in 1 tests
-
-* 7 failed
-* 0% of the checks and 0% of the tests were OK
-
-
----- ---- ---- ---- ---- ---- ----
-### 234/339 `nist/sql/yts772.sql` (CTS1)
-
-```sql
-SELECT CONSTRAINT_CATALOG, CONSTRAINT_SCHEMA, CONSTRAINT_NAME, IS_DEFERRABLE, INITIALLY_DEFERRED FROM INFORMATION_SCHEMA.ASSERTIONS
-
-TEST:7554 PASS:7554 If IS_DEFERRABLE = 'YES' or 'NO'? If INITALLY_DEFERRED = 'YES' or 'NO'? If IS_DEFERRABLE = 'NO' then ? INITIALLY_DEFFERED must also = 'NO' ?
-=> unparsed: condition not read: IS_DEFERRABLE = 'YES' or 'NO'
+TEST:7555 PASS:7555 If COUNT not 0?
+=> unparsed: condition not read: COUNT not 0
 ```
 
 #### ☓ Ran 3 checks in 1 tests
@@ -4629,23 +4643,7 @@ TEST:7554 PASS:7554 If IS_DEFERRABLE = 'YES' or 'NO'? If INITALLY_DEFERRED = 'YE
 
 
 ---- ---- ---- ---- ---- ---- ----
-### 235/339 `nist/sql/yts770.sql` (CTS1)
-
-#### ☓ Ran 8 checks in 1 tests
-
-* 8 failed
-* 0% of the checks and 0% of the tests were OK
-
-
----- ---- ---- ---- ---- ---- ----
 ### 236/339 `nist/sql/yts774.sql` (CTS1)
-
-```sql
-SELECT CATALOG_NAME FROM INFORMATION_SCHEMA.INFORMATION_SCHEMA_CATALOG_NAME
-
-TEST:7556 PASS:7556 If select statement completed successfully?
-=> expected success, got error: Unknown INFORMATION_SCHEMA table
-```
 
 ```sql
 SELECT TABLE_CATALOG FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = 'INFORMATION_SCHEMA' AND TABLE_NAME = 'TABLES' AND TABLE_TYPE = 'VIEW' ORDER BY TABLE_CATALOG
@@ -4662,20 +4660,29 @@ TEST:7556 PASS:7556 If 1 or more rows are selected? If exactly 1 row has TABLE_C
 
 
 ---- ---- ---- ---- ---- ---- ----
-### 237/339 `nist/sql/yts778.sql` (CTS1)
+### 237/339 `nist/sql/yts776.sql` (CTS1)
+
+```sql
+DROP SCHEMA MARPLE RESTRICT
+
+TEST:7510 PASS:7510 If schema dropped successfully?
+=> expected success, got error: Parsing halted while starting to recover from another error.
+```
+
+#### ☓ Ran 4 checks in 1 tests
+
+* 3 failed
+* 25% of the checks and 0% of the tests were OK
+
+
+---- ---- ---- ---- ---- ---- ----
+### 238/339 `nist/sql/yts778.sql` (CTS1)
 
 ```sql
 SELECT * FROM alt_test ORDER BY K
 
 TEST:7520 PASS:7520 If 3 rows are returned in the following order? c1 c2 c3 c4 == == == == If 1 1 1 1? If 2 2 NULL 2? If 3 50 3 99?
 => expected ==   ==   ==   == | If     1    1    1    1? | If     2    2   NULL  2? | If     3   50    3   99?, got 1 1 1 1 | 2 2 NULL 2 | 3 50 3 NULL
-```
-
-```sql
-ALTER TABLE alt_test ALTER COLUMN L SET DEFAULT 100
-
-TEST:7520 PASS:7520 If table altered successfully?
-=> expected success, got error: Parse error on line 1: ...LTER TABLE alt_test ALTER COLUMN L SET D -----------------------^ Expecting 'DROP', 'RENAME', 'ADD', 'MODIFY', got 'ALTER'
 ```
 
 ```sql
@@ -4692,39 +4699,29 @@ TEST:7520 PASS:7520 If 6 rows are returned in the following order? c1 c2 c3 c4 =
 
 
 ---- ---- ---- ---- ---- ---- ----
-### 238/339 `nist/sql/yts763.sql` (CTS1)
+### 239/339 `nist/sql/yts764.sql` (CTS1)
 
 ```sql
-SELECT col2, col3, col4 FROM CTS1.ET ORDER BY col3, col4
+SELECT COUNT (*), col5, col6 FROM CTS1.ET GROUP BY col6, col5 ORDER BY 2,3
 
-TEST:7518 PASS:7518 If 3 rows are selected in the following order? col2 col3 col4 ==== ==== ==== If Betty 10 Vienna? If Don 12 Deale? If Carmen 13 Vienna?
-=> expected ====     ====     ==== | If   Betty    10       Vienna? | If   Don      12       Deale? | If   Carmen   13       Vienna?, got 
+TEST:7519 PASS:7519 If 7 rows are returned in the following order? count col5 col6 ===== ==== ==== If 1 15 7000? If 1 30 8000? If 3 30 20000? If 2 35 15000? If 9 40 10000? If 2 60 45000? If 6 70 40000?
+=> expected =====   ====   ==== | If   1      15     7000? | If   1      30     8000? | If   3      30     20000? | If   2      35     15000? | If   9      40     10000? | If   2      60     45000? | If   6      70     40000?, got 
 ```
 
 #### ☓ Ran 4 checks in 1 tests
 
-* 1 failed
-* 75% of the checks and 0% of the tests were OK
-
-
----- ---- ---- ---- ---- ---- ----
-### 239/339 `nist/sql/yts780.sql` (CTS1)
-
-#### ☓ Ran 10 checks in 1 tests
-
-* 8 failed
-* 2 not read (condition text the runner does not understand)
-* 0% of the checks and 0% of the tests were OK
+* 2 failed
+* 50% of the checks and 0% of the tests were OK
 
 
 ---- ---- ---- ---- ---- ---- ----
 ### 240/339 `nist/sql/yts781.sql` (CTS1)
 
 ```sql
-INSERT INTO TTIME VALUES (1, TIME '12:00:00', TIMESTAMP '1995-04-10 12:00:00')
+SET TIME ZONE LOCAL
 
-TEST:7536 PASS:7536 If 1 row inserted successfully?
-=> expected success, got error: Parse error on line 2: ...ALUES (1, TIME '12:00:00', TIMESTAM ----------------------^ Expecting 'COMMA', 'RPAR', 'IN', 'LIKE', 'ARROW', 'DOT', 'CARET', 'EQ', 'SLASH', 'EXCLAMATION', 'MODULO', 'GT', 'LT', 'GTGT', 'LTLT', 'NOT', 'AND', 'OR', 'PLUS', 'STAR', 'REGEXP', 'TIL…
+TEST:7536 PASS:7536 If SET completed successfully?
+=> expected success, got error: Parse error on line 1: SET TIME ZONE LOCAL ---------^ Expecting 'ARROW', 'DOT', 'EQ', 'ON', 'OFF', got 'LITERAL'
 ```
 
 ```sql
@@ -4744,13 +4741,6 @@ TEST:7536 PASS:7536 If 1 1995 4 (10 12 0)+TZD (12 0)+TZD ? If 2 1995 4 (10 1 45)
 ---- ---- ---- ---- ---- ---- ----
 ### 241/339 `nist/sql/yts782.sql` (CTS1)
 
-```sql
-INSERT INTO TTIME (PK, TT) VALUES (4, TIME '01:45:00')
-
-TEST:7561 PASS:7561 If 1 row inserted successfully?
-=> expected success, got error: Parse error on line 2: ... VALUES (4, TIME '01:45:00') -----------------------^ Expecting 'COMMA', 'RPAR', 'IN', 'LIKE', 'ARROW', 'DOT', 'CARET', 'EQ', 'SLASH', 'EXCLAMATION', 'MODULO', 'GT', 'LT', 'GTGT', 'LTLT', 'NOT', 'AND', 'OR', 'PLUS', 'STAR', 'REGEXP', 'TILDA', '…
-```
-
 #### ☓ Ran 12 checks in 1 tests
 
 * 8 failed
@@ -4758,19 +4748,27 @@ TEST:7561 PASS:7561 If 1 row inserted successfully?
 
 
 ---- ---- ---- ---- ---- ---- ----
-### 242/339 `nist/sql/yts764.sql` (CTS1)
+### 242/339 `nist/sql/yts762.sql` (CTS1)
 
 ```sql
-SELECT COUNT (*), col5, col6 FROM CTS1.ET GROUP BY col6, col5 ORDER BY 2,3
+SELECT * FROM CTS1.STAFF1 EXCEPT SELECT * FROM CTS1.STAFF4
 
-TEST:7519 PASS:7519 If 7 rows are returned in the following order? count col5 col6 ===== ==== ==== If 1 15 7000? If 1 30 8000? If 3 30 20000? If 2 35 15000? If 9 40 10000? If 2 60 45000? If 6 70 40000?
-=> expected =====   ====   ==== | If   1      15     7000? | If   1      30     8000? | If   3      30     20000? | If   2      35     15000? | If   9      40     10000? | If   2      60     45000? | If   6      70     40000?, got 
+TEST:7517 PASS:7517 If 3 rows are selected in any order? If E9 Imogen 10 Prague? If E10 John 20 Brussels? If E12 Laura 20 Deale?
+=> unparsed: condition not read: E9   Imogen   10   Prague
 ```
 
-#### ☓ Ran 4 checks in 1 tests
+```sql
+SELECT * FROM CTS1.STAFF1 EXCEPT SELECT * FROM CTS1.STAFF4
 
-* 2 failed
-* 50% of the checks and 0% of the tests were OK
+TEST:7517 PASS:7517 If ERROR - no data?
+=> expected an error, got 5 rows
+```
+
+#### ☓ Ran 29 checks in 1 tests
+
+* 8 failed
+* 1 not read (condition text the runner does not understand)
+* 71% of the checks and 0% of the tests were OK
 
 
 ---- ---- ---- ---- ---- ---- ----
@@ -4807,6 +4805,13 @@ TEST:7523 PASS:7523 If COUNT = 1?
 => expected count 1, got error: Table does not exist: Tab
 ```
 
+```sql
+DROP SCHEMA CTSC CASCADE
+
+TEST:7523 PASS:7523 If drop completed successfully?
+=> expected success, got error: Parsing halted while starting to recover from another error.
+```
+
 #### ☓ Ran 7 checks in 1 tests
 
 * 5 failed
@@ -4821,13 +4826,6 @@ TEST:7523 PASS:7523 If COUNT = 1?
 SELECT CONSTRAINT_SCHEMA, TABLE_SCHEMA, IS_DEFERRABLE, INITIALLY_DEFERRED FROM INFORMATION_SCHEMA.TABLE_CONSTRAINTS WHERE TABLE_NAME = 'WORKS3A' AND CONSTRAINT_TYPE = 'FOREIGN KEY'
 
 TEST:7537 PASS:7537 If TABLE_SCHEMA = CTS1? If IS_DEFFERRABLE = NO? If INITIALLY_DEFERRED = NO?
-=> expected TABLE_SCHEMA = CTS1, got error: Unknown INFORMATION_SCHEMA table
-```
-
-```sql
-SELECT CONSTRAINT_SCHEMA, TABLE_SCHEMA, IS_DEFERRABLE, INITIALLY_DEFERRED FROM INFORMATION_SCHEMA.TABLE_CONSTRAINTS WHERE TABLE_NAME = 'WORKS' AND CONSTRAINT_TYPE = 'UNIQUE'
-
-TEST:7537 PASS:7537 If TABLE_SCHEMA = CTS1? If IS_DEFERRABLE = NO? If INITIALLY_DEFERRED = NO?
 => expected TABLE_SCHEMA = CTS1, got error: Unknown INFORMATION_SCHEMA table
 ```
 
@@ -4862,6 +4860,13 @@ SELECT B FROM CTS1.TV WHERE A = 2
 
 TEST:7558 PASS:7558 If B = NULL?
 => expected B = NULL, got 'b'
+```
+
+```sql
+SELECT B FROM CTS1.TV WHERE A = 5
+
+TEST:7558 PASS:7558 If B = 'i'?
+=> expected B = 'i', got 'e'
 ```
 
 #### ☓ Ran 7 checks in 1 tests
@@ -4958,10 +4963,10 @@ TEST:7549 PASS:7549 If 46 rows are returned ordered by SIZING_ID? If values for 
 ### 253/339 `nist/sql/yts805.sql` (CTS1)
 
 ```sql
-SELECT COUNT (*) FROM INFORMATION_SCHEMA.TABLE_CONSTRAINTS WHERE TABLE_SCHEMA = 'ZZZ' AND TABLE_NAME = 'BBB' AND CONSTRAINT_TYPE = 'UNIQUE'
+SELECT COUNT (*) FROM INFORMATION_SCHEMA.TABLE_CONSTRAINTS WHERE TABLE_SCHEMA = 'ZZZ' AND TABLE_NAME = 'AAA' AND CONSTRAINT_TYPE = 'FOREIGN KEY'
 
-TEST:7562 PASS:7562 If COUNT = 1?
-=> expected count 1, got error: Unknown INFORMATION_SCHEMA table
+TEST:7562 PASS:7562 If COUNT = 2?
+=> expected count 2, got error: Unknown INFORMATION_SCHEMA table
 ```
 
 #### ☓ Ran 14 checks in 1 tests
@@ -4971,235 +4976,45 @@ TEST:7562 PASS:7562 If COUNT = 1?
 
 
 ---- ---- ---- ---- ---- ---- ----
-### 254/339 `nist/sql/dml139.sql` (HU)
-
-#### ☓ Ran 5 checks in 1 tests
-
-* 3 failed
-* 40% of the checks and 0% of the tests were OK
-
-
----- ---- ---- ---- ---- ---- ----
-### 255/339 `nist/sql/yts766.sql` (CTS1)
+### 254/339 `nist/sql/yts767.sql` (CTS1)
 
 ```sql
-SELECT CONSTRAINT_NAME, UNIQUE_CONSTRAINT_SCHEMA, MATCH_OPTION,UPDATE_RULE,DELETE_RULE FROM INFORMATION_SCHEMA.REFERENTIAL_CONSTRAINTS ORDER BY CONSTRAINT_NAME
+SELECT CONSTRAINT_SCHEMA, CONSTRAINT_NAME FROM INFORMATION_SCHEMA.TABLE_CONSTRAINTS WHERE TABLE_SCHEMA = 'CTS1' AND TABLE_NAME = 'STAFF7' AND CONSTRAINT_TYPE = 'CHECK'
 
-TEST:7540 PASS:7540 If CONST_NAME = previous CONST_NAME for exactly 1 row?
-=> unparsed: condition not read: CONST_NAME = previous CONST_NAME for exactly 1 row
+TEST:7544 PASS:7544 If 1 row selected?
+=> expected 1 rows selected, got error: Unknown INFORMATION_SCHEMA table
 ```
 
 ```sql
-SELECT CONSTRAINT_NAME, UNIQUE_CONSTRAINT_SCHEMA, MATCH_OPTION,UPDATE_RULE,DELETE_RULE FROM INFORMATION_SCHEMA.REFERENTIAL_CONSTRAINTS ORDER BY CONSTRAINT_NAME
+SELECT CONSTRAINT_SCHEMA, CONSTRAINT_NAME, CHECK_CLAUSE FROM INFORMATION_SCHEMA.CHECK_CONSTRAINTS ORDER BY CONSTRAINT_SCHEMA, CONSTRAINT_NAME
 
-TEST:7540 PASS:7540 If MATCH_OPTION = NONE? If UPDATE_RULE = NO ACTION? If DELETE_RULE = NO ACTION?
-=> expected MATCH_OPTION = NONE, got error: Unknown INFORMATION_SCHEMA table
+TEST:7544 PASS:7544 If CONSTRAINT_SCHEMA & CONSTRAINT_NAME = previous ? CONSTRAINT_SCHEMA & CONSTRAINT_NAME for exactly ? 1 row and CHECK_CLAUSE is either NULL or ? 'CHECK (GRADE BETWEEN 1 AND 20)' ?
+=> unparsed: condition not read: CONSTRAINT_SCHEMA & CONSTRAINT_NAME = previous    CONSTRAINT_SCHEMA & CONSTRAINT_NAME for exactly   1 row
 ```
 
 ```sql
-SELECT COUNT (*) FROM INFORMATION_SCHEMA.REFERENTIAL_CONSTRAINTS WHERE CONSTRAINT_NAME IS NULL
+SELECT CONSTRAINT_SCHEMA, CONSTRAINT_NAME, CHECK_CLAUSE FROM INFORMATION_SCHEMA.CHECK_CONSTRAINTS ORDER BY CONSTRAINT_SCHEMA, CONSTRAINT_NAME
 
-TEST:7542 PASS:7542 If COUNT = 0?
-=> expected count 0, got error: Unknown INFORMATION_SCHEMA table
+TEST:7545 PASS:7545 If matches above and CHECK_CLAUSE is NULL or ? 'CHECK (SALARY > 0)' ?
+=> unparsed: condition not read: matches above
 ```
 
 ```sql
-SELECT COUNT (*) FROM INFORMATION_SCHEMA.REFERENTIAL_CONSTRAINTS
+SELECT CONSTRAINT_SCHEMA, CONSTRAINT_NAME, CHECK_CLAUSE FROM INFORMATION_SCHEMA.CHECK_CONSTRAINTS ORDER BY CONSTRAINT_SCHEMA, CONSTRAINT_NAME
 
-TEST:7543 PASS:7543 If this COUNT (referenced as COUNT#1) is = to ? the next three COUNTs ?
-=> unparsed: condition not read: this COUNT (referenced as COUNT#1) is = to    the next three COUNTs
+TEST:7546 PASS:7546 If matches above and CHECK_VALUE is NULL or ? 'CHECK (VALUE > 500)' ?
+=> unparsed: condition not read: matches above
 ```
 
-#### ☓ Ran 27 checks in 4 tests
+#### ☓ Ran 21 checks in 4 tests
 
-* 17 failed
+* 11 failed
 * 10 not read (condition text the runner does not understand)
 * 0% of the checks and 0% of the tests were OK
 
 
 ---- ---- ---- ---- ---- ---- ----
-### 256/339 `nist/sql/yts808.sql` (CTS1)
-
-```sql
-SELECT COUNT (*) FROM TTIME WHERE TT AT LOCAL > TIME '10:30:05+01:45'
-
-TEST:7565 PASS:7565 If the sum of this COUNT and next COUNT = 6?
-=> unparsed: condition not read: the sum of this COUNT
-```
-
-```sql
-SELECT COUNT (*) FROM TTIME WHERE TIME '06:15:05-02:30' >= TT AT LOCAL
-
-TEST:7565 PASS:7565 If the sum of this COUNT and previous COUNT = 6?
-=> unparsed: condition not read: the sum of this COUNT
-```
-
-#### ☓ Ran 10 checks in 1 tests
-
-* 6 failed
-* 4 not read (condition text the runner does not understand)
-* 0% of the checks and 0% of the tests were OK
-
-
----- ---- ---- ---- ---- ---- ----
-### 257/339 `nist/sql/yts809.sql` (CTS1)
-
-#### ★ Ran 5 checks in 1 tests
-
-* 4 not read (condition text the runner does not understand)
-* 100% of the checks and 0% of the tests were OK
-
-
----- ---- ---- ---- ---- ---- ----
-### 258/339 `nist/sql/yts810.sql` (CTS1)
-
-```sql
-SELECT GRADE, COUNT (*) AS CC, EMPNUM FROM TA FULL OUTER JOIN TB ON GRADE > PNUM AND EMPNUM = DEPTNO WHERE GRADE IS NOT NULL GROUP BY GRADE, EMPNUM ORDER BY CC DESC, GRADE
-
-TEST:7567 PASS:7567 If 4 rows returned in the following order? grade grpno empnum ===== ===== ====== If 7 3 abc ? If 8 3 abc ? If 1 1 NULL ? If 2 1 NULL ?
-=> expected rows, got error: alasql.databases[source.databaseid].tables[source.tableid].select is not a function. (In 'alasql.databases[source.databaseid].tables[source.tableid].select(params)', 'alasql.databases[source.databaseid].tables[source.tableid].select' is undefined)
-```
-
-#### ☓ Ran 15 checks in 1 tests
-
-* 4 failed
-* 73% of the checks and 0% of the tests were OK
-
-
----- ---- ---- ---- ---- ---- ----
-### 259/339 `nist/sql/yts773.sql` (CTS1)
-
-```sql
-SELECT COUNT (*) FROM INFORMATION_SCHEMA.SQL_LANGUAGES WHERE SQL_LANGUAGE_BINDING_STYLE = 'EMBEDDED' AND SQL_LANGUAGE_PROGRAMMING_LANGUAGE = 'C'
-
-TEST:7555 PASS:7555 If COUNT not 0?
-=> unparsed: condition not read: COUNT not 0
-```
-
-#### ☓ Ran 3 checks in 1 tests
-
-* 2 failed
-* 1 not read (condition text the runner does not understand)
-* 0% of the checks and 0% of the tests were OK
-
-
----- ---- ---- ---- ---- ---- ----
-### 260/339 `nist/sql/yts776.sql` (CTS1)
-
-#### ☓ Ran 4 checks in 1 tests
-
-* 3 failed
-* 25% of the checks and 0% of the tests were OK
-
-
----- ---- ---- ---- ---- ---- ----
-### 261/339 `nist/sql/yts812.sql` (CTS1)
-
-```sql
-SELECT TX1 FROM TX WHERE TX3 || TX2 IS NULL
-
-TEST:7569 PASS:7569 If 2 rows returned in any order? If TX1 = 1? If TX1 = 2?
-=> expected 2 rows returned, got 0
-```
-
-#### ☓ Ran 2 checks in 1 tests
-
-* 2 failed
-* 0% of the checks and 0% of the tests were OK
-
-
----- ---- ---- ---- ---- ---- ----
-### 262/339 `nist/sql/yts779.sql` (CTS1)
-
-```sql
-ALTER TABLE alt_test ALTER COLUMN L DROP DEFAULT
-
-TEST:7521 PASS:7521 If table altered successfully?
-=> expected success, got error: Parse error on line 1: ...LTER TABLE alt_test ALTER COLUMN L DROP -----------------------^ Expecting 'DROP', 'RENAME', 'ADD', 'MODIFY', got 'ALTER'
-```
-
-```sql
-SELECT * FROM alt_test
-
-TEST:7521 PASS:7521 If column1 = 7? If column2 is NULL? If column3 is NULL? If column4 = 99?
-=> unresolved: no column column1 in K, L, M, N
-```
-
-#### ☓ Ran 9 checks in 1 tests
-
-* 6 failed
-* 1 not resolved (the condition names a column the result does not have)
-* 25% of the checks and 0% of the tests were OK
-
-
----- ---- ---- ---- ---- ---- ----
-### 263/339 `nist/sql/yts777.sql` (CTS2)
-
-#### ☓ Ran 14 checks in 1 tests
-
-* 3 failed
-* 78% of the checks and 0% of the tests were OK
-
-
----- ---- ---- ---- ---- ---- ----
-### 264/339 `nist/sql/yts790.sql` (CTS1)
-
-#### ☓ Ran 1 checks in 1 tests
-
-* 1 failed
-* 0% of the checks and 0% of the tests were OK
-
-
----- ---- ---- ---- ---- ---- ----
-### 265/339 `nist/sql/yts793.sql` (CTS1)
-
-#### ☓ Ran 3 checks in 1 tests
-
-* 3 failed
-* 0% of the checks and 0% of the tests were OK
-
-
----- ---- ---- ---- ---- ---- ----
-### 266/339 `nist/sql/yts806.sql` (CTS1)
-
-```sql
-SELECT * FROM STAFF1 NATURAL FULL OUTER JOIN STAFFA ORDER BY EMPNUM, EMPNAME, GRADE, PNUM
-
-TEST:7563 PASS:7563 If 12 rows selected in the following order? eno enaam grd cit hrs sal pno === ===== === === === === === If E1 Alice 4 Lyon 20 40000 11 ? If E1 Alice 8 Lyon 20 40000 11 ? If E1 Alice 12 Geneva 20 40000 11 ? If E2 Betty 16 Strasbourg 15 20000 12 ? If E2 Betty 16 Strasbourg 15 20000 13 ? If E2 Betty 2…
-=> expected rows, got error: Table does not exist: STAFFA
-```
-
-#### ☓ Ran 2 checks in 1 tests
-
-* 1 failed
-* 50% of the checks and 0% of the tests were OK
-
-
----- ---- ---- ---- ---- ---- ----
-### 267/339 `nist/sql/xts771.sql` (CTS3)
-
-```sql
-SELECT COLNUM1,COLSTR1,COLSTR2 FROM TAB771 ORDER BY COLNUM1
-
-TEST:7071 PASS:7071 If 3 row are selected in the following order? COLNUM1 COLSTR1 COLSTR2 ======= ======= ======= If 20 `$NIK MAY BE ? If 21 ~!KOS{} {ERROR} ? If 22 !$[\]^`{}~ OK ?
-=> expected rows, got error: Table does not exist: TAB771
-```
-
-```sql
-DROP TABLE TAB771 CASCADE
-
-TEST:7071 PASS:7071 If TABLE dropped successfully?
-=> expected success, got error: Parsing halted while starting to recover from another error.
-```
-
-#### ☓ Ran 7 checks in 1 tests
-
-* 7 failed
-* 0% of the checks and 0% of the tests were OK
-
-
----- ---- ---- ---- ---- ---- ----
-### 268/339 `nist/sql/yts807.sql` (CTS1)
+### 255/339 `nist/sql/yts807.sql` (CTS1)
 
 ```sql
 SELECT PK, EXTRACT (TIMEZONE_HOUR FROM CAST (TT AS TIME WITH TIME ZONE)), EXTRACT (TIMEZONE_MINUTE FROM CAST (TT AS TIME WITH TIME ZONE)) FROM TTIME WHERE PK = 1
@@ -5223,16 +5038,57 @@ TEST:7564 PASS:7564 If PK = 1? If HOUR1 = 7? If MIN1 = 35? If HOUR2 = 7? If MIN2
 
 
 ---- ---- ---- ---- ---- ---- ----
-### 269/339 `nist/sql/xts719.sql` (CTS4)
+### 256/339 `nist/sql/yts808.sql` (CTS1)
+
+```sql
+INSERT INTO TTIME VALUES (5, TIME '17:56:26', TIMESTAMP '1961-10-28 17:56:26')
+
+TEST:7565 PASS:7565 If 1 row inserted successfully?
+=> expected success, got error: Parse error on line 2: ...ALUES (5, TIME '17:56:26', TIMESTAM ----------------------^ Expecting 'COMMA', 'RPAR', 'IN', 'LIKE', 'ARROW', 'DOT', 'CARET', 'EQ', 'SLASH', 'EXCLAMATION', 'MODULO', 'GT', 'LT', 'GTGT', 'LTLT', 'NOT', 'AND', 'OR', 'PLUS', 'STAR', 'REGEXP', 'TIL…
+```
+
+```sql
+SELECT COUNT (*) FROM TTIME WHERE TT AT LOCAL > TIME '10:30:05+01:45'
+
+TEST:7565 PASS:7565 If the sum of this COUNT and next COUNT = 6?
+=> unparsed: condition not read: the sum of this COUNT
+```
+
+#### ☓ Ran 10 checks in 1 tests
+
+* 6 failed
+* 4 not read (condition text the runner does not understand)
+* 0% of the checks and 0% of the tests were OK
+
+
+---- ---- ---- ---- ---- ---- ----
+### 257/339 `nist/sql/yts780.sql` (CTS1)
 
 #### ☓ Ran 10 checks in 1 tests
 
 * 8 failed
-* 20% of the checks and 0% of the tests were OK
+* 2 not read (condition text the runner does not understand)
+* 0% of the checks and 0% of the tests were OK
 
 
 ---- ---- ---- ---- ---- ---- ----
-### 270/339 `nist/sql/yts811.sql` (CTS1)
+### 258/339 `nist/sql/yts809.sql` (CTS1)
+
+#### ★ Ran 5 checks in 1 tests
+
+* 4 not read (condition text the runner does not understand)
+* 100% of the checks and 0% of the tests were OK
+
+
+---- ---- ---- ---- ---- ---- ----
+### 259/339 `nist/sql/yts811.sql` (CTS1)
+
+```sql
+SELECT VT1, VT2, VT3 FROM V_DATA_TYPE WHERE NOT VT1 = 0 ORDER BY VT2, VT3
+
+TEST:7568 PASS:7568 If WARNING - null value eliminated in set function? If 3 rows are returned in the following order? VT1 VT2 VT3 === === === If 4 2 3 ? If 5 4 3 ? If 3 4 5 ?
+=> unparsed: condition not read: 4       2       3
+```
 
 ```sql
 SELECT VT1, VT2, VT3 FROM V_DATA_TYPE WHERE VT2 = 1
@@ -5263,14 +5119,188 @@ TEST:7568 PASS:7568 If WARNING - null value eliminated in set function? If SUM =
 
 
 ---- ---- ---- ---- ---- ---- ----
-### 271/339 `nist/sql/xts714.sql` (CTS2)
+### 260/339 `nist/sql/yts810.sql` (CTS1)
 
 ```sql
-SELECT * FROM T2831C.TESTAB2831 ORDER BY TNUM
+SELECT GRADE, COUNT (*) AS CC, EMPNUM FROM TA FULL OUTER JOIN TB ON GRADE > PNUM AND EMPNUM = DEPTNO WHERE GRADE IS NOT NULL GROUP BY GRADE, EMPNUM ORDER BY CC DESC, GRADE
 
-TEST:7014 PASS:7014 If 5 row selected in following order? c1 c2 == == If 1 AA? If 2 BB? If 3 CC? If 4 DD? If 5 EE?
-=> expected ==   == | If    1   AA? | If    2   BB? | If    3   CC? | If    4   DD? | If    5   EE?, got 1 'AA' | 2 'BB' | 3 'CC' | 4 'DD' | 5 'EE'
+TEST:7567 PASS:7567 If 4 rows returned in the following order? grade grpno empnum ===== ===== ====== If 7 3 abc ? If 8 3 abc ? If 1 1 NULL ? If 2 1 NULL ?
+=> expected rows, got error: alasql.databases[source.databaseid].tables[source.tableid].select is not a function. (In 'alasql.databases[source.databaseid].tables[source.tableid].select(params)', 'alasql.databases[source.databaseid].tables[source.tableid].select' is undefined)
 ```
+
+#### ☓ Ran 15 checks in 1 tests
+
+* 4 failed
+* 73% of the checks and 0% of the tests were OK
+
+
+---- ---- ---- ---- ---- ---- ----
+### 261/339 `nist/sql/yts779.sql` (CTS1)
+
+```sql
+SELECT * FROM alt_test
+
+TEST:7521 PASS:7521 If column1 = 7? If column2 is NULL? If column3 is NULL? If column4 = 99?
+=> unresolved: no column column1 in K, L, M, N
+```
+
+#### ☓ Ran 9 checks in 1 tests
+
+* 6 failed
+* 1 not resolved (the condition names a column the result does not have)
+* 25% of the checks and 0% of the tests were OK
+
+
+---- ---- ---- ---- ---- ---- ----
+### 262/339 `nist/sql/yts770.sql` (CTS1)
+
+```sql
+SELECT COUNT (*) FROM INFORMATION_SCHEMA.DOMAIN_CONSTRAINTS WHERE DOMAIN_NAME LIKE 'ESAL%'
+
+TEST:7552 PASS:7552 If count = 1?
+=> expected count 1, got error: Unknown INFORMATION_SCHEMA table
+```
+
+#### ☓ Ran 8 checks in 1 tests
+
+* 8 failed
+* 0% of the checks and 0% of the tests were OK
+
+
+---- ---- ---- ---- ---- ---- ----
+### 263/339 `nist/sql/yts772.sql` (CTS1)
+
+```sql
+SELECT CONSTRAINT_CATALOG, CONSTRAINT_SCHEMA, CONSTRAINT_NAME, IS_DEFERRABLE, INITIALLY_DEFERRED FROM INFORMATION_SCHEMA.ASSERTIONS
+
+TEST:7554 PASS:7554 If IS_DEFERRABLE = 'YES' or 'NO'? If INITALLY_DEFERRED = 'YES' or 'NO'? If IS_DEFERRABLE = 'NO' then ? INITIALLY_DEFFERED must also = 'NO' ?
+=> unparsed: condition not read: IS_DEFERRABLE = 'YES' or 'NO'
+```
+
+#### ☓ Ran 3 checks in 1 tests
+
+* 2 failed
+* 1 not read (condition text the runner does not understand)
+* 0% of the checks and 0% of the tests were OK
+
+
+---- ---- ---- ---- ---- ---- ----
+### 264/339 `nist/sql/yts794.sql` (CTS2)
+
+```sql
+SELECT * FROM TB
+
+TEST:7528 PASS:7528 If value selected = 'def'?
+=> unparsed: condition not read: value selected = 'def'
+```
+
+#### ☓ Ran 5 checks in 1 tests
+
+* 3 failed
+* 1 not read (condition text the runner does not understand)
+* 25% of the checks and 0% of the tests were OK
+
+
+---- ---- ---- ---- ---- ---- ----
+### 265/339 `nist/sql/yts793.sql` (CTS1)
+
+#### ☓ Ran 3 checks in 1 tests
+
+* 3 failed
+* 0% of the checks and 0% of the tests were OK
+
+
+---- ---- ---- ---- ---- ---- ----
+### 266/339 `nist/sql/yts790.sql` (CTS1)
+
+#### ☓ Ran 1 checks in 1 tests
+
+* 1 failed
+* 0% of the checks and 0% of the tests were OK
+
+
+---- ---- ---- ---- ---- ---- ----
+### 267/339 `nist/sql/yts806.sql` (CTS1)
+
+```sql
+SELECT * FROM STAFF1 NATURAL FULL OUTER JOIN STAFFA ORDER BY EMPNUM, EMPNAME, GRADE, PNUM
+
+TEST:7563 PASS:7563 If 12 rows selected in the following order? eno enaam grd cit hrs sal pno === ===== === === === === === If E1 Alice 4 Lyon 20 40000 11 ? If E1 Alice 8 Lyon 20 40000 11 ? If E1 Alice 12 Geneva 20 40000 11 ? If E2 Betty 16 Strasbourg 15 20000 12 ? If E2 Betty 16 Strasbourg 15 20000 13 ? If E2 Betty 2…
+=> expected rows, got error: Table does not exist: STAFFA
+```
+
+#### ☓ Ran 2 checks in 1 tests
+
+* 1 failed
+* 50% of the checks and 0% of the tests were OK
+
+
+---- ---- ---- ---- ---- ---- ----
+### 268/339 `nist/sql/xts715.sql` (CTS4)
+
+```sql
+SELECT * FROM T7015aPC.TESTAB2931 ORDER BY TNUM
+
+TEST:7015 PASS:7015 If 5 rows selected in following order? c1 c2 == == If 1 AA? If 2 BB? If 3 CC? If 4 DD? If 5 EE?
+=> expected ==  == | If  1  AA? | If  2  BB? | If  3  CC? | If  4  DD? | If  5  EE?, got 1 'AA' | 2 'BB' | 3 'CC' | 4 'DD' | 5 'EE'
+```
+
+```sql
+DROP SCHEMA T7015bPC CASCADE
+
+TEST:7015 PASS:7015 If schema dropped successfully?
+=> expected success, got error: Parsing halted while starting to recover from another error.
+```
+
+#### ☓ Ran 20 checks in 1 tests
+
+* 6 failed
+* 70% of the checks and 0% of the tests were OK
+
+
+---- ---- ---- ---- ---- ---- ----
+### 269/339 `nist/sql/yts791.sql` (CTS2)
+
+```sql
+SELECT * FROM TB
+
+TEST:7525 PASS:7525 If answer = 'def'?
+=> expected answer = 'def', got error: Table does not exist: TB
+```
+
+#### ☓ Ran 5 checks in 1 tests
+
+* 5 failed
+* 0% of the checks and 0% of the tests were OK
+
+
+---- ---- ---- ---- ---- ---- ----
+### 270/339 `nist/sql/yts812.sql` (CTS1)
+
+```sql
+SELECT TX1 FROM TX WHERE TX3 || TX2 IS NULL
+
+TEST:7569 PASS:7569 If 2 rows returned in any order? If TX1 = 1? If TX1 = 2?
+=> expected 2 rows returned, got 0
+```
+
+#### ☓ Ran 2 checks in 1 tests
+
+* 2 failed
+* 0% of the checks and 0% of the tests were OK
+
+
+---- ---- ---- ---- ---- ---- ----
+### 271/339 `nist/sql/xts721.sql` (CTS4)
+
+#### ☓ Ran 7 checks in 1 tests
+
+* 5 failed
+* 28% of the checks and 0% of the tests were OK
+
+
+---- ---- ---- ---- ---- ---- ----
+### 272/339 `nist/sql/xts714.sql` (CTS2)
 
 ```sql
 SELECT DT2831C.DTESTAB2831.TNUM, DT2831C.DTESTAB2831.TCHAR FROM DT2831C.DTESTAB2831 WHERE DT2831C.DTESTAB2831.TNUM = 1
@@ -5293,47 +5323,23 @@ TEST:7014 PASS:7014 If 4 rows selected in following order? c1 c2 == == If 2 BB? 
 
 
 ---- ---- ---- ---- ---- ---- ----
-### 272/339 `nist/sql/yts794.sql` (CTS2)
+### 273/339 `nist/sql/yts777.sql` (CTS2)
 
 ```sql
-SELECT * FROM TB
+DROP SCHEMA SC777 CASCADE
 
-TEST:7528 PASS:7528 If value selected = 'def'?
-=> unparsed: condition not read: value selected = 'def'
+TEST:7511 PASS:7511 If schema dropped successfully?
+=> expected success, got error: Parsing halted while starting to recover from another error.
 ```
 
-#### ☓ Ran 5 checks in 1 tests
+#### ☓ Ran 14 checks in 1 tests
 
 * 3 failed
-* 1 not read (condition text the runner does not understand)
-* 25% of the checks and 0% of the tests were OK
-
-
----- ---- ---- ---- ---- ---- ----
-### 273/339 `nist/sql/yts791.sql` (CTS2)
-
-```sql
-SELECT * FROM TB
-
-TEST:7525 PASS:7525 If answer = 'def'?
-=> expected answer = 'def', got error: Table does not exist: TB
-```
-
-#### ☓ Ran 5 checks in 1 tests
-
-* 5 failed
-* 0% of the checks and 0% of the tests were OK
+* 78% of the checks and 0% of the tests were OK
 
 
 ---- ---- ---- ---- ---- ---- ----
 ### 274/339 `nist/sql/xts769.sql` (CTS3)
-
-```sql
-INSERT INTO TABLATIN1 VALUES (_LATIN1 'LAMIA', _LATIN1 'ISOS', _LATIN1 'ALLOS',3)
-
-TEST:7069 PASS:7069 If 1 row inserted?
-=> expected 1 rows inserted, got error: Parse error on line 2: ...IN1 VALUES(_LATIN1 'LAMIA', _LATIN1 'IS ----------------------^ Expecting 'COMMA', 'RPAR', 'IN', 'LIKE', 'ARROW', 'DOT', 'CARET', 'EQ', 'SLASH', 'EXCLAMATION', 'MODULO', 'GT', 'LT', 'GTGT', 'LTLT', 'NOT', 'AND', 'OR', 'PLUS', 'STAR', 'R…
-```
 
 ```sql
 SELECT COL1, COL2, COL3, COL4 FROM TABLATIN1 WHERE COL1 = _LATIN1'NICKOS'
@@ -5351,6 +5357,13 @@ TEST:7069 PASS:7069 If COL1 = NICKOS? If COL2 = VASO? If COL3 = BILL? If COL4 = 
 ---- ---- ---- ---- ---- ---- ----
 ### 275/339 `nist/sql/xts770.sql` (CTS3)
 
+```sql
+SELECT COLNUM1,COLSTR1 FROM TAB770 ORDER BY COLNUM1
+
+TEST:7070 PASS:7070 If 3 rows are selected in the following order? COLUMN1 COLSTR1 ========= ========= If 10 BARBIE ? If 20 205 GTi ? If 30 KILLER ?
+=> expected rows, got error: Table does not exist: TAB770
+```
+
 #### ☓ Ran 6 checks in 1 tests
 
 * 6 failed
@@ -5358,28 +5371,46 @@ TEST:7069 PASS:7069 If COL1 = NICKOS? If COL2 = VASO? If COL3 = BILL? If COL4 = 
 
 
 ---- ---- ---- ---- ---- ---- ----
-### 276/339 `nist/sql/xts715.sql` (CTS4)
+### 276/339 `nist/sql/xts771.sql` (CTS3)
 
 ```sql
-SELECT * FROM T7015aPC.TESTAB2931 ORDER BY TNUM
+INSERT INTO TAB771 VALUES(21,_ASCII_GRAPHIC'~!KOS{}',_ASCII_GRAPHIC'{ERROR}')
 
-TEST:7015 PASS:7015 If 5 rows selected in following order? c1 c2 == == If 1 AA? If 2 BB? If 3 CC? If 4 DD? If 5 EE?
-=> expected rows, got error: undefined is not an object (evaluating 'alasql.databases[fr.databaseid || databaseid].tables')
+TEST:7071 PASS:7071 If 1 row inserted?
+=> expected 1 rows inserted, got error: Parse error on line 2: ...ES(21,_ASCII_GRAPHIC'~!KOS{}',_ASCII_GRA -----------------------^ Expecting 'COMMA', 'RPAR', 'IN', 'LIKE', 'ARROW', 'DOT', 'CARET', 'EQ', 'SLASH', 'EXCLAMATION', 'MODULO', 'GT', 'LT', 'GTGT', 'LTLT', 'NOT', 'AND', 'OR', 'PLUS', 'STAR', …
 ```
 
-#### ☓ Ran 20 checks in 1 tests
+#### ☓ Ran 7 checks in 1 tests
 
-* 20 failed
+* 7 failed
 * 0% of the checks and 0% of the tests were OK
 
 
 ---- ---- ---- ---- ---- ---- ----
-### 277/339 `nist/sql/xts720.sql` (CTS4)
+### 277/339 `nist/sql/xts719.sql` (CTS4)
+
+#### ☓ Ran 10 checks in 1 tests
+
+* 8 failed
+* 20% of the checks and 0% of the tests were OK
+
+
+---- ---- ---- ---- ---- ---- ----
+### 278/339 `nist/sql/xts723.sql` (CTS4)
+
+#### ☓ Ran 7 checks in 1 tests
+
+* 5 failed
+* 28% of the checks and 0% of the tests were OK
+
+
+---- ---- ---- ---- ---- ---- ----
+### 279/339 `nist/sql/xts720.sql` (CTS4)
 
 ```sql
-DROP TABLE TAB720a CASCADE
+DROP VIEW VA_720a CASCADE
 
-TEST:7020 PASS:7020 If table dropped successfully?
+TEST:7020 PASS:7020 If view dropped successfully?
 => expected success, got error: Parsing halted while starting to recover from another error.
 ```
 
@@ -5390,7 +5421,16 @@ TEST:7020 PASS:7020 If table dropped successfully?
 
 
 ---- ---- ---- ---- ---- ---- ----
-### 278/339 `nist/sql/xts722.sql` (CTS4)
+### 280/339 `nist/sql/xts724.sql` (CTS4)
+
+#### ☓ Ran 7 checks in 1 tests
+
+* 6 failed
+* 14% of the checks and 0% of the tests were OK
+
+
+---- ---- ---- ---- ---- ---- ----
+### 281/339 `nist/sql/xts722.sql` (CTS4)
 
 ```sql
 SELECT COUNT (DISTINCT TABLE_NAME), COUNT(CONSTRAINT_NAME) FROM INFORMATION_SCHEMA.CONSTRAINT_TABLE_USAGE WHERE CONSTRAINT_SCHEMA = 'CTS4'
@@ -5407,41 +5447,14 @@ TEST:7022 PASS:7022 If first COUNT = 1? If second COUNT = 3?
 
 
 ---- ---- ---- ---- ---- ---- ----
-### 279/339 `nist/sql/xts721.sql` (CTS4)
-
-#### ☓ Ran 7 checks in 1 tests
-
-* 5 failed
-* 28% of the checks and 0% of the tests were OK
-
-
----- ---- ---- ---- ---- ---- ----
-### 280/339 `nist/sql/xts724.sql` (CTS4)
-
-#### ☓ Ran 7 checks in 1 tests
-
-* 6 failed
-* 14% of the checks and 0% of the tests were OK
-
-
----- ---- ---- ---- ---- ---- ----
-### 281/339 `nist/sql/xts723.sql` (CTS4)
+### 282/339 `nist/sql/yts792.sql` (CTS4)
 
 ```sql
-DROP TABLE TAB722a CASCADE
+SELECT COUNT (*) FROM TC
 
-TEST:7023 PASS:7023 If table dropped successfully?
-=> expected success, got error: Parsing halted while starting to recover from another error.
+TEST:7526 PASS:7526 If COUNT = 1?
+=> expected count 1, got 0
 ```
-
-#### ☓ Ran 7 checks in 1 tests
-
-* 5 failed
-* 28% of the checks and 0% of the tests were OK
-
-
----- ---- ---- ---- ---- ---- ----
-### 282/339 `nist/sql/yts792.sql` (CTS4)
 
 #### ☓ Ran 7 checks in 1 tests
 
@@ -5476,13 +5489,6 @@ TEST:0860 PASS:0860 If xhour = -3? If xminute = -30?
 ```
 
 ```sql
-INSERT INTO TIDES.LOCATIONS VALUES (300, 'Bath, Maine', -69.8133, 43.9183, 1, 3.422E0, INTERVAL '-05:00' HOUR TO MINUTE, ':US/Eastern')
-
-TEST:0860 PASS:0860 If 1 row inserted successfully?
-=> expected success, got error: Parse error on line 3: ...ERVAL '-05:00' HOUR TO MINUTE, ':US/East -----------------------^ Expecting 'COMMA', 'RPAR', 'IN', 'LIKE', 'ARROW', 'DOT', 'CARET', 'EQ', 'SLASH', 'EXCLAMATION', 'MODULO', 'GT', 'LT', 'GTGT', 'LTLT', 'NOT', 'AND', 'OR', 'PLUS', 'STAR', 'REGEXP'…
-```
-
-```sql
 SELECT EPOCH FROM CONST_RAD WHERE LOC_ID = 100 AND CONST_ID = 0
 
 TEST:0860 PASS:0860 If EPOCH = 2.11 (+ or - 0.01)?
@@ -5494,6 +5500,13 @@ SELECT COUNT(*) FROM CONST_RAD_NOT_NORM WHERE EPOCH > 6.2831853E0
 
 TEST:0860 PASS:0860 If COUNT = 4?
 => expected count 4, got error: Table does not exist: CONST_NOT_NORM
+```
+
+```sql
+INSERT INTO PENDING VALUES ( 102, TIMESTAMP '1993-12-31 19:00:00-05:00', TIMESTAMP '1994-01-02 00:00:00-05:00', 2)
+
+TEST:0860 PASS:0860 If 1 row inserted successfully?
+=> expected success, got error: Parse error on line 2: ... 102, TIMESTAMP '1993-12-31 19:00:00... -----------------------^ Expecting 'COMMA', 'RPAR', 'IN', 'LIKE', 'ARROW', 'DOT', 'CARET', 'EQ', 'SLASH', 'EXCLAMATION', 'MODULO', 'GT', 'LT', 'GTGT', 'LTLT', 'NOT', 'AND', 'OR', 'PLUS', 'STAR', 'REGEXP',…
 ```
 
 ```sql
@@ -5557,13 +5570,6 @@ TEST:0882 PASS:0882 If 6 rows are returned in the following order? empnum city s
 => expected ======     ====     ====== | If  E1         Deale    NULL   ? | If  E2         Vienna   NULL   ? | If  E3         Vienna   13000  ? | If  E4         Deale    12000  ? | If  E5         NULL     13000  ? | If  E6         Akron    NULL   ?, got 'E1' 'Deale' NULL | 'E2' 'Vienna' NULL | 'E3' 'V…
 ```
 
-```sql
-DROP TABLE STAFF66 CASCADE
-
-TEST:0882 PASS:0882 If table dropped successfully?
-=> expected success, got error: Parsing halted while starting to recover from another error.
-```
-
 #### ☓ Ran 6 checks in 1 tests
 
 * 2 failed
@@ -5587,6 +5593,13 @@ TEST:0866 PASS:0866 If 6 rows are returned in the following order? coalesce(city
 => expected If  Akron? | If  E1   ? | If  E4   ? | If  Monash? | If  Vienna? | If  Vienna?, got 'Akron' | 'E1' | 'E4' | 'Vienna' | 'Vienna'
 ```
 
+```sql
+DROP VIEW V0866 CASCADE
+
+TEST:0866 PASS:0866 If view dropped successfully?
+=> expected success, got error: Parsing halted while starting to recover from another error.
+```
+
 #### ☓ Ran 13 checks in 2 tests
 
 * 6 failed
@@ -5594,23 +5607,7 @@ TEST:0866 PASS:0866 If 6 rows are returned in the following order? coalesce(city
 
 
 ---- ---- ---- ---- ---- ---- ----
-### 288/339 `nist/sql/dml165.sql` (FLATER)
-
-```sql
-SELECT * FROM APPLES UNION ALL SELECT * FROM ORANGES ORDER BY 1
-
-TEST:0870 PASS:0870 If 4 rows returned in the following order? col1 col2 ==== ==== If 1.0 (+ or - 0.01) Granny Smith? If 1.5 (+ or - 0.01) Navel? If 2.0 (+ or - 0.01) Red Delicious? If 2.5 (+ or - 0.01) Florida?
-=> expected ====                 ==== | If   1.0 (+ or - 0.01)    Granny Smith? | If   1.5 (+ or - 0.01)    Navel? | If   2.0 (+ or - 0.01)    Red Delicious? | If   2.5 (+ or - 0.01)    Florida?, got 1 'Granny Smith' | 2 'Red Delicious' | 1.5 'Navel' | 2.5 'Florida'
-```
-
-#### ☓ Ran 9 checks in 1 tests
-
-* 3 failed
-* 66% of the checks and 0% of the tests were OK
-
-
----- ---- ---- ---- ---- ---- ----
-### 289/339 `nist/sql/dml164.sql` (FLATER)
+### 288/339 `nist/sql/dml164.sql` (FLATER)
 
 ```sql
 SELECT COUNT(*) FROM TIDES.LOCATIONS WHERE LOC_NAME LIKE '% ' || 'Key' || '%' OR LOC_NAME LIKE '%' || 'Key' || ' %' OR LOC_NAME = 'Key'
@@ -5633,13 +5630,13 @@ TEST:0867 PASS:0867 If LOC_ID= 10?
 
 
 ---- ---- ---- ---- ---- ---- ----
-### 290/339 `nist/sql/dml167.sql` (FLATER)
+### 289/339 `nist/sql/dml167.sql` (FLATER)
 
 ```sql
-SELECT COUNT (DISTINCT TABLE_CATALOG) FROM INFORMATION_SCHEMA.TABLE_CONSTRAINTS
+SELECT COUNT(*) FROM INFORMATION_SCHEMA.CONSTRAINT_TABLE_USAGE WHERE CONSTRAINT_CATALOG <> ( SELECT CATALOG_NAME FROM INFORMATION_SCHEMA.INFORMATION_SCHEMA_CATALOG_NAME) OR CONSTRAINT_CATALOG IS NULL OR TABLE_CATALOG IS NULL
 
-TEST:0874 PASS:0874 If COUNT = 1?
-=> expected count 1, got error: Unknown INFORMATION_SCHEMA table
+TEST:0874 PASS:0874 If COUNT = 0?
+=> expected count 0, got error: Unknown INFORMATION_SCHEMA table
 ```
 
 ```sql
@@ -5671,6 +5668,22 @@ TEST:0875 PASS:0875 If this COUNT = the previous COUNT?
 
 
 ---- ---- ---- ---- ---- ---- ----
+### 290/339 `nist/sql/dml165.sql` (FLATER)
+
+```sql
+SELECT * FROM APPLES UNION ALL SELECT * FROM ORANGES ORDER BY 1
+
+TEST:0870 PASS:0870 If 4 rows returned in the following order? col1 col2 ==== ==== If 1.0 (+ or - 0.01) Granny Smith? If 1.5 (+ or - 0.01) Navel? If 2.0 (+ or - 0.01) Red Delicious? If 2.5 (+ or - 0.01) Florida?
+=> expected ====                 ==== | If   1.0 (+ or - 0.01)    Granny Smith? | If   1.5 (+ or - 0.01)    Navel? | If   2.0 (+ or - 0.01)    Red Delicious? | If   2.5 (+ or - 0.01)    Florida?, got 1 'Granny Smith' | 2 'Red Delicious' | 1.5 'Navel' | 2.5 'Florida'
+```
+
+#### ☓ Ran 9 checks in 1 tests
+
+* 3 failed
+* 66% of the checks and 0% of the tests were OK
+
+
+---- ---- ---- ---- ---- ---- ----
 ### 291/339 `nist/sql/dml168.sql` (FLATER)
 
 ```sql
@@ -5694,13 +5707,6 @@ TEST:0879 PASS:0879 If 1 row inserted successfully?
 => expected success, got error: Violation of CHECK constraint DELME
 ```
 
-```sql
-INSERT INTO T0879 VALUES (2, 0)
-
-TEST:0879 PASS:0879 If ERROR - integrity constraint violation?
-=> expected an error, got count 1
-```
-
 #### ☓ Ran 25 checks in 3 tests
 
 * 21 failed
@@ -5711,17 +5717,17 @@ TEST:0879 PASS:0879 If ERROR - integrity constraint violation?
 ### 292/339 `nist/sql/dml170.sql` (FLATER)
 
 ```sql
+INSERT INTO T0880 VALUES (0, 1)
+
+TEST:0880 PASS:0880 If 1 row inserted successfully?
+=> expected success, got error: Table 'T0880' could not be found
+```
+
+```sql
 SELECT C1 FROM T0880 ORDER BY C1
 
 TEST:0880 PASS:0880 If 2 rows are returned in the following order? c1 == If 0 ? If 1 ?
 => expected rows, got error: Table does not exist: T0880
-```
-
-```sql
-DROP CHARACTER SET "Little boxes on the hillside, Little boxes made of ticky-tacky"
-
-TEST:0881 PASS:0881 If character set dropped successfully?
-=> expected success, got error: Parse error on line 1: DROP CHARACTER SET "Little boxes ---------------^ Expecting 'DATABASE', got 'SET'
 ```
 
 #### ☓ Ran 17 checks in 2 tests
@@ -5731,7 +5737,23 @@ TEST:0881 PASS:0881 If character set dropped successfully?
 
 
 ---- ---- ---- ---- ---- ---- ----
-### 293/339 `nist/sql/dml184.sql` (FLATER)
+### 293/339 `nist/sql/dml172.sql` (FLATER)
+
+#### ☓ Ran 4 checks in 1 tests
+
+* 4 failed
+* 0% of the checks and 0% of the tests were OK
+
+
+---- ---- ---- ---- ---- ---- ----
+### 294/339 `nist/sql/dml184.sql` (FLATER)
+
+```sql
+SET SESSION AUTHORIZATION 'SCHANZLE'
+
+TEST:0897 PASS:0897 If session set successfully?
+=> expected success, got error: Parse error on line 1: SET SESSION AUTHORIZATION 'SCHAN ------------^ Expecting 'ARROW', 'DOT', 'EQ', 'ON', 'OFF', got 'LITERAL'
+```
 
 ```sql
 SELECT CONSTRAINT_NAME FROM INFORMATION_SCHEMA.CONSTRAINT_TABLE_USAGE WHERE TABLE_SCHEMA = 'FLATER' AND TABLE_NAME = 'T' AND CONSTRAINT_SCHEMA = 'FLATER'
@@ -5747,20 +5769,58 @@ TEST:0897 PASS:0897 If name = 'UNIQUEONCOLSAANDB'?
 
 
 ---- ---- ---- ---- ---- ---- ----
-### 294/339 `nist/sql/isi001.sql` (FLATER)
+### 295/339 `nist/sql/isi002.sql` (FLATER)
 
 ```sql
-SELECT COUNT(*) FROM INFORMATION_SCHEMA.TABLES Z WHERE NOT EXISTS (SELECT TABLE_SCHEMA, TABLE_NAME FROM INFORMATION_SCHEMA.TABLE_PRIVILEGES X WHERE GRANTEE IN ('PUBLIC', USER) AND X.TABLE_SCHEMA = Z.TABLE_SCHEMA AND X.TABLE_NAME = Z.TABLE_NAME UNION SELECT TABLE_SCHEMA, TABLE_NAME FROM INFORMATION_…
+SELECT COUNT(*) FROM INFORMATION_SCHEMA.VIEWS
 
-TEST:0568 PASS:0568 If COUNT = 0?
-=> expected count 0, got error: Parse error on line 2: ... INFORMATION_SCHEMA.TABLES Z WHERE NOT E -----------------------^ Expecting 'LITERAL', 'BRALITERAL', 'KEY', 'OPEN', 'CLOSE', 'SEPARATOR', got 'TABLE'
+TEST:0569 PASS:0569 If this COUNT = next COUNT?
+=> unparsed: condition not read: this COUNT = next COUNT
 ```
+
+```sql
+SELECT COUNT(*) FROM INFORMATION_SCHEMA.VIEWS A, INFORMATION_SCHEMA.VIEWS B WHERE A.TABLE_SCHEMA = B.TABLE_SCHEMA AND A.TABLE_NAME = B.TABLE_NAME
+
+TEST:0569 PASS:0569 If this COUNT = previous COUNT?
+=> unparsed: condition not read: this COUNT = previous COUNT
+```
+
+```sql
+SELECT CHECK_OPTION, IS_UPDATABLE FROM INFORMATION_SCHEMA.VIEWS WHERE TABLE_SCHEMA = 'FLATER' AND TABLE_NAME = 'DV1'
+
+TEST:0569 PASS:0569 If CHECK_OPTION = 'NONE'? If IS_UPDATABLE = 'YES'?
+=> expected CHECK_OPTION = 'NONE', got no rows
+```
+
+```sql
+SELECT CHECK_OPTION, IS_UPDATABLE FROM INFORMATION_SCHEMA.VIEWS WHERE TABLE_SCHEMA = 'FLATER' AND TABLE_NAME = 'VS1'
+
+TEST:0569 PASS:0569 If CHECK_OPTION = 'NONE'? If IS_UPDATABLE = 'YES'?
+=> expected CHECK_OPTION = 'NONE', got no rows
+```
+
+#### ☓ Ran 17 checks in 1 tests
+
+* 13 failed
+* 2 not read (condition text the runner does not understand)
+* 13% of the checks and 0% of the tests were OK
+
+
+---- ---- ---- ---- ---- ---- ----
+### 296/339 `nist/sql/isi001.sql` (FLATER)
 
 ```sql
 SELECT TABLE_TYPE FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = 'FLATER' AND TABLE_NAME = 'USIG'
 
 TEST:0568 PASS:0568 If TABLE_TYPE = 'BASE TABLE'?
 => expected TABLE_TYPE = 'BASE TABLE', got error: Parse error on line 2: ... INFORMATION_SCHEMA.TABLES WHERE TA -----------------------^ Expecting 'LITERAL', 'BRALITERAL', 'KEY', 'OPEN', 'CLOSE', 'SEPARATOR', got 'TABLE'
+```
+
+```sql
+SELECT TABLE_TYPE FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = 'FLATER' AND TABLE_NAME = 'VS1'
+
+TEST:0568 PASS:0568 If TABLE_TYPE = 'VIEW'?
+=> expected TABLE_TYPE = 'VIEW', got error: Parse error on line 2: ... INFORMATION_SCHEMA.TABLES WHERE TA -----------------------^ Expecting 'LITERAL', 'BRALITERAL', 'KEY', 'OPEN', 'CLOSE', 'SEPARATOR', got 'TABLE'
 ```
 
 #### ☓ Ran 20 checks in 1 tests
@@ -5771,108 +5831,48 @@ TEST:0568 PASS:0568 If TABLE_TYPE = 'BASE TABLE'?
 
 
 ---- ---- ---- ---- ---- ---- ----
-### 295/339 `nist/sql/isi007.sql` (FLATER)
-
-```sql
-SELECT COUNT (DISTINCT OBJECT_CATALOG) FROM INFORMATION_SCHEMA.USAGE_PRIVILEGES
-
-TEST:0574 PASS:0574 If COUNT = 0 or 1?
-=> unparsed: condition not read: COUNT = 0 or 1
-```
-
-```sql
-SELECT TABLE_CATALOG FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = 'WCOV'
-
-TEST:0574 PASS:0574 If select completed successfully?
-=> expected success, got error: Parse error on line 2: ... INFORMATION_SCHEMA.TABLES WHERE TA -----------------------^ Expecting 'LITERAL', 'BRALITERAL', 'KEY', 'OPEN', 'CLOSE', 'SEPARATOR', got 'TABLE'
-```
-
-```sql
-SELECT TABLE_CATALOG FROM INFORMATION_SCHEMA.TABLES ORDER BY TABLE_CATALOG
-
-TEST:0574 PASS:0574 IF no NULLS? If no value = to previous "noted" TABLE_CATALOG name?
-=> unparsed: condition not read: no NULLS
-```
-
-```sql
-SELECT CHARACTER_SET_CATALOG, CHARACTER_SET_SCHEMA, CHARACTER_SET_NAME, COLLATION_CATALOG, COLLATION_SCHEMA, COLLATION_NAME, DOMAIN_CATALOG, DOMAIN_SCHEMA, DOMAIN_NAME, INTERVAL_TYPE, INTERVAL_PRECISION FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = 'FLATER' AND TABLE_NAME = 'USIG' AND COLUMN…
-
-TEST:0574 PASS:0574 If either: completed successfully or ? WARNING - string data, right truncation?
-=> unparsed: condition not read: right truncation
-```
-
-```sql
-SELECT COUNT(*) FROM INFORMATION_SCHEMA.USAGE_PRIVILEGES
-
-TEST:0574 PASS:0574 If this COUNT = next COUNT?
-=> unparsed: condition not read: this COUNT = next COUNT
-```
-
-```sql
-SELECT COUNT(*) FROM INFORMATION_SCHEMA.USAGE_PRIVILEGES A, INFORMATION_SCHEMA.USAGE_PRIVILEGES B WHERE A.GRANTOR = B.GRANTOR AND A.GRANTEE = B.GRANTEE AND A.OBJECT_SCHEMA = B.OBJECT_SCHEMA AND A.OBJECT_NAME = B.OBJECT_NAME AND A.OBJECT_TYPE = B.OBJECT_TYPE
-
-TEST:0574 PASS:0574 If this COUNT = previous COUNT?
-=> unparsed: condition not read: this COUNT = previous COUNT
-```
-
-```sql
-SELECT COUNT(*) FROM INFORMATION_SCHEMA.USAGE_PRIVILEGES WHERE GRANTOR = '_SYSTEM' AND GRANTEE = 'PUBLIC' AND OBJECT_SCHEMA = 'INFORMATION_SCHEMA' AND OBJECT_NAME = 'SQL_IDENTIFIER' AND OBJECT_TYPE = 'DOMAIN' AND IS_GRANTABLE = 'YES' AND PRIVILEGE_TYPE = 'USAGE'
-
-TEST:0574 PASS:0574 If COUNT = 1?
-=> expected count 1, got error: Unknown INFORMATION_SCHEMA table
-```
-
-#### ☓ Ran 29 checks in 1 tests
-
-* 17 failed
-* 12 not read (condition text the runner does not understand)
-* 0% of the checks and 0% of the tests were OK
-
-
----- ---- ---- ---- ---- ---- ----
-### 296/339 `nist/sql/dml172.sql` (FLATER)
-
-#### ☓ Ran 4 checks in 1 tests
-
-* 4 failed
-* 0% of the checks and 0% of the tests were OK
-
-
----- ---- ---- ---- ---- ---- ----
 ### 297/339 `nist/sql/xts713.sql` (T7013PC)
 
 #### ☓ Ran 16 checks in 1 tests
 
-* 10 failed
-* 37% of the checks and 0% of the tests were OK
+* 5 failed
+* 68% of the checks and 0% of the tests were OK
 
 
 ---- ---- ---- ---- ---- ---- ----
-### 298/339 `nist/sql/isi003.sql` (FLATER)
+### 298/339 `nist/sql/cdr031.sql` (FLATER)
 
 ```sql
-SELECT COUNT(*) FROM INFORMATION_SCHEMA.COLUMNS
+INSERT INTO SUN.T6 VALUES ('AAAAAAAAAAAAAAAAAAAA', 'BBBBBBBBBBBBBBBBBBBB', 'CCCCCCCCCCCCCCCCCCCC', 'DDDDDDDDDDDDDDDDDDDD', 'EEEEEEEEEEEEEEEEEEEEEEE', 9999)
 
-TEST:0570 PASS:0570 If this COUNT(referneced as COUNT1) = next COUNT?
-=> unparsed: condition not read: this COUNT(referneced as COUNT1) = next COUNT
+TEST:0526 PASS:0526 If 1 row is inserted?
+=> expected 1 rows inserted, got error: undefined is not an object (evaluating 'fktable.pk.onrightfn')
 ```
 
-```sql
-SELECT COUNT(*) FROM INFORMATION_SCHEMA.COLUMNS A, INFORMATION_SCHEMA.COLUMNS B WHERE A.TABLE_SCHEMA = B.TABLE_SCHEMA AND A.TABLE_NAME = B.TABLE_NAME AND A.ORDINAL_POSITION = B.ORDINAL_POSITION
+#### ☓ Ran 5 checks in 1 tests
 
-TEST:0570 PASS:0570 If this COUNT = previous COUNT1?
-=> unparsed: condition not read: this COUNT = previous COUNT1
-```
-
-#### ☓ Ran 14 checks in 1 tests
-
-* 11 failed
-* 3 not read (condition text the runner does not understand)
-* 0% of the checks and 0% of the tests were OK
+* 2 failed
+* 60% of the checks and 0% of the tests were OK
 
 
 ---- ---- ---- ---- ---- ---- ----
-### 299/339 `nist/sql/isi004.sql` (FLATER)
+### 299/339 `nist/sql/dml005.sql` (HU)
+
+```sql
+SELECT LONG_INT, LONG_INT /1000000, LONG_INT - 123456789000000. FROM LONGINT
+
+TEST:0011 PASS:0011 If values are (123456789012345, 123456789, 12345), but? Second value may be between 123456788 and 123456790?
+=> unparsed: condition not read: values are (123456789012345
+```
+
+#### ★ Ran 2 checks in 1 tests
+
+* 1 not read (condition text the runner does not understand)
+* 100% of the checks and 0% of the tests were OK
+
+
+---- ---- ---- ---- ---- ---- ----
+### 300/339 `nist/sql/isi004.sql` (FLATER)
 
 ```sql
 SELECT DISTINCT SCHEMA_OWNER FROM INFORMATION_SCHEMA.SCHEMATA
@@ -5889,7 +5889,7 @@ TEST:0571 PASS:0571 If SCHEMA_OWNER = 'FLATER'?
 
 
 ---- ---- ---- ---- ---- ---- ----
-### 300/339 `nist/sql/dml042.sql` (HU)
+### 301/339 `nist/sql/dml042.sql` (HU)
 
 #### ★ Ran 2 checks in 1 tests
 
@@ -5897,31 +5897,7 @@ TEST:0571 PASS:0571 If SCHEMA_OWNER = 'FLATER'?
 
 
 ---- ---- ---- ---- ---- ---- ----
-### 301/339 `nist/sql/dml005.sql` (HU)
-
-```sql
-SELECT LONG_INT, LONG_INT /1000000, LONG_INT - 123456789000000. FROM LONGINT
-
-TEST:0011 PASS:0011 If values are (123456789012345, 123456789, 12345), but? Second value may be between 123456788 and 123456790?
-=> unparsed: condition not read: values are (123456789012345
-```
-
-#### ★ Ran 2 checks in 1 tests
-
-* 1 not read (condition text the runner does not understand)
-* 100% of the checks and 0% of the tests were OK
-
-
----- ---- ---- ---- ---- ---- ----
-### 302/339 `nist/sql/dml043.sql` (HU)
-
-#### ★ Ran 4 checks in 1 tests
-
-* 100% of the checks and 100% of the tests were OK
-
-
----- ---- ---- ---- ---- ---- ----
-### 303/339 `nist/sql/dml044.sql` (HU)
+### 302/339 `nist/sql/dml044.sql` (HU)
 
 ```sql
 SELECT STR110 FROM T4
@@ -5934,6 +5910,14 @@ TEST:0216 PASS:0216 If STR110 starts with 'This test is trying to test the '? an
 
 * 1 not read (condition text the runner does not understand)
 * 100% of the checks and 50% of the tests were OK
+
+
+---- ---- ---- ---- ---- ---- ----
+### 303/339 `nist/sql/dml043.sql` (HU)
+
+#### ★ Ran 4 checks in 1 tests
+
+* 100% of the checks and 100% of the tests were OK
 
 
 ---- ---- ---- ---- ---- ---- ----
@@ -5969,13 +5953,6 @@ TEST:0220 PASS:0220 If 4 rows are selected and first row? COL5 = 88888882, COL6 
 => unparsed: condition not read: first row COL5 = 88888882
 ```
 
-```sql
-SELECT COL3,COL11,COL9,COL8,COL7,COL5,COL4 FROM T12 ORDER BY COL9,COL8,COL7,COL5,COL4,COL3
-
-TEST:0221 PASS:0221 If 4 rows are selected ? If first row COL3 = 4441 and COL11 = 333?
-=> unparsed: condition not read: first row COL3 = 4441
-```
-
 #### ★ Ran 12 checks in 2 tests
 
 * 2 not read (condition text the runner does not understand)
@@ -5992,7 +5969,32 @@ TEST:0221 PASS:0221 If 4 rows are selected ? If first row COL3 = 4441 and COL11 
 
 
 ---- ---- ---- ---- ---- ---- ----
-### 307/339 `nist/sql/dml050.sql` (HU)
+### 307/339 `nist/sql/dml049.sql` (HU)
+
+#### ★ Ran 6 checks in 1 tests
+
+* 100% of the checks and 100% of the tests were OK
+
+
+---- ---- ---- ---- ---- ---- ----
+### 308/339 `nist/sql/isi003.sql` (FLATER)
+
+```sql
+SELECT COUNT(*) FROM INFORMATION_SCHEMA.COLUMNS
+
+TEST:0570 PASS:0570 If this COUNT(referneced as COUNT1) = next COUNT?
+=> unparsed: condition not read: this COUNT(referneced as COUNT1) = next COUNT
+```
+
+#### ☓ Ran 14 checks in 1 tests
+
+* 11 failed
+* 3 not read (condition text the runner does not understand)
+* 0% of the checks and 0% of the tests were OK
+
+
+---- ---- ---- ---- ---- ---- ----
+### 309/339 `nist/sql/dml050.sql` (HU)
 
 #### ☓ Ran 1 checks in 1 tests
 
@@ -6001,15 +6003,7 @@ TEST:0221 PASS:0221 If 4 rows are selected ? If first row COL3 = 4441 and COL11 
 
 
 ---- ---- ---- ---- ---- ---- ----
-### 308/339 `nist/sql/dml049.sql` (HU)
-
-#### ★ Ran 6 checks in 1 tests
-
-* 100% of the checks and 100% of the tests were OK
-
-
----- ---- ---- ---- ---- ---- ----
-### 309/339 `nist/sql/dml055.sql` (HU)
+### 310/339 `nist/sql/dml055.sql` (HU)
 
 #### ★ Ran 14 checks in 3 tests
 
@@ -6017,7 +6011,7 @@ TEST:0221 PASS:0221 If 4 rows are selected ? If first row COL3 = 4441 and COL11 
 
 
 ---- ---- ---- ---- ---- ---- ----
-### 310/339 `nist/sql/dml056.sql` (HU)
+### 311/339 `nist/sql/dml056.sql` (HU)
 
 #### ★ Ran 5 checks in 2 tests
 
@@ -6025,15 +6019,14 @@ TEST:0221 PASS:0221 If 4 rows are selected ? If first row COL3 = 4441 and COL11 
 
 
 ---- ---- ---- ---- ---- ---- ----
-### 311/339 `nist/sql/cdr014.sql` (SUN)
-
-#### ★ Ran 4 checks in 2 tests
-
-* 100% of the checks and 100% of the tests were OK
-
-
----- ---- ---- ---- ---- ---- ----
 ### 312/339 `nist/sql/dml057.sql` (HU)
+
+```sql
+SELECT FLOATTEST FROM JJ
+
+TEST:0248 PASS:0248 If FLOATTEST = 0.1048575 ? OR is between 0.1048574 and 0.1048576 ?
+=> unparsed: condition not read: OR is between 0.1048574
+```
 
 #### ★ Ran 18 checks in 3 tests
 
@@ -6042,16 +6035,7 @@ TEST:0221 PASS:0221 If 4 rows are selected ? If first row COL3 = 4441 and COL11 
 
 
 ---- ---- ---- ---- ---- ---- ----
-### 313/339 `nist/sql/cdr015.sql` (SUN)
-
-#### ☓ Ran 5 checks in 3 tests
-
-* 4 failed
-* 20% of the checks and 33% of the tests were OK
-
-
----- ---- ---- ---- ---- ---- ----
-### 314/339 `nist/sql/cdr016.sql` (SUN)
+### 313/339 `nist/sql/cdr016.sql` (SUN)
 
 #### ☓ Ran 6 checks in 3 tests
 
@@ -6060,23 +6044,31 @@ TEST:0221 PASS:0221 If 4 rows are selected ? If first row COL3 = 4441 and COL11 
 
 
 ---- ---- ---- ---- ---- ---- ----
-### 315/339 `nist/sql/cdr018.sql` (SUN)
+### 314/339 `nist/sql/cdr015.sql` (SUN)
 
-```sql
-UPDATE SIZ3_P10 SET F1 = 100 WHERE F1 = 8
+#### ☓ Ran 5 checks in 3 tests
 
-TEST:0362 PASS:0362 If RI ERROR, children exist, 0 rows updated?
-=> expected an error, got count 1
-```
+* 4 failed
+* 20% of the checks and 33% of the tests were OK
 
-#### ☓ Ran 13 checks in 5 tests
 
-* 8 failed
-* 38% of the checks and 20% of the tests were OK
+---- ---- ---- ---- ---- ---- ----
+### 315/339 `nist/sql/cdr014.sql` (SUN)
+
+#### ★ Ran 4 checks in 2 tests
+
+* 100% of the checks and 100% of the tests were OK
 
 
 ---- ---- ---- ---- ---- ---- ----
 ### 316/339 `nist/sql/cdr017.sql` (SUN)
+
+```sql
+SELECT COUNT(*) FROM SIZ2_P WHERE P1 = ' A'
+
+TEST:0358 PASS:0358 If count = 1?
+=> expected count 1, got 0
+```
 
 #### ☓ Ran 17 checks in 7 tests
 
@@ -6085,7 +6077,49 @@ TEST:0362 PASS:0362 If RI ERROR, children exist, 0 rows updated?
 
 
 ---- ---- ---- ---- ---- ---- ----
-### 317/339 `nist/sql/dml173.sql` (FLATER)
+### 317/339 `nist/sql/cdr018.sql` (SUN)
+
+#### ☓ Ran 13 checks in 5 tests
+
+* 8 failed
+* 38% of the checks and 20% of the tests were OK
+
+
+---- ---- ---- ---- ---- ---- ----
+### 318/339 `nist/sql/dml174.sql` (FLATER)
+
+#### ☓ Ran 5 checks in 1 tests
+
+* 4 failed
+* 20% of the checks and 0% of the tests were OK
+
+
+---- ---- ---- ---- ---- ---- ----
+### 319/339 `nist/sql/dml106.sql` (FLATER)
+
+```sql
+SELECT C2, C1, C3 FROM FOUR_CITIES ORDER BY C3, C2
+
+TEST:0599 PASS:0599 If 7 rows selected with ordered rows and column values ? Akron T -999 ? Deale T -999 ? Vienna X -1 ? Deale P 666 ? Vienna P 666 ? Deale S 777 ? Vienna S 777 ?
+=> expected Deale   T     -999  ? | Vienna  X       -1  ? | Deale   P      666  ? | Vienna  P      666  ? | Deale   S      777  ? | Vienna  S      777  ?, got 'Akron' 'T' -999 | 'Deale' 'T' -999 | 'Vienna' 'X' -1 | 'Vienna' 'X' -1 | 'Deale' 'P' 666 | 'Vienna' 'P' 666 | 'Deale' 'S' 777 | 'Vienna' 'S' 7…
+```
+
+```sql
+CREATE TABLE TSERR ( BADINT INTERVAL YEAR (2) TO MONTH, BADDATE DATE)
+
+TEST:0615 PASS:0615 If table is created?
+=> expected success, got error: Parse error on line 2: ...LE TSERR ( BADINT INTERVAL YEAR (2) TO ----------------------^ Expecting 'LITERAL', 'EOF', 'COMMA', 'RPAR', 'END', 'ELSE', 'ColumnConstraints', 'ENUM', 'GO', 'SEMICOLON', got 'INTERVAL'
+```
+
+#### ☓ Ran 37 checks in 5 tests
+
+* 20 failed
+* 3 not read (condition text the runner does not understand)
+* 41% of the checks and 0% of the tests were OK
+
+
+---- ---- ---- ---- ---- ---- ----
+### 320/339 `nist/sql/dml173.sql` (FLATER)
 
 #### ☓ Ran 4 checks in 1 tests
 
@@ -6094,7 +6128,7 @@ TEST:0362 PASS:0362 If RI ERROR, children exist, 0 rows updated?
 
 
 ---- ---- ---- ---- ---- ---- ----
-### 318/339 `nist/sql/dml169.sql` (FLATER)
+### 321/339 `nist/sql/dml169.sql` (FLATER)
 
 ```sql
 CREATE TABLE FOO (C1 INT)
@@ -6131,56 +6165,6 @@ TEST:0877 PASS:0877 If 1 row inserted successfully? If CHAR(4) literal 'EX ' sto
 
 
 ---- ---- ---- ---- ---- ---- ----
-### 319/339 `nist/sql/dml106.sql` (FLATER)
-
-```sql
-SELECT COUNT(*) FROM TSSMALL WHERE EXTRACT (YEAR FROM SMALLD) = EXTRACT (YEAR FROM SMALLTS)
-
-TEST:0613 PASS:0613 If count = 1?
-=> expected count 1, got error: Parse error on line 3: ...WHEREEXTRACT (YEAR FROM SMALLD) = EXTRA ----------------------^ Expecting 'EOF', 'COMMA', 'RPAR', 'IN', 'LIKE', 'ARROW', 'DOT', 'CARET', 'EQ', 'SLASH', 'EXCLAMATION', 'MODULO', 'GT', 'LT', 'GTGT', 'LTLT', 'NOT', 'AND', 'OR', 'PLUS', 'STAR', 'RB…
-```
-
-#### ☓ Ran 37 checks in 5 tests
-
-* 20 failed
-* 3 not read (condition text the runner does not understand)
-* 41% of the checks and 0% of the tests were OK
-
-
----- ---- ---- ---- ---- ---- ----
-### 320/339 `nist/sql/isi002.sql` (FLATER)
-
-```sql
-SELECT CHECK_OPTION, IS_UPDATABLE FROM INFORMATION_SCHEMA.VIEWS WHERE TABLE_SCHEMA = 'FLATER' AND TABLE_NAME = 'DV1'
-
-TEST:0569 PASS:0569 If CHECK_OPTION = 'NONE'? If IS_UPDATABLE = 'YES'?
-=> expected CHECK_OPTION = 'NONE', got no rows
-```
-
-```sql
-SELECT CHECK_OPTION, IS_UPDATABLE FROM INFORMATION_SCHEMA.VIEWS WHERE TABLE_SCHEMA = 'FLATER' AND TABLE_NAME = 'VS5'
-
-TEST:0569 PASS:0569 IF CHECK_OPTION = 'NONE'? If IS_UPDATABLE = 'NO'?
-=> expected CHECK_OPTION = 'NONE', got no rows
-```
-
-#### ☓ Ran 17 checks in 1 tests
-
-* 13 failed
-* 2 not read (condition text the runner does not understand)
-* 13% of the checks and 0% of the tests were OK
-
-
----- ---- ---- ---- ---- ---- ----
-### 321/339 `nist/sql/dml177.sql` (FLATER)
-
-#### ☓ Ran 28 checks in 2 tests
-
-* 2 failed
-* 92% of the checks and 0% of the tests were OK
-
-
----- ---- ---- ---- ---- ---- ----
 ### 322/339 `nist/sql/isi005.sql` (FLATER)
 
 ```sql
@@ -6191,7 +6175,7 @@ TEST:0572 PASS:0572 If CIUNT = 0?
 ```
 
 ```sql
-SELECT COUNT(*) FROM INFORMATION_SCHEMA.TABLE_PRIVILEGES WHERE GRANTOR = 'FLATER' AND GRANTEE = 'SCHANZLE' AND IS_GRANTABLE = 'NO' AND TABLE_SCHEMA = 'FLATER' AND TABLE_NAME = 'WCOV' AND PRIVILEGE_TYPE = 'REFERENCES'
+SELECT COUNT(*) FROM INFORMATION_SCHEMA.TABLE_PRIVILEGES WHERE GRANTOR = 'FLATER' AND GRANTEE = 'SCHANZLE' AND IS_GRANTABLE = 'NO' AND TABLE_SCHEMA = 'FLATER' AND TABLE_NAME = 'WCOV' AND PRIVILEGE_TYPE = 'SELECT'
 
 TEST:0572 PASS:0572 If COUNT = 1?
 => expected count 1, got error: Unknown INFORMATION_SCHEMA table
@@ -6223,6 +6207,13 @@ TEST:0892 PASS:0892 If CHAR_LENGTH = 8000?
 ---- ---- ---- ---- ---- ---- ----
 ### 324/339 `nist/sql/isi006.sql` (FLATER)
 
+```sql
+SELECT COUNT(*) FROM INFORMATION_SCHEMA.COLUMN_PRIVILEGES WHERE GRANTOR = 'FLATER' AND GRANTEE = 'SCHANZLE' AND IS_GRANTABLE = 'NO' AND TABLE_SCHEMA = 'FLATER' AND TABLE_NAME = 'WCOV' AND COLUMN_NAME = 'C1' AND PRIVILEGE_TYPE = 'INSERT'
+
+TEST:0573 PASS:0573 If COUNT = 1?
+=> expected count 1, got error: Unknown INFORMATION_SCHEMA table
+```
+
 #### ☓ Ran 15 checks in 1 tests
 
 * 13 failed
@@ -6240,13 +6231,6 @@ TEST:0895 PASS:0895 If 2 rows are returned? avg(cost) ========= If 24.95 (+ or -
 => unparsed: condition not read: 24.95 (+ or - 0.01)
 ```
 
-```sql
-DROP TABLE ORDERS CASCADE
-
-TEST:0895 PASS:0895 If table dropped successfully?
-=> expected success, got error: Parsing halted while starting to recover from another error.
-```
-
 #### ☓ Ran 7 checks in 1 tests
 
 * 2 failed
@@ -6255,31 +6239,58 @@ TEST:0895 PASS:0895 If table dropped successfully?
 
 
 ---- ---- ---- ---- ---- ---- ----
-### 326/339 `nist/sql/dml132.sql` (FLATER)
+### 326/339 `nist/sql/isi007.sql` (FLATER)
 
-#### ★ Ran 14 checks in 3 tests
+```sql
+SELECT COUNT (DISTINCT OBJECT_CATALOG) FROM INFORMATION_SCHEMA.USAGE_PRIVILEGES
 
-* 2 not read (condition text the runner does not understand)
-* 100% of the checks and 66% of the tests were OK
+TEST:0574 PASS:0574 If COUNT = 0 or 1?
+=> unparsed: condition not read: COUNT = 0 or 1
+```
+
+```sql
+SELECT TABLE_CATALOG FROM INFORMATION_SCHEMA.TABLES ORDER BY TABLE_CATALOG
+
+TEST:0574 PASS:0574 IF no NULLS? If no value = to previous "noted" TABLE_CATALOG name?
+=> unparsed: condition not read: no NULLS
+```
+
+```sql
+SELECT TABLE_CATALOG FROM INFORMATION_SCHEMA.USAGE_PRIVILEGES ORDER BY TABLE_CATALOG
+
+TEST:0574 PASS:0574 If no NULLS? If no value = to previous "noted" TABLE_CATALOG name?
+=> unparsed: condition not read: no NULLS
+```
+
+```sql
+SELECT CHARACTER_SET_CATALOG, CHARACTER_SET_SCHEMA, CHARACTER_SET_NAME, COLLATION_CATALOG, COLLATION_SCHEMA, COLLATION_NAME, DOMAIN_CATALOG, DOMAIN_SCHEMA, DOMAIN_NAME, INTERVAL_TYPE, INTERVAL_PRECISION FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = 'FLATER' AND TABLE_NAME = 'USIG' AND COLUMN…
+
+TEST:0574 PASS:0574 If either: completed successfully or ? WARNING - string data, right truncation?
+=> unparsed: condition not read: right truncation
+```
+
+#### ☓ Ran 29 checks in 1 tests
+
+* 17 failed
+* 12 not read (condition text the runner does not understand)
+* 0% of the checks and 0% of the tests were OK
 
 
 ---- ---- ---- ---- ---- ---- ----
-### 327/339 `nist/sql/cdr031.sql` (FLATER)
-
-#### ☓ Ran 5 checks in 1 tests
-
-* 2 failed
-* 60% of the checks and 0% of the tests were OK
-
-
----- ---- ---- ---- ---- ---- ----
-### 328/339 `nist/sql/dml186.sql` (FLATER)
+### 327/339 `nist/sql/dml186.sql` (FLATER)
 
 ```sql
 SELECT EXTRACT (YEAR FROM C1), EXTRACT (MONTH FROM C2), EXTRACT (DAY FROM C3), EXTRACT (HOUR FROM C4), EXTRACT (MINUTE FROM C5), EXTRACT (SECOND FROM C6), EXTRACT (SECOND FROM C7) FROM TIMEPREC
 
 TEST:0899 PASS:0899 If int1 = 9999999? If int2 = 9999999? If int3 = 9999999? If int4 = 9999999? If int5 = 9999999? If int6 = 9999999? If int7 = 9999999?
 => expected int1 = 9999999, got error: Parse error on line 1: ...ELECT EXTRACT (YEAR FROM C1), EXTRA -----------------------^ Expecting 'EOF', 'COMMA', 'RPAR', 'IN', 'LIKE', 'ARROW', 'DOT', 'CARET', 'EQ', 'SLASH', 'EXCLAMATION', 'MODULO', 'GT', 'LT', 'GTGT', 'LTLT', 'NOT', 'AND', 'OR', 'PLUS', 'STAR',…
+```
+
+```sql
+DROP TABLE TIMEPREC CASCADE
+
+TEST:0899 PASS:0899 If table dropped successfully?
+=> expected success, got error: Parsing halted while starting to recover from another error.
 ```
 
 #### ☓ Ran 6 checks in 1 tests
@@ -6289,11 +6300,27 @@ TEST:0899 PASS:0899 If int1 = 9999999? If int2 = 9999999? If int3 = 9999999? If 
 
 
 ---- ---- ---- ---- ---- ---- ----
-### 329/339 `nist/sql/flg009.sql` (HU)
+### 328/339 `nist/sql/dml132.sql` (FLATER)
 
-#### ☓ Ran 3 checks in 1 tests
+#### ★ Ran 14 checks in 3 tests
 
-* 3 failed
+* 2 not read (condition text the runner does not understand)
+* 100% of the checks and 66% of the tests were OK
+
+
+---- ---- ---- ---- ---- ---- ----
+### 329/339 `nist/sql/flg006.sql` (MCGINN)
+
+```sql
+SELECT COL3 FROM VIEWABCDEFGHIKLMN19
+
+TEST:0299 PASS:0299 If the value 299 is selected by any of SQL SELECTs above?
+=> unparsed: condition not read: the value 299 is selected by any of SQL SELECTs above
+```
+
+#### ★ Ran 1 checks in 1 tests
+
+* 1 not read (condition text the runner does not understand)
 * 0% of the checks and 0% of the tests were OK
 
 
@@ -6314,14 +6341,16 @@ TEST:0389 PASS:0389 If character in 1st position matches ? description in positi
 
 
 ---- ---- ---- ---- ---- ---- ----
-### 331/339 `nist/sql/dml084.sql` (SCHANZLE)
+### 331/339 `nist/sql/dml175.sql` (FLATER)
 
-```sql
-SELECT COUNT(*) FROM HU.STAFF WHERE GRADE < (SELECT MAX(HOURS) FROM HU.WORKS) OR GRADE > (SELECT MAX(NUMKEY) FROM HU.UPUNIQ) OR GRADE + 100 > (SELECT MIN(HOURS) FROM HU.WORKS)
+#### ☓ Ran 5 checks in 1 tests
 
-TEST:0503 PASS:0503 If ERROR, syntax error or access rule violation? 0 rows selected OR SQLSTATE = 42000 OR SQLCODE < 0?
-=> expected an error, got 1 rows
-```
+* 4 failed
+* 20% of the checks and 0% of the tests were OK
+
+
+---- ---- ---- ---- ---- ---- ----
+### 332/339 `nist/sql/dml084.sql` (SCHANZLE)
 
 #### ☓ Ran 12 checks in 2 tests
 
@@ -6331,42 +6360,23 @@ TEST:0503 PASS:0503 If ERROR, syntax error or access rule violation? 0 rows sele
 
 
 ---- ---- ---- ---- ---- ---- ----
-### 332/339 `nist/sql/cdr025.sql` (SUN)
-
-#### ☓ Ran 5 checks in 3 tests
-
-* 2 failed
-* 1 not read (condition text the runner does not understand)
-* 50% of the checks and 0% of the tests were OK
-
-
----- ---- ---- ---- ---- ---- ----
-### 333/339 `nist/sql/dml176.sql` (FLATER)
-
-#### ☓ Ran 5 checks in 1 tests
-
-* 4 failed
-* 20% of the checks and 0% of the tests were OK
-
-
----- ---- ---- ---- ---- ---- ----
-### 334/339 `nist/sql/dml174.sql` (FLATER)
-
-#### ☓ Ran 5 checks in 1 tests
-
-* 4 failed
-* 20% of the checks and 0% of the tests were OK
-
-
----- ---- ---- ---- ---- ---- ----
-### 335/339 `nist/sql/dml175.sql` (FLATER)
+### 333/339 `nist/sql/dml177.sql` (FLATER)
 
 ```sql
-SELECT COUNT(*) FROM CONTACTS WHERE DESCRIPTION LIKE N'%gra' AND KEYWORDS LIKE N'%magnetic'
+DROP TABLE NOMAIL CASCADE
 
-TEST:0887 PASS:0887 If COUNT = 1?
-=> expected count 1, got 0
+TEST:0889 PASS:0889 If table dropped successfully?
+=> expected success, got error: Parsing halted while starting to recover from another error.
 ```
+
+#### ☓ Ran 28 checks in 2 tests
+
+* 2 failed
+* 92% of the checks and 0% of the tests were OK
+
+
+---- ---- ---- ---- ---- ---- ----
+### 334/339 `nist/sql/dml176.sql` (FLATER)
 
 #### ☓ Ran 5 checks in 1 tests
 
@@ -6375,7 +6385,7 @@ TEST:0887 PASS:0887 If COUNT = 1?
 
 
 ---- ---- ---- ---- ---- ---- ----
-### 336/339 `nist/sql/dml178.sql` (FLATER)
+### 335/339 `nist/sql/dml178.sql` (FLATER)
 
 ```sql
 SELECT C1, C2, C3, C4, C5, C6, C7, C8, C9, C10, C11, C12, C13, C14, C15, C16, C17, C18, C19, C20, C21, C22, C23, C24, C25, C26, C27, C28, C29, C30, C31, C32, C33, C34, C35, C36, C37, C38, C39, C40, C41, C42, C43, C44, C45, C46, C47, C48, C49, C50, C51, C52, C53, C54, C55, C56, C57, C58, C59, C60, C…
@@ -6392,7 +6402,7 @@ TEST:0891 PASS:0891 If 250 values are returned with values from 2 thru 251?
 
 
 ---- ---- ---- ---- ---- ---- ----
-### 337/339 `nist/sql/dml181.sql` (FLATER)
+### 336/339 `nist/sql/dml181.sql` (FLATER)
 
 ```sql
 SELECT FIRSTNAME, LASTNAME, AVG(COST) FROM PEOPLE_ORDERS GROUP BY LASTNAME, FIRSTNAME ORDER BY LASTNAME, FIRSTNAME
@@ -6409,7 +6419,7 @@ TEST:0894 PASS:0894 If aaaaaaaa.... bbbbbbbb.... 24.95 (+ or - 0.01)? If ccccccc
 
 
 ---- ---- ---- ---- ---- ---- ----
-### 338/339 `nist/sql/dml183.sql` (FLATER)
+### 337/339 `nist/sql/dml183.sql` (FLATER)
 
 ```sql
 SELECT EMPNUM, CASE GRADE WHEN 0 THEN 1000 WHEN 1 THEN 997 WHEN 2 THEN 994 WHEN 3 THEN 991 WHEN 4 THEN 988 WHEN 5 THEN 985 WHEN 6 THEN 982 WHEN 7 THEN 979 WHEN 8 THEN 976 WHEN 9 THEN 973 WHEN 10 THEN 970 WHEN 11 THEN 967 WHEN 12 THEN 964 WHEN 13 THEN 961 WHEN 14 THEN 958 WHEN 15 THEN 955 WHEN 16 TH…
@@ -6432,19 +6442,29 @@ TEST:0896 PASS:0896 If empnum = 'E2' and casgrd = 970?
 
 
 ---- ---- ---- ---- ---- ---- ----
-### 339/339 `nist/sql/flg006.sql` (MCGINN)
+### 338/339 `nist/sql/flg009.sql` (HU)
 
 ```sql
-SELECT COL3 FROM VIEWABCDEFGHIKLMN19
+SELECT EMPNUM, CITY FROM STAFF UNION SELECT 'e1', CITY FROM PROJ
 
-TEST:0299 PASS:0299 If the value 299 is selected by any of SQL SELECTs above?
-=> unparsed: condition not read: the value 299 is selected by any of SQL SELECTs above
+TEST:0455 PASS:0455 If 8 rows selected?
+=> expected 8 rows selected, got 11
 ```
 
-#### ★ Ran 1 checks in 1 tests
+#### ☓ Ran 3 checks in 1 tests
 
-* 1 not read (condition text the runner does not understand)
+* 3 failed
 * 0% of the checks and 0% of the tests were OK
+
+
+---- ---- ---- ---- ---- ---- ----
+### 339/339 `nist/sql/cdr025.sql` (SUN)
+
+#### ☓ Ran 5 checks in 3 tests
+
+* 2 failed
+* 1 not read (condition text the runner does not understand)
+* 50% of the checks and 0% of the tests were OK
 
 
 -----------------------------
@@ -6453,11 +6473,11 @@ TEST:0299 PASS:0299 If the value 299 is selected by any of SQL SELECTs above?
 
 * `alasql@4.20.0` (Bun 1.4.3)
 * Test files: 339
-* Checks: 3,570: 1,374 passed, 1,872 failed, 313 not read, 11 not resolved
-* Tests (TEST:nnnn, all checks pass): 168 of 675
+* Checks: 3,570: 1,405 passed, 1,841 failed, 313 not read, 11 not resolved
+* Tests (TEST:nnnn, all checks pass): 172 of 675
 * ROLLBACK emulated 688 times (20 by rebuilding after DDL)
-* Final score: 42 % of the checks and 24 % of the tests were OK
+* Final score: 43 % of the checks and 25 % of the tests were OK
 
-Total script time: 20.9s
+Total script time: 24.5s
 
 _Repeated failures are sampled; run with --printAllErrors to see every one, or --debug for results/debug.jsonl_

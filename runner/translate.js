@@ -35,7 +35,8 @@ export function translate(sql, session) {
 
 	const schema = /^CREATE\s+SCHEMA\b\s*(?!AUTHORIZATION\b)([A-Z_][\w]*)?\s*(?:AUTHORIZATION\s+([A-Z_][\w]*))?\s*(?:DEFAULT\s+CHARACTER\s+SET\s+\S+)?/i.exec(s);
 	if (schema) {
-		const name = (schema[1] || schema[2] || session.auth).toUpperCase();
+		// the name as written: AlaSQL database names are case-sensitive, and the file uses the same spelling later
+		const name = schema[1] || schema[2] || session.auth;
 		const body = s.slice(schema[0].length);
 		const starts = elementStarts(body);
 		const elements = starts.map((p, i) => body.slice(p, starts[i + 1] ?? body.length).trim()).filter(Boolean);

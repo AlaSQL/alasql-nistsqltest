@@ -78,7 +78,7 @@ function restore(snap) {
 		s.db.sqlCache = {};
 		s.db.astCache = {};
 	}
-	alasql.sets = {};
+	// alasql.sets stays: CHECK constraints compiled in the setup look their IN lists up there
 	if (!alasql.databases[alasql.useid]) alasql.useid = "alasql";
 	alasql.tables = alasql.databases[alasql.useid].tables;
 }
